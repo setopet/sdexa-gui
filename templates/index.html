@@ -8,15 +8,21 @@
     <form action="/upload" method="POST" enctype="multipart/form-data">
         <div>
             <label for="upload">upload file</label>
-            <input name="upload" type="file" title="upload file">
+            <input name="surview" type="file" title="upload file">
+            <label for="upload">upload file</label>
+            <input name="ct" type="file" title="upload file">
         </div>
        <div>
             <button type="submit">Submit</button>
        </div>
     </form>
 
-    {% if image_filename != None %}
-        <img src="../uploads/{{image_filename}}" alt="image">
+    {% if filename_surview != None %}
+        <img src="../uploads/{{ filename_surview }}" alt="image">
+    {% endif %}
+
+    {% if filename_ct != None %}
+        <img src="../uploads/{{ filename_ct }}" alt="image">
     {% endif %}
   </body>
 </html>
