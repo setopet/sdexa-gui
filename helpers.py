@@ -5,8 +5,8 @@ from datetime import datetime
 from PIL import Image
 
 
-# normalize array, set minimum to 0 and maximum to 255
-def normalize_array(image: np.array) -> np.array:
+# set window for image, minimum to 0, maximum to 255
+def set_window(image: np.array) -> np.array:
     result = image - image.min()
     return result * (255 / result.max())
 

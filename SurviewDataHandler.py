@@ -1,5 +1,5 @@
 import numpy as np
-from helpers import normalize_array, save_image
+from helpers import set_window, save_image
 
 
 class SurviewDataHandler:
@@ -7,7 +7,7 @@ class SurviewDataHandler:
         self.directory = directory
 
     def process_and_save_image(self, file):
-        image = normalize_array(np.load(file))
+        image = set_window(np.load(file))
         mask = get_segmentation(image)
         return save_image(self.directory, overlay_images(image, mask))
 
