@@ -1,9 +1,12 @@
+import os
+
 from flask import Flask, render_template, request, send_file
 from CtDataHandler import CtDataHandler
 from SurviewDataHandler import SurviewDataHandler
 
 app = Flask(__name__)
 app.config['UPLOAD_DIR'] = 'uploads'
+os.makedirs(app.config['UPLOAD_DIR'], exist_ok=True)
 app.config['FILENAME_SURVIEW'] = None
 app.config['FILENAME_CT'] = None
 sv_handler = SurviewDataHandler(app.config['UPLOAD_DIR'])
