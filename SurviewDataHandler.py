@@ -1,8 +1,7 @@
 import numpy as np
-from omegaconf import OmegaConf
 from torchvision.transforms import transforms
 from helpers import set_window, save_image
-from segmentation.model.base import BaseModel
+from segmentation.base import BaseModel
 
 
 class SurviewDataHandler:
@@ -25,8 +24,7 @@ def overlay_images(image, mask):
 # will be removed for real segmentation (Burak's code)
 # mask contains only ones and zeros.
 def get_segmentation(image):
-    hparams = OmegaConf.load('./segmentation/configs/base_config.yaml')
-    model = BaseModel.load_from_checkpoint('./segmentation/checkpoints/0912_194939.ckpt', hparams=hparams)
+    model = BaseModel.load_from_checkpoint('./segmentation/checkpoints/0912_194939.ckpt')
     i = image[0,0:512,0:512]
     model.float()
     # Pytorch erwartet Batch als Eingabe, das [None, ...] fügt eine "Batch"-Dimension hinzu
