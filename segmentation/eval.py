@@ -1,6 +1,13 @@
+import numpy as np
+import pytorch_lightning as pl
+import cv2
+from argparse import ArgumentParser
 import pytorch_lightning as pl
 
-from argparse import ArgumentParser
+import torchvision
+from torchvision.transforms import transforms
+
+import torch
 from omegaconf import OmegaConf
 
 from model.base import BaseModel
@@ -17,12 +24,7 @@ if __name__ == '__main__':
 
     hparams = OmegaConf.load(config_path)
 
-    trainer = Trainer(
-        gpus=0,
-        callbacks=None,
-        logger=False
-    )
-
     model = BaseModel.load_from_checkpoint(ckpt_path, hparams=hparams)
-
-    trainer.test(model)
+    test = cv2.imread('G:\\Code\\ba\\thesis-gui\\segmentation\\inputs\\S002768_S1000_output-photo.png', 0)
+    res = model(transforms.ToTensor()(test)[None, ...])
+    torchvision.utils.save_image(res, '{}\\{}.png'.format('G:\\Code\\ba\\thesis-gui\\segmentation\\outputs\\', 'out'))

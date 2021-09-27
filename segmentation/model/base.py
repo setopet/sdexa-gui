@@ -7,10 +7,12 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Subset
 from torchvision.transforms import transforms
 from torchvision.utils import make_grid
-from utils.util import save_image
-from data.dataset import BasicDataset
-from model.metric import dice_score
-from model.losses import DiceLoss
+
+from segmentation.data.dataset import BasicDataset
+from segmentation.model.losses import DiceLoss
+from segmentation.model.metric import dice_score
+from segmentation.utils.util import save_image
+
 
 class BaseModel(pl.LightningModule):
     def __init__(self, hparams):
@@ -53,7 +55,7 @@ class BaseModel(pl.LightningModule):
         return Subset(dataset, train_idx), Subset(dataset, val_idx)
 
     def forward(self, x):
-        return self.model(x)
+        return self.model(x.float())
 
     def training_step(self, batch, batch_idx):
         return self.run_step(batch, 'train')

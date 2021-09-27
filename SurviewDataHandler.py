@@ -1,5 +1,8 @@
 import numpy as np
+from omegaconf import OmegaConf
+from torchvision.transforms import transforms
 from helpers import set_window, save_image
+from segmentation.model.base import BaseModel
 
 
 class SurviewDataHandler:
@@ -15,13 +18,17 @@ class SurviewDataHandler:
 # overlay image with mask
 def overlay_images(image, mask):
     result = np.stack([image, image, image]).transpose(2, 3, 0, 1).squeeze()
-    result[:, :, 0] += mask.squeeze() * 100  # multiplying mask with value between 1 and 255 for better displaying
+    result[:, 0:512, 0] += (mask > 0).squeeze() * 100  # multiplying mask with value between 1 and 255 for better displaying
     return result.astype('uint8')
 
 
 # will be removed for real segmentation (Burak's code)
 # mask contains only ones and zeros.
 def get_segmentation(image):
-    mask_path = 'C:\\Users\\Sebastian\\LRZ Sync+Share\\Informatik\\Bachelorarbeit\\Daten\\Surview_data\\' \
-                'S002768_S1000_output-photo_r1_mask.npy'
-    return np.load(mask_path)
+    hparams = OmegaConf.load('./segmentation/configs/base_config.yaml')
+    model = BaseModel.load_from_checkpoint('./segmentation/checkpoints/0912_194939.ckpt', hparams=hparams)
+    i = image[0,0:512,0:512]
+    model.float()
+    # Pytorch erwartet Batch als Eingabe, das [None, ...] fügt eine "Batch"-Dimension hinzu
+    result = model(transforms.ToTensor()(i)[None, ...])
+    return result.detach().numpy().squeeze().astype(int)

@@ -18,4 +18,4 @@ optimizer:
   lr: 0.0003
 
 eval: True
-save_path: './outputs/'
+save_path: './segmentation/outputs/'

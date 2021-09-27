@@ -11,7 +11,7 @@ from pathlib import Path
 from itertools import repeat
 from PIL import Image
 
-from model.metric import dice_score
+from segmentation.model.metric import dice_score
 
 
 def transform_to_hu(medical_image, image):
