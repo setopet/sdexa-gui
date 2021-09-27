@@ -23,7 +23,7 @@ def get_image(image=None):
     return send_file('uploads/' + image, mimetype='image/jpeg')
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/uploads', methods=['POST'])
 def upload_surview():
     if request.files.get('surview'):
         file = request.files['surview']

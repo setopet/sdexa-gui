@@ -1,7 +1,6 @@
 import numpy as np
-from torchvision.transforms import transforms
 from helpers import set_window, save_image
-from segmentation.base import BaseModel
+from segmentation.Segmentation import perform_segmentation
 
 
 class SurviewDataHandler:
@@ -17,15 +16,10 @@ class SurviewDataHandler:
 # overlay image with mask
 def overlay_images(image, mask):
     result = np.stack([image, image, image]).transpose(2, 3, 0, 1).squeeze()
-    result[:, 0:512, 0] += (mask > 0).squeeze() * 100  # multiplying mask with value between 1 and 255 for better displaying
+    result[:, 0:512, 0] += mask * 100  # multiplying mask with value between 1 and 255 for better displaying
     return result.astype('uint8')
 
 
-# will be removed for real segmentation (Burak's code)
-# mask contains only ones and zeros.
 def get_segmentation(image):
-    model = BaseModel.load_from_checkpoint('./segmentation/checkpoints/0912_194939.ckpt')
-    i = image[0, 0:512, 0:512]
-    model.float()  # necessary, because pytorch expects type 'double' otherwise
-    result = model(transforms.ToTensor()(i)[None, ...])  # pytorch expects a batch of data, so a dimension is added
-    return result.detach().numpy().squeeze().astype(int)
+    return perform_segmentation(image[0, 0:512, 0:512])
+
