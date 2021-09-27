@@ -25,8 +25,7 @@ def overlay_images(image, mask):
 # mask contains only ones and zeros.
 def get_segmentation(image):
     model = BaseModel.load_from_checkpoint('./segmentation/checkpoints/0912_194939.ckpt')
-    i = image[0,0:512,0:512]
-    model.float()
-    # Pytorch erwartet Batch als Eingabe, das [None, ...] fügt eine "Batch"-Dimension hinzu
-    result = model(transforms.ToTensor()(i)[None, ...])
+    i = image[0, 0:512, 0:512]
+    model.float()  # necessary, because pytorch expects type 'double' otherwise
+    result = model(transforms.ToTensor()(i)[None, ...])  # pytorch expects a batch of data, so a dimension is added
     return result.detach().numpy().squeeze().astype(int)

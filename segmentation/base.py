@@ -12,4 +12,4 @@ class BaseModel(pl.LightningModule):
         )
 
     def forward(self, x):
-        return self.model(x.float())
+        return self.model(x.float())  # .float() is necessary, because pytorch expects type 'double' otherwise
