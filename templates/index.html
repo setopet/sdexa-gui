@@ -5,29 +5,58 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
-    <h1>sdexa-gui</h1>
-    <form action="/uploads" method="POST" enctype="multipart/form-data">
+    <div class="container">
         <div class="row">
-            <div class="col-4">
-                <label class="btn-dark" for="surview">Upload Surview</label>
-                <input style="display:none;" id="surview" name="surview" type="file" title="Upload Surview">
-                {% if filename_surview != None %}
-                    <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_surview }}" alt="image"></div>
-                {% endif %}
+            <div class="col-sm">
+                <h1>sdexa-gui</h1>
             </div>
-            <div class="col-4">
-                <label class="btn-dark" for="ct">Upload CT</label>
-                <input style="display:none;" id="ct" name="ct" type="file" title="Upload CT">
-            {% if filename_ct != None %}
-                <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_ct }}" alt="image"></div>
-            {% endif %}
+            <div class="col-sm text-right">
+                <img src="{{ url_for('static', filename='TUM_logo.png') }}" style="height:50px">
             </div>
         </div>
-       <div>
-            <button class="btn-primary" type="submit">Submit</button>
-       </div>
-    </form>
+        <div class="row">
+            <div class="col-sm">
+                <form action="/uploads" method="POST" enctype="multipart/form-data">
+                <div>
+                    <label class="btn-dark" for="surview">Upload Surview</label>
+                    <input style="display:none;" id="surview" name="surview" type="file" title="Upload Surview">
+                </div>
+                <div>
+                    <button class="btn-primary" type="submit">Submit</button>
+                </div>
+                </form>
+                <div>
+                    {% if filename_surview != None %}
+                        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_surview }}" alt="image"></div>
+                    {% endif %}
+                    {% if filename_surview == None %}
+                        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-sm">
+                <form action="/uploads" method="POST" enctype="multipart/form-data">
+                    <div>
+                        <label class="btn-dark" for="ct">Upload CT</label>
+                        <input style="display:none;" id="ct" name="ct" type="file" title="Upload CT">
+                    </div>
+                    <div>
+                        <button class="btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+                <div>
+                    {% if filename_ct != None %}
+                        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_ct }}" alt="image"></div>
+                    {% endif %}
+                    {% if filename_ct == None %}
+                        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
   </body>
 </html>
