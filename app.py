@@ -15,7 +15,7 @@ ct_handler = CtDataHandler(app.config['UPLOAD_DIR'])
 
 @app.route('/', methods=['GET'])
 def root():
-    return render_template('index.html', surview_filename=None)
+    return render_template('index.html', filename_surview=None, filename_ct=None)
 
 
 @app.route('/uploads/<image>', methods=['GET'])
