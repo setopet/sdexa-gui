@@ -26,4 +26,6 @@ def overlay_images(image, mask):
     result = np.stack([result, result, result])
     result[0] += mask * (100 / mask.max())
     result = set_window(result).astype('uint8')
-    return result.transpose(2, 1, 0)
+    result = np.rot90(np.rot90(result.transpose(2, 1, 0)))
+    x,y,_ = result.shape
+    return np.pad(result, ((512-x, 0), (512-y, 0), (0,0)), 'constant')

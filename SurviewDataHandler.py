@@ -15,9 +15,9 @@ class SurviewDataHandler:
 
 # overlay image with mask
 def overlay_images(image, mask):
-    result = np.stack([image, image, image]).transpose(2, 3, 0, 1).squeeze()
-    result[:, 0:512, 0] += mask * 100  # multiplying mask with value between 1 and 255 for better displaying
-    return result.astype('uint8')
+    result = np.stack([image, image, image]).transpose(2, 3, 0, 1).squeeze()[0:512,0:512,:]
+    result[:, :, 0] += mask * 100  # multiplying mask with value between 1 and 255 for better displaying
+    return np.rot90(result.astype('uint8'))
 
 
 def get_segmentation(image):
