@@ -2,15 +2,14 @@ import os
 
 from flask import Flask, render_template, request, send_file
 from CtDataHandler import CtDataHandler
-from SurviewDataHandler import SurviewDataHandler
+from Surview import Surview
 
 app = Flask(__name__)
-app.config['UPLOAD_DIR'] = 'uploads'
-os.makedirs(app.config['UPLOAD_DIR'], exist_ok=True)
+UPLOAD_DIR = 'uploads'
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.config['FILENAME_SURVIEW'] = None
 app.config['FILENAME_CT'] = None
-sv_handler = SurviewDataHandler(app.config['UPLOAD_DIR'])
-ct_handler = CtDataHandler(app.config['UPLOAD_DIR'])
+ct_handler = CtDataHandler(UPLOAD_DIR)
 
 
 @app.route('/', methods=['GET'])
@@ -27,7 +26,8 @@ def get_image(image=None):
 def upload_surview():
     if request.files.get('surview'):
         file = request.files['surview']
-        app.config['FILENAME_SURVIEW'] = sv_handler.process_and_save_image(file)
+        surview = Surview(file, (0, 800))
+        app.config['FILENAME_SURVIEW'] = surview.get_segmentation_overlay_image(UPLOAD_DIR)
     if request.files.get('ct'):
         file = request.files['ct']
         app.config['FILENAME_CT'] = ct_handler.process_and_save_image(file)
