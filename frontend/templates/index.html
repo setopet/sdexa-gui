@@ -1,64 +1,12 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>sdexa-gui</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-    <script type="module" src="{{ url_for('static', filename='modules/app.js' )}}"></script>
-  </head>
-  <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                <h1>sdexa-gui</h1>
-            </div>
-            <div class="col-sm text-right">
-                <img src="{{ url_for('static', filename='images/TUM_logo.png') }}" style="height:50px">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div>
-                    <label class="btn-dark" for="surview">Upload Surview</label>
-                    <input style="display:none;" id="surview" name="surview" type="file" title="Upload Surview">
-                </div>
-                <div>
-                    <button class="btn-primary" onclick="$ctrl.uploadSurview()">Submit</button>
-                </div>
-                <div>
-                    {% if filename_surview != None %}
-                        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_surview }}" alt="image"></div>
-                    {% endif %}
-                    {% if filename_surview == None %}
-                        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-sm">
-                    <div>
-                        <label class="btn-dark" for="ct_projection">Upload CT</label>
-                        <input style="display:none;" id="ct_projection" name="ct_projection" type="file" title="Upload CT">
-                    </div>
-                    <div>
-                        <button class="btn-primary" onclick="$ctrl.uploadCtProjection()">Submit</button>
-                    </div>
-                <div>
-                    {% if filename_ct != None %}
-                        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_ct }}" alt="image"></div>
-                    {% endif %}
-                    {% if filename_ct == None %}
-                        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <footer>
-                <p>Authored <b>2021</b>, TU München.</p>
-            </footer>
-        </div>
+{% extends 'page.html' %}
+
+{% block content %}
+    <div class="col-sm">
+        {% include "surview/form.html" %}
+        {% include "surview/surview.html" %}
     </div>
-  </body>
-</html>
+    <div class="col-sm">
+        {% include "ct/form.html" %}
+        {% include "ct/projection.html" %}
+    </div>
+{% endblock %}

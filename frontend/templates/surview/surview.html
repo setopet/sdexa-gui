@@ -1,0 +1,8 @@
+<div>
+    {% if filename_surview != None %}
+        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_surview }}" alt="image"></div>
+    {% endif %}
+    {% if filename_surview == None %}
+        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
+    {% endif %}
+</div>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block page %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h1>sdexa-gui</h1>
+            </div>
+            <div class="col-sm text-right">
+                <img src="{{ url_for('static', filename='images/TUM_logo.png') }}" style="height:50px">
+            </div>
+        </div>
+        <div class="row">
+            {% block content %} {% endblock %}
+        </div>
+        <div class="row">
+            <footer>
+                <p>Authored <b>2021</b>, TU München.</p>
+            </footer>
+        </div>
+    </div>
+{% endblock %}

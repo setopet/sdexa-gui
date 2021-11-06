@@ -1,0 +1,8 @@
+<div>
+    {% if filename_ct != None %}
+        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_ct }}" alt="image"></div>
+    {% endif %}
+    {% if filename_ct == None %}
+        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
+    {% endif %}
+</div>
