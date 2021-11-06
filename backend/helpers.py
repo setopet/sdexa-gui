@@ -1,5 +1,4 @@
 import os
-
 import numpy as np
 from datetime import datetime
 from PIL import Image

@@ -5,7 +5,11 @@ from flask import Flask, render_template, request, send_file
 from backend.CtProjection import CtProjection
 from backend.Surview import Surview
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='',
+            static_folder='frontend/static',
+            template_folder='frontend/templates'
+            )
 UPLOAD_DIR = 'uploads'
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.config['FILENAME_SURVIEW'] = None
