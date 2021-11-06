@@ -2,8 +2,8 @@ import os
 
 from flask import Flask, render_template, request, send_file
 
-from CtProjection import CtProjection
-from Surview import Surview
+from backend.CtProjection import CtProjection
+from backend.Surview import Surview
 
 app = Flask(__name__)
 UPLOAD_DIR = 'uploads'

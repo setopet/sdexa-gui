@@ -1,6 +1,6 @@
 import numpy as np
-from helpers import save_timestamped_image, to_uint8, to_normalized_rgb
-from segmentation.Segmentation import perform_segmentation
+from backend.helpers import save_timestamped_image, to_uint8, to_normalized_rgb
+from backend.segmentation.Segmentation import perform_segmentation
 
 
 class Surview:

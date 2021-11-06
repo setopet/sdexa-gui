@@ -1,7 +1,7 @@
-from segmentation.BaseModel import BaseModel
+from backend.segmentation.BaseModel import BaseModel
 from torchvision.transforms import transforms
 
-checkpoint_path = './segmentation/checkpoints/0912_194939.ckpt'
+checkpoint_path = './backend/segmentation/checkpoints/0912_194939.ckpt'
 
 
 def perform_segmentation(image):

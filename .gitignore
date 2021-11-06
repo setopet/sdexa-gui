@@ -2,10 +2,10 @@
 __pycache__/
 uploads/
 venv/
-segmentation/checkpoints/
+backend/segmentation/checkpoints/
 
-segmentation/images/
+backend/segmentation/images/
 
-segmentation/outputs/
+backend/segmentation/outputs/
 
-segmentation/inputs/
+backend/segmentation/inputs/
