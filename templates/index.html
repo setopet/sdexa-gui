@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='index.js' )}}"></script>
   </head>
   <body>
     <div class="container">
@@ -19,15 +20,13 @@
         </div>
         <div class="row">
             <div class="col-sm">
-                <form action="/uploads" method="POST" enctype="multipart/form-data">
                 <div>
                     <label class="btn-dark" for="surview">Upload Surview</label>
                     <input style="display:none;" id="surview" name="surview" type="file" title="Upload Surview">
                 </div>
                 <div>
-                    <button class="btn-primary" type="submit">Submit</button>
+                    <button class="btn-primary" onclick="controller.uploadSurview()">Submit</button>
                 </div>
-                </form>
                 <div>
                     {% if filename_surview != None %}
                         <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_surview }}" alt="image"></div>
@@ -38,15 +37,13 @@
                 </div>
             </div>
             <div class="col-sm">
-                <form action="/uploads" method="POST" enctype="multipart/form-data">
                     <div>
-                        <label class="btn-dark" for="ct">Upload CT</label>
-                        <input style="display:none;" id="ct" name="ct" type="file" title="Upload CT">
+                        <label class="btn-dark" for="ct_projection">Upload CT</label>
+                        <input style="display:none;" id="ct_projection" name="ct_projection" type="file" title="Upload CT">
                     </div>
                     <div>
-                        <button class="btn-primary" type="submit">Submit</button>
+                        <button class="btn-primary" onclick="controller.uploadCtProjection()">Submit</button>
                     </div>
-                </form>
                 <div>
                     {% if filename_ct != None %}
                         <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_ct }}" alt="image"></div>
