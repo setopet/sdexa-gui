@@ -1,6 +1,6 @@
-const baseUrl = 'http://localhost:5000/'
+import {baseUrl} from "./config.js";
 
-const controller = function() {
+export function controller() {
     'use strict';
     const vm = this;
 
@@ -32,4 +32,4 @@ const controller = function() {
     }
 
     return vm;
-}.bind({})();
+}
