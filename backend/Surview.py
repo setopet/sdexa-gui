@@ -1,5 +1,5 @@
 import numpy as np
-from backend.helpers import save_timestamped_image, to_uint8, to_normalized_rgb
+from backend.helpers import to_uint8, to_normalized_rgb
 from backend.segmentation.Segmentation import perform_segmentation
 
 
@@ -10,14 +10,14 @@ class Surview:
         self.surview = array
         self.segmentation = None
 
-    def get_surview_image(self, output_path):
-        return save_timestamped_image(output_path, self.surview)
+    def get_image(self):
+        return self.surview
 
-    def get_segmentation_image(self, output_path):
-        return save_timestamped_image(output_path, self.segmentation)
+    def get_segmentation_image(self):
+        return self.segmentation
 
-    def get_segmentation_overlay_image(self, output_path):
-        return save_timestamped_image(output_path, self.overlay_images())
+    def get_segmentation_overlay_image(self):
+        return self.overlay_images()
 
     def get_segmentation(self):
         if self.segmentation is None:
@@ -28,5 +28,3 @@ class Surview:
         image = to_normalized_rgb(self.surview, (0, 2000))
         image[:, :, 0] += self.get_segmentation() * mask_intensity
         return np.rot90(to_uint8(image))
-
-

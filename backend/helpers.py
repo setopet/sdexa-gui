@@ -34,10 +34,3 @@ def set_window(image, minimum, maximum):
     image = np.where(image >= minimum, image, np.zeros(image.shape))
     image = np.where(image <= maximum, image, np.zeros(image.shape))
     return image
-
-
-def save_timestamped_image(path, image):
-    filename = datetime.now().strftime("%y%m%d%H%M%S")
-    path = os.path.join(path, filename + '.jpeg')
-    Image.fromarray(image).save(path)
-    return filename + '.jpeg'

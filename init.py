@@ -1,12 +1,9 @@
 import os
 from Server import Server
 from flask import Flask
+from Config import load_config, Config
 
-from config import config
 
-
-# TODO: Das hier nicht mehr global sichtbar machen und insbesondere die Zustandsverwaltung
-#  nicht mehr über app.config
 app = Flask(__name__,
             static_url_path='',
             static_folder='frontend/static',
@@ -20,14 +17,13 @@ def init_routes(server):
 
 
 def init_file_system():
-    os.makedirs(app.config['UPLOAD_DIR'], exist_ok=True)
+    os.makedirs(Config['UPLOAD_DIR'], exist_ok=True)
 
 
 def init():
-    config(app)
+    load_config()
     init_file_system()
-    server = Server(app)
-    init_routes(server)
+    init_routes(Server())
 
 
 init()
