@@ -1,3 +1,5 @@
+from io import BytesIO
+
 from flask import render_template, request, send_file
 
 from Session import Session
@@ -18,7 +20,8 @@ class Server:
             Route('/ct-projection', self.upload_ct_projection, ["POST"]),
             Route('/uploads/<image>', self.get_image, ["GET"]),
             Route('/surview/segmentation', self.perform_surview_segmention, ["PUT"]),
-            Route('/surview/segmentation/download', self.download_segmentation, ["GET"])
+            Route('/surview/download', self.download_surview_image, ["GET"]),
+            Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"])
         ]
         self.session = None
         self.directory = CONFIG['UPLOAD_DIR']
@@ -56,11 +59,17 @@ class Server:
         self.session.overlay_surview_image_with_segmentation()
         return SUCCESS_RESPONSE
 
-    def download_segmentation(self):
+    def download_surview_image(self):
+        csv = self.session.get_surview_image_csv()
+        if csv is None:
+            return NOT_FOUND
+        return send_csv(csv)
+
+    def download_surview_segmentation(self):
         csv = self.session.get_surview_segmentation_csv()
         if csv is None:
             return NOT_FOUND
-        return send_file(csv, mimetype="text/csv")
+        return send_csv(csv)
 
     def upload_ct_projection(self):
         if not request.files.get('file'):
@@ -76,3 +85,8 @@ class Server:
     def generate_new_session(self):
         self.session = Session(DEFAULT_USER_ID, self.directory)
         return self.session
+
+
+# Flask accepts only byte encoded File-like objects for "send_file"
+def send_csv(csv):
+    return send_file(BytesIO(csv.encode()), mimetype="text/csv")

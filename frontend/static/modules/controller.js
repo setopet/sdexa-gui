@@ -14,22 +14,30 @@ export function controller() {
     }
 
     vm.downloadSegmentation = () => {
-        // Credits to https://stackoverflow.com/questions/32545632/how-can-i-download-a-file-using-window-fetch
-        fetch(baseUrl + "surview/segmentation/download", { method: 'GET'})
-            .then(response => response.blob())
-            .then(blob => {
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = "segmentation.csv";
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-            })
+        downloadFile(baseUrl + "surview/segmentation/download", "segmentation.csv");
+    }
+
+    vm.downloadImage = () => {
+        downloadFile(baseUrl + "surview/download", "surview.csv")
     }
 
     vm.uploadCtProjection = () => {
         const file = getInputField("ct_projection").files[0];
         uploadFile(file, baseUrl + "ct-projection").then(reloadPage);
+    }
+
+    const downloadFile = (url, fileName) => {
+        // Credits to https://stackoverflow.com/questions/32545632/how-can-i-download-a-file-using-window-fetch
+        fetch(url, { method: 'GET'})
+            .then(response => response.blob())
+            .then(blob => {
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            });
     }
 
     const uploadFile = (file, route) => {

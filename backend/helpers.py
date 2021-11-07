@@ -1,3 +1,5 @@
+from io import StringIO
+
 import numpy as np
 
 
@@ -35,3 +37,12 @@ def set_window(image, minimum, maximum):
     image = np.where(image >= minimum, image, np.zeros(image.shape))
     image = np.where(image <= maximum, image, np.zeros(image.shape))
     return image
+
+
+def image_to_csv(image, format_string=None):
+    stream = StringIO()
+    if format_string is not None:
+        np.savetxt(stream, to_uint8(image), fmt=format_string, delimiter=",")
+    else:
+        np.savetxt(stream, to_uint8(image), delimiter=",")
+    return stream.getvalue()

@@ -29,6 +29,11 @@ class Session:
             return None
         self.generate_new_surview_file(self.surview.get_segmentation_overlay_image())
 
+    def get_surview_image_csv(self):
+        if self.surview is None:
+            return None
+        return self.surview.get_image_csv()
+
     def get_surview_segmentation_csv(self):
         if self.surview is None:
             return None
