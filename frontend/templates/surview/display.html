@@ -6,3 +6,9 @@
         <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
     {% endif %}
 </div>
+<div>
+    {% if filename_surview != None %}
+            <button class="btn-outline-dark" onclick="$ctrl.showSegmentation()">Show Segmentation</button>
+            <button class="btn-outline-dark" onclick="$ctrl.downloadSegmentation()">Download Segmentation</button>
+    {% endif %}
+</div>

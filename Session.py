@@ -24,14 +24,17 @@ class Session:
             return None
         if self.filename_surview is not None:
             return self.filename_surview
-        return self.generate_surview_file()
+        self.generate_new_surview_file(self.surview.get_image())
+        return self.filename_surview
 
-    # TODO: Methoden die z.B. die Segmentierung auslösen ändern das filename_surview zu overlay
-    def generate_surview_file(self):
-        surview = self.surview.get_segmentation_overlay_image()
-        filename = self.get_timestamped_image_file(surview)
+    def overlay_surview_segmentation(self):
+        if self.surview is None:
+            return None
+        self.generate_new_surview_file(self.surview.get_segmentation_overlay_image())
+
+    def generate_new_surview_file(self, image):
+        filename = self.get_timestamped_image_file(image)
         self.filename_surview = filename
-        return filename
 
     def cleanup_surview_file(self):
         if self.filename_surview is None:

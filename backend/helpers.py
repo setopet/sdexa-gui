@@ -1,7 +1,4 @@
-import os
 import numpy as np
-from datetime import datetime
-from PIL import Image
 
 
 def to_uint8(image):
@@ -23,6 +20,10 @@ def to_normalized_rgb(image, window=None):
         image = set_window(image, minimum, maximum)
     image = normalize_array_for_uint8(image)
     return to_rgb(image)
+
+
+def to_normalized_uint8_rgb(image, window=None):
+    return to_uint8(to_normalized_rgb(image, window))
 
 
 def normalize_array_for_uint8(image):

@@ -1,20 +1,21 @@
 import numpy as np
-from backend.helpers import to_uint8, to_normalized_rgb
+
+from backend.helpers import to_uint8, to_normalized_rgb, to_normalized_uint8_rgb
 from backend.segmentation.Segmentation import perform_segmentation
 
 
 class Surview:
-    def __init__(self, file, cropping=(0, 0)):
+    def __init__(self, file, cropping=(0, 0), window=None):
         x, y = cropping
-        array = np.loadtxt(file, delimiter=",")[x:x + 512, y:y + 512]
-        self.surview = array
+        self.surview = np.loadtxt(file, delimiter=",")[x:x + 512, y:y + 512]
+        self.window = window
         self.segmentation = None
 
     def get_image(self):
-        return self.surview
+        return to_normalized_uint8_rgb(self.surview, self.window)
 
     def get_segmentation_image(self):
-        return self.segmentation
+        return to_normalized_uint8_rgb(self.segmentation, self.window)
 
     def get_segmentation_overlay_image(self):
         return self.overlay_images()
@@ -25,6 +26,6 @@ class Surview:
         return self.segmentation
 
     def overlay_images(self, mask_intensity=50):
-        image = to_normalized_rgb(self.surview, (0, 2000))
+        image = to_normalized_rgb(self.surview, self.window)
         image[:, :, 0] += self.get_segmentation() * mask_intensity
-        return np.rot90(to_uint8(image))
+        return to_uint8(image)

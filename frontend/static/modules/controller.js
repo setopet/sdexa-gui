@@ -9,6 +9,14 @@ export function controller() {
         uploadFile(file, baseUrl + "surview").then(reloadPage);
     }
 
+    vm.showSegmentation = () => {
+        fetch(baseUrl + "surview/segmentation", { method: 'PUT' }).then(reloadPage);
+    }
+
+    vm.downloadSegmentation = () => {
+
+    }
+
     vm.uploadCtProjection = () => {
         const file = getInputField("ct_projection").files[0];
         uploadFile(file, baseUrl + "ct-projection").then(reloadPage);

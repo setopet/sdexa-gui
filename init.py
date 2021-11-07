@@ -1,7 +1,7 @@
 import os
 from Server import Server
 from flask import Flask
-from Config import load_config, Config
+from Config import load_config, CONFIG
 
 
 app = Flask(__name__,
@@ -17,7 +17,7 @@ def init_routes(server):
 
 
 def init_file_system():
-    os.makedirs(Config['UPLOAD_DIR'], exist_ok=True)
+    os.makedirs(CONFIG['UPLOAD_DIR'], exist_ok=True)
 
 
 def init():

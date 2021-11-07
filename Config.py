@@ -1,4 +1,4 @@
-Config = {}
+CONFIG = {}
 
 dev_config = {
     'DEV': True,
@@ -10,5 +10,5 @@ dev_config = {
 #  TODO: Über config.yaml Datei machen der das alles geladen wird + die BaseUrl spezifiziert wird
 def load_config():
     for key, value in dev_config.items():
-        Config[key] = value
+        CONFIG[key] = value
     return

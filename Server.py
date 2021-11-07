@@ -1,11 +1,11 @@
 from flask import render_template, request, send_file
 
 from Session import Session
-from api import SUCCESS_RESPONSE
+from api import SUCCESS_RESPONSE, NOT_FOUND
 from Route import Route
 from backend.CtProjection import CtProjection
 from backend.Surview import Surview
-from Config import Config
+from Config import CONFIG
 
 DEFAULT_USER_ID = 1
 
@@ -16,10 +16,11 @@ class Server:
             Route('/', self.get_root_page, ["GET"]),
             Route('/surview', self.upload_surview, ["POST"]),
             Route('/ct-projection', self.upload_ct_projection, ["POST"]),
-            Route('/uploads/<image>', self.get_image, ["GET"])
+            Route('/uploads/<image>', self.get_image, ["GET"]),
+            Route('/surview/segmentation', self.perform_surview_segmention, ["PUT"])
         ]
         self.session = None
-        self.directory = Config['UPLOAD_DIR']
+        self.directory = CONFIG['UPLOAD_DIR']
 
     def get_root_page(self):
         filename_surview = None
@@ -39,11 +40,17 @@ class Server:
         if not request.files.get('file'):
             return
         file = request.files['file']
-        surview = Surview(file, (0, 800))
+        surview = Surview(file, cropping=(0, 800), window=(0, 2000))
         session = self.session
         if session is None:
             session = self.generate_new_session()
         session.set_surview(surview)
+        return SUCCESS_RESPONSE
+
+    def perform_surview_segmention(self):
+        if self.session is None or self.session.get_surview() is None:
+            return NOT_FOUND
+        self.session.overlay_surview_segmentation()
         return SUCCESS_RESPONSE
 
     def upload_ct_projection(self):
