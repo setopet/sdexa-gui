@@ -42,7 +42,7 @@ def set_window(image, minimum, maximum):
 def image_to_csv(image, format_string=None):
     stream = StringIO()
     if format_string is not None:
-        np.savetxt(stream, to_uint8(image), fmt=format_string, delimiter=",")
+        np.savetxt(stream, image, fmt=format_string, delimiter=",")
     else:
-        np.savetxt(stream, to_uint8(image), delimiter=",")
+        np.savetxt(stream, image, delimiter=",")
     return stream.getvalue()

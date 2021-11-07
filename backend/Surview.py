@@ -18,7 +18,7 @@ class Surview:
         return self.overlay_images()
 
     def get_segmentation_csv(self):
-        return image_to_csv(self.get_segmentation(), format_string="%i")
+        return image_to_csv(to_uint8(self.get_segmentation()), format_string="%i")
 
     def get_image_csv(self):
         return image_to_csv(self.cropped_image)

@@ -46,7 +46,7 @@ class Server:
         if not request.files.get('file'):
             return
         file = request.files['file']
-        surview = Surview(file, cropping=(0, 800), window=(0, 2000))
+        surview = Surview(file, cropping=(0, 0), window=(0, 2000))
         session = self.session
         if session is None:
             session = self.generate_new_session()
