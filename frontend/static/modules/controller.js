@@ -18,8 +18,12 @@ export function controller() {
         fetch(baseUrl + "surview/segmentation/download", { method: 'GET'})
             .then(response => response.blob())
             .then(blob => {
-                const file = window.URL.createObjectURL(blob);
-                window.location.assign(file);
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "segmentation.csv";
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
             })
     }
 
