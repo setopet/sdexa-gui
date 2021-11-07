@@ -16,10 +16,7 @@ class Session:
         self.cleanup_surview_file()
         self.surview = surview
 
-    def get_surview(self):
-        return self.surview
-
-    def get_surview_file(self):
+    def get_surview_image(self):
         if self.surview is None:
             return None
         if self.filename_surview is not None:
@@ -27,10 +24,15 @@ class Session:
         self.generate_new_surview_file(self.surview.get_image())
         return self.filename_surview
 
-    def overlay_surview_segmentation(self):
+    def overlay_surview_image_with_segmentation(self):
         if self.surview is None:
             return None
         self.generate_new_surview_file(self.surview.get_segmentation_overlay_image())
+
+    def get_surview_segmentation_csv(self):
+        if self.surview is None:
+            return None
+        return self.surview.get_segmentation_csv()
 
     def generate_new_surview_file(self, image):
         filename = self.get_timestamped_image_file(image)
@@ -43,13 +45,10 @@ class Session:
         self.filename_surview = None
 
     def set_ct_projection(self, ct_projection):
-        self.cleanup_ct_projection_file()
+        self.cleanup_ct_projection_file() # TODO: Cleanup könnte in "generate_new_suview_file" gemacht werden
         self.ct_projection = ct_projection
 
-    def get_ct_projection(self):
-        return self.ct_projection
-
-    def get_ct_projection_file(self):
+    def get_ct_projection_image(self):
         if self.ct_projection is None:
             return None
         if self.filename_ct_projection is not None:
@@ -57,8 +56,7 @@ class Session:
         return self.generate_ct_projection_file()
 
     def generate_ct_projection_file(self):
-        projection = self.ct_projection.get_ct_projection()
-        filename = self.get_timestamped_image_file(projection)
+        filename = self.get_timestamped_image_file(self.ct_projection)
         self.filename_ct_projection = filename
         return filename
 

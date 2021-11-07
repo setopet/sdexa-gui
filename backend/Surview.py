@@ -1,5 +1,5 @@
+from io import StringIO, BytesIO
 import numpy as np
-
 from backend.helpers import to_uint8, to_normalized_rgb, to_normalized_uint8_rgb
 from backend.segmentation.Segmentation import perform_segmentation
 
@@ -14,11 +14,15 @@ class Surview:
     def get_image(self):
         return to_normalized_uint8_rgb(self.surview, self.window)
 
-    def get_segmentation_image(self):
-        return to_normalized_uint8_rgb(self.segmentation, self.window)
-
     def get_segmentation_overlay_image(self):
         return self.overlay_images()
+
+    def get_segmentation_csv(self):
+        segmentation = self.get_segmentation()
+        stream = StringIO()
+        np.savetxt(stream, to_uint8(segmentation), fmt="%i", delimiter=",")
+        csv_string = stream.getvalue()
+        return BytesIO(csv_string.encode())
 
     def get_segmentation(self):
         if self.segmentation is None:

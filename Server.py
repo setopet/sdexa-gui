@@ -17,7 +17,8 @@ class Server:
             Route('/surview', self.upload_surview, ["POST"]),
             Route('/ct-projection', self.upload_ct_projection, ["POST"]),
             Route('/uploads/<image>', self.get_image, ["GET"]),
-            Route('/surview/segmentation', self.perform_surview_segmention, ["PUT"])
+            Route('/surview/segmentation', self.perform_surview_segmention, ["PUT"]),
+            Route('/surview/segmentation/download', self.download_segmentation, ["GET"])
         ]
         self.session = None
         self.directory = CONFIG['UPLOAD_DIR']
@@ -26,13 +27,15 @@ class Server:
         filename_surview = None
         filename_ct = None
         if self.session is not None:
-            filename_surview = self.session.get_surview_file()
-            filename_ct = self.session.get_ct_projection_file()
+            filename_surview = self.session.get_surview_image()
+            filename_ct = self.session.get_ct_projection_image()
         return render_template('index.html',
                                filename_surview=filename_surview,
                                filename_ct=filename_ct)
 
-    # TODO: Get Request zu Bildern mit UserId als Parameter anstatt filenames
+    # TODO: Get Request zu Bildern mit UserId als Parameter
+    #  und ich könnte den Schritt des Zwischenspeicherns als File übergehen.
+    #  Also evtl. nicht mehr über Filenames
     def get_image(self, image=None):
         return send_file(self.directory + "/" + image, mimetype='image/jpeg')
 
@@ -48,10 +51,16 @@ class Server:
         return SUCCESS_RESPONSE
 
     def perform_surview_segmention(self):
-        if self.session is None or self.session.get_surview() is None:
+        if self.session is None or self.session.get_surview_image() is None:
             return NOT_FOUND
-        self.session.overlay_surview_segmentation()
+        self.session.overlay_surview_image_with_segmentation()
         return SUCCESS_RESPONSE
+
+    def download_segmentation(self):
+        csv = self.session.get_surview_segmentation_csv()
+        if csv is None:
+            return NOT_FOUND
+        return send_file(csv, mimetype="text/csv")
 
     def upload_ct_projection(self):
         if not request.files.get('file'):

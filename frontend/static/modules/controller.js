@@ -14,7 +14,13 @@ export function controller() {
     }
 
     vm.downloadSegmentation = () => {
-
+        // Credits to https://stackoverflow.com/questions/32545632/how-can-i-download-a-file-using-window-fetch
+        fetch(baseUrl + "surview/segmentation/download", { method: 'GET'})
+            .then(response => response.blob())
+            .then(blob => {
+                const file = window.URL.createObjectURL(blob);
+                window.location.assign(file);
+            })
     }
 
     vm.uploadCtProjection = () => {
