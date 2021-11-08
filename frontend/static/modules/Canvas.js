@@ -10,7 +10,7 @@ export function Canvas(id, width, height) {
         element.src = URL.createObjectURL(image);
         const context = this.canvas.getContext("2d");
         return new Promise(resolve => {
-            element.onload = event => { // Feuert hier das onload Event beim zweiten Neuzeichnen etwa doppelt?
+            element.onload = event => {
                 context.drawImage(event.target, 0, 0);
                 resolve(this);
             };

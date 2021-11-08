@@ -23,7 +23,7 @@ export function Controller(fileService, modalService, alertService) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'posX': this.canvas.getX(), 'posY': this.canvas.getY()})
+            body: JSON.stringify({ 'posX': vm.canvas.getX(), 'posY': vm.canvas.getY()})
         })
             .then(reloadPage)
             .catch(alertService.error);
