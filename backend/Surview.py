@@ -14,6 +14,9 @@ class Surview:
     def get_image(self):
         return to_normalized_uint8_rgb(self.cropped_image, self.window)
 
+    def get_full_image(self):
+        return to_normalized_uint8_rgb(self.full_image, self.window)
+
     def get_segmentation_overlay_image(self):
         return self.overlay_images()
 

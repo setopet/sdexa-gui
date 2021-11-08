@@ -1,8 +1,12 @@
 import os
 from datetime import datetime
+from io import BytesIO
+
 from PIL import Image
 
 
+# TODO: Diese Klasse durch Flask Sessions ersetzen:
+#  https://flask.palletsprojects.com/en/2.0.x/quickstart/#sessions
 class Session:
     def __init__(self, user_id, directory):
         self.user_id = user_id
@@ -23,6 +27,11 @@ class Session:
             return self.filename_surview
         self.generate_new_surview_file(self.surview.get_image())
         return self.filename_surview
+
+    def get_full_surview_image(self):
+        if self.surview is None:
+            return None
+        return self.surview.get_full_image()
 
     def overlay_surview_image_with_segmentation(self):
         if self.surview is None:
@@ -50,7 +59,7 @@ class Session:
         self.filename_surview = None
 
     def set_ct_projection(self, ct_projection):
-        self.cleanup_ct_projection_file() # TODO: Cleanup könnte in "generate_new_suview_file" gemacht werden
+        self.cleanup_ct_projection_file()  # TODO: Cleanup könnte in "generate_new_suview_file" gemacht werden
         self.ct_projection = ct_projection
 
     def get_ct_projection_image(self):

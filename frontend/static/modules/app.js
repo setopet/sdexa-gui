@@ -1,8 +1,12 @@
-import {controller} from "./controller.js";
+import {Controller} from "./Controller.js";
+import {FileService} from "./FileService.js";
 
-function getInstance (factory) {
+function getInstance (factory, ...dependencies) {
     const instance = {};
-    return factory.bind(instance)();
+    return factory.bind(instance)(...dependencies);
 }
 
-window.$ctrl = getInstance(controller);
+const fileService = getInstance(FileService);
+const controller = getInstance(Controller, fileService);
+
+window.$ctrl = controller;
