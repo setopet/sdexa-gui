@@ -29,9 +29,9 @@ class Surview:
         shape_x, shape_y = self.full_image.shape
         image = self.full_image
         if shape_x < 512:
-            image = np.pad(image, ((512 - shape_x, 0), (0, 0)), 'constant')
+            image = np.pad(image, ((0, 512 - shape_x), (0, 0)), 'constant')
         if shape_y < 512:
-            image = np.pad(image, ((0,0), (512-shape_y, 0)), 'constant')
+            image = np.pad(image, ((0,0), (0, 512-shape_y)), 'constant')
         return image
 
     def get_image(self):
