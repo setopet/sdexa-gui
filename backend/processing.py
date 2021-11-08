@@ -40,9 +40,8 @@ def set_window(image, minimum, maximum):
 
 
 def create_mask(image, threshold=0):
-    image = image.astype('uint8')
     array = np.where(image >= threshold, image, np.zeros(image.shape))
-    return np.where(array == 0, array, np.ones(array.shape))
+    return to_uint8(np.where(array == 0, array, np.ones(array.shape)))
 
 
 def overlay_with_mask(image, mask, mask_intensity=50, window=None):
@@ -51,6 +50,7 @@ def overlay_with_mask(image, mask, mask_intensity=50, window=None):
     return to_uint8(image)
 
 
+# TODO: ".nii"
 def get_array_from_file(file):
     _, extension = os.path.splitext(file.filename)
     if extension == ".txt":

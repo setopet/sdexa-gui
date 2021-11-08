@@ -1,6 +1,6 @@
 from backend.Image import Image
 from backend.processing import to_uint8, image_to_csv, overlay_with_mask
-from backend.segmentation.Segmentation import perform_segmentation
+from backend.segmentation.segmentation import perform_segmentation
 
 
 class Surview(Image):
@@ -8,13 +8,13 @@ class Surview(Image):
         super().__init__(file, window)
         self.segmentation = None
 
+    def get_segmentation(self):
+        if self.segmentation is None:
+            self.segmentation = perform_segmentation(self.image)
+        return self.segmentation
+
     def get_segmentation_overlay_image(self):
         return overlay_with_mask(self.image, self.get_segmentation(), 50, self.window)
 
     def get_segmentation_csv(self):
         return image_to_csv(to_uint8(self.get_segmentation()), format_string="%i")
-
-    def get_segmentation(self):
-        if self.segmentation is None:
-            self.segmentation = perform_segmentation(self.image)
-        return self.segmentation

@@ -10,7 +10,7 @@ class Image:
     def set_image_position(self, positions):
         image = insert_padding(self.full_image)
         self.image = crop_image(positions, image)
-        return image
+        return self.image
 
     def get_image(self):
         return to_normalized_uint8_rgb(self.image, self.window)
