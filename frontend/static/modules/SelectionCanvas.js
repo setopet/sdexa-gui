@@ -5,7 +5,7 @@ export function SelectionCanvas(id, image) {
 
     this.selectionCanvas = document.createElement('canvas');
     this.image = image;
-    this.lineWidth = 6;
+    this.lineWidth = 6; // take an even number
     let posX = 0;
     let posY = 0;
 

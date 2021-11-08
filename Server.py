@@ -37,7 +37,7 @@ class Server:
                                filename_surview=filename_surview,
                                filename_ct=filename_ct)
 
-    # TODO: Das hier auch nicht mehr über Files machen sondern In-Memory-Streams
+    # TODO
     def get_image(self, image=None):
         return send_file(self.directory + "/" + image, mimetype='image/jpeg')
 

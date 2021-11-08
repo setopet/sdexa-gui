@@ -7,7 +7,7 @@ dev_config = {
 }
 
 
-#  TODO: Über config.yaml Datei machen der das alles geladen wird + die BaseUrl spezifiziert wird
+#  TODO
 def load_config():
     for key, value in dev_config.items():
         CONFIG[key] = value

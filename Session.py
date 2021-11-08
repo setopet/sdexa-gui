@@ -3,8 +3,7 @@ from datetime import datetime
 from PIL import Image
 
 
-# TODO: Diese Klasse durch Flask Sessions ersetzen:
-#  https://flask.palletsprojects.com/en/2.0.x/quickstart/#sessions
+# TODO
 class Session:
     def __init__(self, user_id, directory):
         self.user_id = user_id
@@ -57,7 +56,7 @@ class Session:
         self.filename_surview = None
 
     def set_ct_projection(self, ct_projection):
-        self.cleanup_ct_projection_file()  # TODO: Cleanup könnte in "generate_new_suview_file" gemacht werden
+        self.cleanup_ct_projection_file()
         self.ct_projection = ct_projection
 
     def get_ct_projection_image(self):

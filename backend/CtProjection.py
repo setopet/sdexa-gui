@@ -1,19 +1,15 @@
-import numpy as np
+from backend.Image import Image
+from backend.processing import create_mask, overlay_with_mask
 
-from backend.processing import create_mask, to_normalized_rgb, to_normalized_uint8
 
-
-class CtProjection:
-    def __init__(self, file):
-        self.ct_projection = np.load(file)
+class CtProjection(Image):
+    def __init__(self, file, window=None):
+        super().__init__(file, window)
         return
 
-    def get_ct_projection(self):
-        return self.ct_projection
+    def get_registration_overlay_image(self, surview):
+        mask = create_mask(self.get_registration_result(), 15)
+        return overlay_with_mask(surview, mask, 50, self.window)
 
-    @staticmethod
-    def overlay_registration(surview, registration_result):
-        mask = create_mask(registration_result, 15)
-        image = to_normalized_rgb(surview)
-        image[:, :, 0] += mask * 50
-        return to_normalized_uint8(image)
+    def get_registration_result(self):
+        pass

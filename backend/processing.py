@@ -14,7 +14,7 @@ def to_normalized_uint8(image):
 
 
 def to_rgb(image):
-    return np.stack([image, image, image]).transpose(1, 2, 0)
+    return np.stack([image, image, image]).transpose((1, 2, 0))
 
 
 def to_normalized_rgb(image, window=None):
