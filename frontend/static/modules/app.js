@@ -12,6 +12,5 @@ function getInstance (factory, ...dependencies) {
 const fileService = getInstance(FileService);
 const modalService = getInstance(ModalService);
 const alertService = getInstance(AlertService);
-const canvas = getInstance(Canvas);
 
-window.$ctrl = getInstance(Controller, fileService, modalService, alertService, canvas);
+window.$ctrl = getInstance(Controller, fileService, modalService, alertService);

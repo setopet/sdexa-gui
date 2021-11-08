@@ -1,8 +1,6 @@
 from io import BytesIO
-
 from PIL import Image
 from flask import render_template, request, send_file
-
 from Session import Session
 from api import SUCCESS, NOT_FOUND
 from Route import Route
@@ -91,7 +89,7 @@ class Server:
         return self.session
 
 
-# Flask accepts only byte encoded File-like objects for "send_file"
+# Flask accepts only byte-encoded File-like objects for "send_file"
 def send_csv(csv):
     return send_file(BytesIO(csv.encode()), mimetype="text/csv")
 

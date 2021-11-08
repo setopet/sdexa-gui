@@ -1,5 +1,4 @@
 from io import StringIO
-
 import numpy as np
 
 
@@ -12,8 +11,7 @@ def to_normalized_uint8(image):
 
 
 def to_rgb(image):
-    image = np.stack([image, image, image]).transpose(1, 2, 0)
-    return image
+    return np.stack([image, image, image]).transpose(1, 2, 0)
 
 
 def to_normalized_rgb(image, window=None):
@@ -35,8 +33,7 @@ def normalize_array_for_uint8(image):
 
 def set_window(image, minimum, maximum):
     image = np.where(image >= minimum, image, np.zeros(image.shape))
-    image = np.where(image <= maximum, image, np.zeros(image.shape))
-    return image
+    return np.where(image <= maximum, image, np.zeros(image.shape))
 
 
 def image_to_csv(image, format_string=None):

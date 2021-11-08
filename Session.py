@@ -1,7 +1,5 @@
 import os
 from datetime import datetime
-from io import BytesIO
-
 from PIL import Image
 
 
