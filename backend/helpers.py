@@ -1,5 +1,8 @@
+import os
 from io import StringIO
 import numpy as np
+from PIL import Image
+from numpy import asarray
 
 
 def to_uint8(image):
@@ -34,6 +37,24 @@ def normalize_array_for_uint8(image):
 def set_window(image, minimum, maximum):
     image = np.where(image >= minimum, image, np.zeros(image.shape))
     return np.where(image <= maximum, image, np.zeros(image.shape))
+
+
+def get_array_from_file(file):
+    _, extension = os.path.splitext(file.filename)
+    if extension == ".txt":
+        return np.loadtxt(file, delimiter=",")
+    elif extension == ".csv":
+        return np.loadtxt(file, delimiter=",")
+    elif extension == ".npy":
+        return np.load(file)
+    elif extension == ".jpg" or extension == ".jpeg" or extension == ".png":
+        image = Image.open(file)
+        array = asarray(image)
+        if array.ndim > 2:
+            array = array[:, :, 0]
+        return array
+    else:
+        raise Exception("Invalid file type!")
 
 
 def image_to_csv(image, format_string=None):

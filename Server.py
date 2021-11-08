@@ -49,7 +49,7 @@ class Server:
         if not request.files.get('file'):
             return
         file = request.files['file']
-        surview = Surview(file, cropping=(0, 0), window=(0, 2000))
+        surview = Surview(file, window=(0, 2000))
         session = self.session
         if session is None:
             session = self.generate_new_session()
@@ -60,7 +60,7 @@ class Server:
         json = request.json
         if self.session is None or self.session.surview is None:
             return ERROR
-        self.session.surview.set_cropping((json['posX'], json['posY']))
+        self.session.surview.set_image_position((json['posX'], json['posY']))
         return SUCCESS
 
     def perform_surview_segmention(self):

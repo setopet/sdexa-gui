@@ -2,6 +2,7 @@ import pytorch_lightning as pl
 import segmentation_models_pytorch as smp
 
 
+# Credits to Burak Aybar (TUM) for providing the pretrained model
 class BaseModel(pl.LightningModule):
     def __init__(self):
         super(BaseModel, self).__init__()
