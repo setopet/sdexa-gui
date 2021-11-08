@@ -10,8 +10,8 @@ export function Controller(fileService, modalService, alertService) {
         fileService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
             .then(blob => {
-                vm.canvas = new SelectionCanvas("surview-modal-canvas", blob);
-                return vm.canvas.init();
+                vm.surviewCanvas = new SelectionCanvas("surview-modal-canvas", blob);
+                return vm.surviewCanvas.init();
             })
             .then(() => modalService.openFullscreen("surviewModal"))
             .catch(alertService.error);
@@ -23,7 +23,7 @@ export function Controller(fileService, modalService, alertService) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'posX': vm.canvas.getX(), 'posY': vm.canvas.getY()})
+            body: JSON.stringify({ 'posX': vm.surviewCanvas.getX(), 'posY': vm.surviewCanvas.getY()})
         })
             .then(reloadPage)
             .catch(alertService.error);

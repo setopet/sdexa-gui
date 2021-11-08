@@ -1,6 +1,6 @@
 import os
-from io import StringIO
 import numpy as np
+from io import StringIO
 from PIL import Image
 from numpy import asarray
 
@@ -39,6 +39,18 @@ def set_window(image, minimum, maximum):
     return np.where(image <= maximum, image, np.zeros(image.shape))
 
 
+def create_mask(image, threshold=0):
+    image = image.astype('uint8')
+    array = np.where(image >= threshold, image, np.zeros(image.shape))
+    return np.where(array == 0, array, np.ones(array.shape))
+
+
+def overlay_with_mask(image, mask, mask_intensity=50, window=None):
+    image = to_normalized_rgb(image, window)
+    image[:, :, 0] += mask * mask_intensity
+    return to_uint8(image)
+
+
 def get_array_from_file(file):
     _, extension = os.path.splitext(file.filename)
     if extension == ".txt":
@@ -64,3 +76,23 @@ def image_to_csv(image, format_string=None):
     else:
         np.savetxt(stream, image, delimiter=",")
     return stream.getvalue()
+
+
+def insert_padding(image, new_size=512):
+    shape_x, shape_y = image.shape
+    if shape_x < new_size:
+        image = np.pad(image, ((0, new_size - shape_x), (0, 0)), 'constant')
+    if shape_y < new_size:
+        image = np.pad(image, ((0,0), (0, new_size-shape_y)), 'constant')
+    return image
+
+
+def crop_image(positions, image, new_size=512):
+    shape_x, shape_y = image.shape
+    y, x = positions  # Frontend x and y axis can't be trusted
+    # If one of the values is out of bound get the value which is the maximum value possible
+    if x+new_size >= shape_x:
+        x = shape_x - new_size
+    if y+new_size >= shape_y:
+        y = shape_y - new_size
+    return image[x:x + new_size, y:y + new_size]

@@ -43,7 +43,7 @@ class Server:
 
     def get_full_surview(self):
         full_surview = self.session.get_full_surview_image()
-        return send_jpeg(full_surview)
+        return self.send_jpeg(full_surview)
 
     def upload_surview(self):
         if not request.files.get('file'):
@@ -73,13 +73,13 @@ class Server:
         csv = self.session.get_surview_image_csv()
         if csv is None:
             return NOT_FOUND
-        return send_csv(csv)
+        return self.send_csv(csv)
 
     def download_surview_segmentation(self):
         csv = self.session.get_surview_segmentation_csv()
         if csv is None:
             return NOT_FOUND
-        return send_csv(csv)
+        return self.send_csv(csv)
 
     def upload_ct_projection(self):
         if not request.files.get('file'):
@@ -96,14 +96,16 @@ class Server:
         self.session = Session(DEFAULT_USER_ID, self.directory)
         return self.session
 
+    # Flask accepts only byte-encoded File-like objects for "send_file"
+    @staticmethod
+    def send_csv(csv):
+        return send_file(BytesIO(csv.encode()), mimetype="text/csv")
 
-# Flask accepts only byte-encoded File-like objects for "send_file"
-def send_csv(csv):
-    return send_file(BytesIO(csv.encode()), mimetype="text/csv")
+    @staticmethod
+    def send_jpeg(image):
+        stream = BytesIO()
+        Image.fromarray(image).save(stream, format='JPEG')
+        stream.seek(0)
+        return send_file(stream, mimetype='image/jpeg')
 
 
-def send_jpeg(image):
-    stream = BytesIO()
-    Image.fromarray(image).save(stream, format='JPEG')
-    stream.seek(0)
-    return send_file(stream, mimetype='image/jpeg')
