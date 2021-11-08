@@ -1,5 +1,5 @@
 import {baseUrl} from "./config.js";
-import {Canvas} from "./Canvas.js";
+import {SelectionCanvas} from "./SelectionCanvas.js";
 
 export function Controller(fileService, modalService, alertService) {
     'use strict';
@@ -7,11 +7,10 @@ export function Controller(fileService, modalService, alertService) {
 
     vm.uploadSurview = () => {
         const file = fileService.getInputFile("surview");
-        const canvas = new Canvas("surview-modal-canvas", 1900, 700);
         fileService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
-            .then(blob => canvas.drawImage(blob))
-            .then(() => canvas.drawRectangle(512,512, 800, 0))
+            .then(blob =>
+                new SelectionCanvas("surview-modal-canvas", blob, 1900, 700).init())
             .then(() => modalService.openFullscreen("surviewModal"))
             .catch(alertService.error);
     }
