@@ -1,6 +1,5 @@
 import {Controller} from "./Controller.js";
 import {FileService} from "./FileService.js";
-import {Canvas} from "./Canvas.js";
 import {ModalService} from "./ModalService.js";
 import {AlertService} from "./AlertService.js";
 

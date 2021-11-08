@@ -20,6 +20,7 @@ export function Canvas(id, width, height) {
 
     this.drawRectangle = (width, height, posX, posY) => {
         const lineWidth = 6;
+        const spacing = lineWidth/2;
         const context = this.element.getContext("2d");
         const selectionCanvas = document.createElement('canvas');
         selectionCanvas.width = this.width;
@@ -28,7 +29,7 @@ export function Canvas(id, width, height) {
         rectangle.beginPath();
         rectangle.lineWidth = lineWidth
         rectangle.strokeStyle = 'red';
-        rectangle.rect(posX, posY, width, height);
+        rectangle.rect(posX+spacing, posY+spacing, width-lineWidth, height-lineWidth);
         rectangle.stroke();
         context.drawImage(selectionCanvas, 0, 0);
         return Promise.resolve();
