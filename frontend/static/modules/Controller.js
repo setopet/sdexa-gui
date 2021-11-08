@@ -10,7 +10,7 @@ export function Controller(fileService, modalService, alertService) {
         fileService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
             .then(blob => {
-                vm.canvas = new SelectionCanvas("surview-modal-canvas", blob, 1900, 700);
+                vm.canvas = new SelectionCanvas("surview-modal-canvas", blob);
                 return vm.canvas.init();
             })
             .then(() => modalService.openFullscreen("surviewModal"))

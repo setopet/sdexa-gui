@@ -1,11 +1,9 @@
 import {Canvas} from "./Canvas.js";
 
-export function SelectionCanvas(id, image, width, height) {
-    Canvas.call(this, id, width, height); // Inheritance from Canvas
+export function SelectionCanvas(id, image) {
+    Canvas.call(this, id); // Inheritance from Canvas
 
     this.selectionCanvas = document.createElement('canvas');
-    this.selectionCanvas.width = this.width;
-    this.selectionCanvas.height = this.height;
     this.image = image;
     this.lineWidth = 6;
     let posX = 0;
@@ -31,11 +29,9 @@ export function SelectionCanvas(id, image, width, height) {
         const context2 = this.selectionCanvas.getContext("2d");
         context2.clearRect(0, 0, this.width, this.height);
         context2.drawImage(this.selectionCanvas, 0, 0);
-
         const context = this.canvas.getContext("2d");
         context.clearRect(0, 0, this.width, this.height);
         context.drawImage(this.canvas, 0, 0);
-
         return Promise.resolve(this);
     }
 
@@ -52,7 +48,12 @@ export function SelectionCanvas(id, image, width, height) {
     };
 
     this.init = () => {
-        this.drawImage(this.image).then(() => drawRectangle(512, 512, posX, posY));
+        this.drawImage(this.image).then(() => {
+            this.selectionCanvas.width = this.width;
+            this.selectionCanvas.height = this.height;
+            return drawRectangle(512, 512, posX, posY);
+            }
+        );
     }
 
     return this;
