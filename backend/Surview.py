@@ -6,10 +6,19 @@ from backend.segmentation.Segmentation import perform_segmentation
 class Surview:
     def __init__(self, file, cropping=(0, 0), window=None):
         self.full_image = np.loadtxt(file, delimiter=",")
-        x, y = cropping
-        self.cropped_image = self.full_image[x:x + 512, y:y + 512]
+        self.cropped_image = None
+        self.set_cropping(cropping)
         self.window = window
         self.segmentation = None
+
+    def set_cropping(self, cropping):
+        y, x = cropping
+        shape_x, shape_y = self.full_image.shape
+        if x+512 >= shape_x:
+            x = 0
+        if y+512 >= shape_y:
+            y = 0
+        self.cropped_image = self.full_image[x:x + 512, y:y + 512]
 
     def get_image(self):
         return to_normalized_uint8_rgb(self.cropped_image, self.window)

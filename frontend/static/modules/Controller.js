@@ -9,9 +9,23 @@ export function Controller(fileService, modalService, alertService) {
         const file = fileService.getInputFile("surview");
         fileService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
-            .then(blob =>
-                new SelectionCanvas("surview-modal-canvas", blob, 1900, 700).init())
+            .then(blob => {
+                vm.canvas = new SelectionCanvas("surview-modal-canvas", blob, 1900, 700);
+                return vm.canvas.init();
+            })
             .then(() => modalService.openFullscreen("surviewModal"))
+            .catch(alertService.error);
+    }
+
+    vm.finishSurviewCropping = () => {
+        fetch(baseUrl + "surview/cropping", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'posX': this.canvas.getX(), 'posY': this.canvas.getY()})
+        })
+            .then(reloadPage)
             .catch(alertService.error);
     }
 

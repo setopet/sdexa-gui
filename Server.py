@@ -2,7 +2,7 @@ from io import BytesIO
 from PIL import Image
 from flask import render_template, request, send_file
 from Session import Session
-from api import SUCCESS, NOT_FOUND
+from api import SUCCESS, NOT_FOUND, ERROR
 from Route import Route
 from backend.CtProjection import CtProjection
 from backend.Surview import Surview
@@ -19,6 +19,7 @@ class Server:
             Route('/ct-projection', self.upload_ct_projection, ["POST"]),
             Route('/uploads/<image>', self.get_image, ["GET"]),
             Route('/surview/full', self.get_full_surview, ["GET"]),
+            Route('/surview/cropping', self.set_surview_cropping, ["POST"]),
             Route('/surview/segmentation', self.perform_surview_segmention, ["PUT"]),
             Route('/surview/download', self.download_surview_image, ["GET"]),
             Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"])
@@ -53,6 +54,13 @@ class Server:
         if session is None:
             session = self.generate_new_session()
         session.set_surview(surview)
+        return SUCCESS
+
+    def set_surview_cropping(self):
+        json = request.json
+        if self.session is None or self.session.surview is None:
+            return ERROR
+        self.session.surview.set_cropping((json['posX'], json['posY']))
         return SUCCESS
 
     def perform_surview_segmention(self):
