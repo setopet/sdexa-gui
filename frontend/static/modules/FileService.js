@@ -3,7 +3,7 @@ export function FileService() {
 
     this.downloadFile = (url, fileName) => {
         // Credits to https://stackoverflow.com/questions/32545632/how-can-i-download-a-file-using-window-fetch
-        fetch(url, { method: 'GET'})
+        return fetch(url, { method: 'GET'})
             .then(response => response.blob())
             .then(blob => {
                 const link = document.createElement('a');
@@ -22,6 +22,10 @@ export function FileService() {
             method: 'POST',
             body: data
         });
+    }
+
+    this.getInputFile = field_id => {
+        return document.querySelector(`input[id=${field_id}]`).files[0];
     }
 
     return this;
