@@ -3,7 +3,7 @@ from backend.processing import get_array_from_file, insert_padding, crop_image, 
 
 class Image:
     def __init__(self, file, window=None):
-        self.full_image = get_array_from_file(file).squeeze()
+        self.full_image = get_array_from_file(file)
         self.image = self.set_image_position((0, 0))
         self.window = window
 

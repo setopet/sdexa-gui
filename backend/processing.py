@@ -54,19 +54,22 @@ def overlay_with_mask(image, mask, mask_intensity=50, window=None):
 def get_array_from_file(file):
     _, extension = os.path.splitext(file.filename)
     if extension == ".txt":
-        return np.loadtxt(file, delimiter=",")
+        array = np.loadtxt(file, delimiter=",")
     elif extension == ".csv":
-        return np.loadtxt(file, delimiter=",")
+        array = np.loadtxt(file, delimiter=",")
     elif extension == ".npy":
-        return np.load(file)
+        array = np.load(file)
     elif extension == ".jpg" or extension == ".jpeg" or extension == ".png":
         image = Image.open(file)
         array = asarray(image)
-        if array.ndim > 2:
+        if array.ndim == 3:
             array = array[:, :, 0]
-        return array
     else:
         raise Exception("Invalid file type!")
+    array = array.squeeze()
+    if array.ndim != 2:
+        raise Exception("Input has a wrong number of dimensions (" + str(array.ndim) + "). It should have 2!")
+    return array
 
 
 def image_to_csv(image, format_string=None):
