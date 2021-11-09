@@ -9,3 +9,5 @@ backend/segmentation/images/
 backend/segmentation/outputs/
 
 backend/segmentation/inputs/
+
+TransformParameters.0.txt
