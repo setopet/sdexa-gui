@@ -1,7 +1,7 @@
-from Controller import Controller
+from Server import Server
 from flask import Flask
 from Config import config
-
+from UserService import UserService
 
 app = Flask(__name__,
             static_url_path='',
@@ -17,7 +17,9 @@ def init_routes(server):
 
 def init():
     config(app)
-    init_routes(Controller())
+    user_service = UserService()
+    server = Server(user_service)
+    init_routes(server)
 
 
 init()

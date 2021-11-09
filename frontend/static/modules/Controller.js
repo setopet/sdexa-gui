@@ -1,8 +1,7 @@
 import {baseUrl} from "./config.js";
 import {SelectionCanvas} from "./SelectionCanvas.js";
 
-// TODO: Ebenfalls aufsplitten und sowas wie putJSONToUrl in HttpService umlagern (alles ausser getInputFile
-//  vom FileService könnte dann dorthin)
+
 export function Controller(fileService, modalService, alertService) {
     'use strict';
     const vm = this;

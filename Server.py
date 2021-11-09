@@ -1,22 +1,16 @@
-import uuid
-from datetime import datetime, timedelta
 from io import BytesIO
 from PIL import Image
-from flask import render_template, request, session, send_file
+from flask import render_template, request, send_file
 from Config import CONFIG
-from Session import Session
 from api import SUCCESS, NOT_FOUND, ERROR
 from Route import Route
 from backend.Projection import Projection
 from backend.Surview import Surview
 
 
-# TODO: SurviewController, ProjectionController, mit Basisklasse Controller. Dafür müssten allerdings die Sessions global
-#  verfügbar sein... z.B. als SessionService den die Basisklasse injected bekommt
-#  Frage ist dann wie wird die Root-Page gehandelt, evlt. direkt in init.py
-class Controller:
-    def __init__(self):
-        self.sessions = {}
+class Server:
+    def __init__(self, user_service):
+        self.user_service = user_service
         self.routes = [
             Route('/', self.get_root_page, ["GET"]),
             Route('/projection', self.get_projection, ["GET"]),
@@ -33,8 +27,9 @@ class Controller:
         ]
 
     def get_root_page(self):
-        self.cleanup_old_sessions()  # To avoid running out of memory, the server cleans up all stored sessions daily.
-        user_session = self.get_session()
+        # To avoid running out of memory, the server cleans up all stored sessions older than one day.
+        self.user_service.cleanup_old_sessions()
+        user_session = self.user_service.get_session()
         render_surview = user_session.has_surview()
         render_projection = user_session.has_projection()
         return render_template('index.html',
@@ -43,7 +38,7 @@ class Controller:
                                render_projection=render_projection)
 
     def get_surview(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_surview():
             return NOT_FOUND
         if user_session.show_surview_segmentation:
@@ -53,13 +48,13 @@ class Controller:
         return self.send_jpeg(image)
 
     def get_full_surview(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_surview():
             return NOT_FOUND
         return self.send_jpeg(user_session.get_full_surview_image())
 
     def upload_surview(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not request.files.get('file'):
             return ERROR
         file = request.files['file']
@@ -69,45 +64,45 @@ class Controller:
         return SUCCESS
 
     def set_surview_position(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_surview():
             return ERROR
         user_session.set_surview_image_position(request.json['posX'], request.json['posY'])
         return SUCCESS
 
     def switch_surview_segmention_view(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         user_session.switch_surview_segmentation()
         return SUCCESS
 
     def download_surview_image(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_surview():
             return NOT_FOUND
         csv = user_session.get_surview_image_csv()
         return self.send_csv(csv)
 
     def download_surview_segmentation(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_surview():
             return NOT_FOUND
         csv = user_session.get_surview_segmentation_csv()
         return self.send_csv(csv)
 
     def get_projection(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_projection():
             return NOT_FOUND
         return self.send_jpeg(user_session.get_projection_image())
 
     def get_full_projection(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_projection():
             return NOT_FOUND
         return self.send_jpeg(user_session.get_full_projection_image())
 
     def upload_projection(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not request.files.get('file'):
             return ERROR
         file = request.files['file']
@@ -116,27 +111,11 @@ class Controller:
         return SUCCESS
 
     def set_projection_position(self):
-        user_session = self.get_session()
+        user_session = self.user_service.get_session()
         if not user_session.has_projection():
             return ERROR
         user_session.set_projection_image_position(request.json['posX'], request.json['posY'])
         return SUCCESS
-
-    def get_session(self) -> Session:
-        if 'user_id' not in session or self.sessions.get(session['user_id']) is None:
-            session['user_id'] = self.generate_new_session().user_id
-        return self.sessions[session['user_id']]
-
-    def generate_new_session(self):
-        user_id = uuid.uuid4().hex
-        new_session = Session(user_id, datetime.now())
-        self.sessions[user_id] = new_session
-        return new_session
-
-    def cleanup_old_sessions(self):
-        for key, user_session in self.sessions.items():
-            if user_session.get_start_date() < (datetime.now() - timedelta(days=1)):
-                self.sessions.pop(key)
 
     # Flask accepts only byte-encoded File-like objects for "send_file"
     @staticmethod
