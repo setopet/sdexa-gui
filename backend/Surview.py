@@ -9,6 +9,9 @@ class Surview(Image):
         super().__init__(file, window)
         self.segmentation = None
 
+    def get_surview_array(self):
+        return self.image
+
     def get_segmentation(self):
         if self.segmentation is None:
             self.segmentation = perform_segmentation(self.image, CONFIG['CHECKPOINT_PATH'])

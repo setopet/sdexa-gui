@@ -1,17 +1,27 @@
 <div>
-    {% if render_surview %}
-        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}" alt="image"></div>
+    {% if surview_present %}
+        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}" alt="Error: image could not get loaded">
+        </div>
     {% endif %}
-    {% if not render_surview %}
+
+    {% if not surview_present %}
+        <!-- unused canvas -->
         <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
     {% endif %}
 </div>
-<div>
-    {% if render_surview %}
-            <button class="btn-outline-dark" onclick="$ctrl.downloadImage()">Download Image</button>
-            <button class="btn-outline-dark" onclick="$ctrl.downloadSegmentation()">Download Segmentation</button>
-            <button class="btn-outline-dark" onclick="$ctrl.showSegmentation()">Show Segmentation</button>
-    {% endif %}
-</div>
+{% if surview_present %}
+    <div>
+
+        <button class="btn-outline-dark"
+                onclick="$ctrl.downloadImage('surview/download', 'surview.csv')">
+            Download Image
+        </button>
+        <button class="btn-outline-dark"
+                onclick="$ctrl.downloadImage('surview/segmentation/download', 'segmentation.csv')">
+            Download Segmentation
+        </button>
+        <button class="btn-outline-dark" onclick="$ctrl.switchSurviewView()">Show/Hide Segmentation</button>
+    </div>
+{% endif %}
 
 

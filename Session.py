@@ -5,6 +5,7 @@ class Session:
         self.surview = None
         self.projection = None
         self.show_surview_segmentation = False
+        self.show_projection_registration = False
 
     def get_start_date(self):
         return self.start_date
@@ -24,9 +25,6 @@ class Session:
         if not self.has_surview():
             return None
         return self.surview.get_full_image()
-
-    def show_surview_segmentation(self):
-        self.show_surview_segmentation = True
 
     def hide_surview_segmentation(self):
         self.show_surview_segmentation = False
@@ -68,5 +66,26 @@ class Session:
             return None
         return self.projection.get_full_image()
 
+    def hide_projection_segmentation(self):
+        self.show_projection_registration = False
+
+    def switch_projection_registration(self):
+        self.show_projection_registration = not self.show_projection_registration
+
     def set_projection_image_position(self, position_x, position_y):
         self.projection.set_image_position((position_x, position_y))
+
+    def get_projection_image_csv(self):
+        if self.projection is None:
+            return None
+        return self.projection.get_image_csv()
+
+    def get_projection_registration_overlay_image(self):
+        if self.projection is None or self.surview is None:
+            return None
+        return self.projection.get_registration_overlay_image(self.surview.get_surview_array())
+
+    def get_projection_registration_csv(self):
+        if self.projection is None or self.surview is None:
+            return None
+        return self.projection.get_registration_result_csv(self.surview.get_surview_array())

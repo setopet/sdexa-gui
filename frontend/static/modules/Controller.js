@@ -6,6 +6,8 @@ export function Controller(fileService, modalService, alertService) {
     'use strict';
     const vm = this;
 
+    // TODO: Fehlermanagement über .catch ermöglichen, indem bei jedem fetch() der StatusCode gecheckt wird
+    //  -> dafür fetch()-Calls in HttpService auslagern
     vm.uploadSurview = () => {
         const file = fileService.getInputFile("surview");
         fileService.uploadFile(file, baseUrl + "surview")
@@ -15,29 +17,6 @@ export function Controller(fileService, modalService, alertService) {
             .catch(alertService.error);
     }
 
-    vm.showSegmentation = () => {
-        fetch(baseUrl + "surview/segmentation", { method: 'PUT' })
-            .then(reloadPage)
-            .catch(alertService.error);
-    }
-
-    vm.downloadSegmentation = () => {
-        fileService
-            .downloadFile(baseUrl + "surview/segmentation/download", "segmentation.csv")
-            .catch(alertService.error);
-    }
-
-    vm.downloadImage = () => {
-        fileService
-            .downloadFile(baseUrl + "surview/download", "surview.csv")
-            .catch(alertService.error);
-    }
-
-    const getFullCtProjection = () => {
-        return fetch(baseUrl + "projection/full")
-            .then(response => response.blob())
-    }
-
     vm.uploadCtProjection = () => {
         const file = fileService.getInputFile("ct_projection");
         fileService
@@ -45,6 +24,24 @@ export function Controller(fileService, modalService, alertService) {
             .then(getFullCtProjection)
             .then(initSelectionCanvas)
             .then(() => openCtModal())
+            .catch(alertService.error);
+    }
+
+    vm.switchSurviewView = () => {
+        fetch(baseUrl + "surview/segmentation", { method: 'PUT' })
+            .then(reloadPage)
+            .catch(alertService.error);
+    }
+
+    vm.switchProjectionView = () => {
+        fetch(baseUrl + "projection/registration", { method: 'PUT' })
+            .then(reloadPage)
+            .catch(alertService.error);
+    }
+
+    vm.downloadImage = (route, fileName) => {
+        fileService
+            .downloadFile(baseUrl + route, fileName)
             .catch(alertService.error);
     }
 
@@ -79,6 +76,11 @@ export function Controller(fileService, modalService, alertService) {
             .then(response => response.blob())
     }
 
+    const getFullCtProjection = () => {
+        return fetch(baseUrl + "projection/full")
+            .then(response => response.blob())
+    }
+
     const putJsonToUrl = (url, data) => {
         return fetch(url, {
             method: 'PUT',
@@ -91,7 +93,7 @@ export function Controller(fileService, modalService, alertService) {
 
     const reloadPage = () => {
         location.href = '/';
-        return Promise.resolve();
+        return Promise.resolve(this);
     }
 
     return vm;

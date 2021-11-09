@@ -12,6 +12,5 @@ dev_config = {
 def config(app):
     for key, value in dev_config.items():
         CONFIG[key] = value
-
     app.secret_key = CONFIG['SECRET_KEY']
     return

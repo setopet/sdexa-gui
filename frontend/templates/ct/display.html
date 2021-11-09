@@ -1,8 +1,24 @@
 <div>
-    {% if render_projection %}
-        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/projection' }}" alt="image"></div>
+    {% if projection_present %}
+        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/projection' }}"
+                  alt="Error: image could not get loaded">
+        </div>
+        <button class="btn-outline-dark"
+                    onclick="$ctrl.downloadImage('projection/download', 'projection.csv')">
+            Download Image
+        </button>
+        {% if surview_present %}
+            <button class="btn-outline-dark"
+                        onclick="$ctrl.downloadImage('projection/registration/download', 'registration.csv')">
+                Download Registration
+            </button>
+            <button class="btn-outline-dark" onclick="$ctrl.switchProjectionView()">Show/Hide registration</button>
+        {% endif %}
     {% endif %}
-    {% if not render_projection %}
+
+    {% if not projection_present %}
+        <!-- unused canvas -->
         <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
     {% endif %}
 </div>
+

@@ -4,7 +4,11 @@ export function FileService() {
     this.downloadFile = (url, fileName) => {
         // Credits to https://stackoverflow.com/questions/32545632/how-can-i-download-a-file-using-window-fetch
         return fetch(url, { method: 'GET'})
-            .then(response => response.blob())
+            .then(response => {
+                if (!response.ok)
+                    throw Error(response.statusText);
+                return response.blob()
+            })
             .then(blob => {
                 const link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
@@ -12,6 +16,7 @@ export function FileService() {
                 document.body.appendChild(link);
                 link.click();
                 link.remove();
+                return this;
             });
     }
 
