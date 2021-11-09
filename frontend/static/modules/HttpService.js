@@ -35,7 +35,8 @@ export function HttpService() {
         data.append('file', file);
         return request(route, {
             method: 'POST',
-            body: data
+            body: data,
+            contentType: 'multipart/form-data'
         });
     }
 
