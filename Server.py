@@ -120,5 +120,3 @@ class Server:
         Image.fromarray(image).save(stream, format='JPEG')
         stream.seek(0)
         return send_file(stream, mimetype='image/jpeg')
-
-

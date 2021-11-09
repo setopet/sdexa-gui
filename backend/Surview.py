@@ -1,3 +1,4 @@
+from Config import CONFIG
 from backend.Image import Image
 from backend.processing import to_uint8, image_to_csv, overlay_with_mask
 from backend.segmentation.segmentation import perform_segmentation
@@ -10,7 +11,7 @@ class Surview(Image):
 
     def get_segmentation(self):
         if self.segmentation is None:
-            self.segmentation = perform_segmentation(self.image)
+            self.segmentation = perform_segmentation(self.image, CONFIG['CHECKPOINT_PATH'])
         return self.segmentation
 
     def get_segmentation_overlay_image(self):

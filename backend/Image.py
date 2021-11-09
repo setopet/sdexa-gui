@@ -7,9 +7,9 @@ class Image:
         self.image = self.set_image_position((0, 0))
         self.window = window
 
-    def set_image_position(self, positions):
+    def set_image_position(self, position):
         image = insert_padding(self.full_image)
-        self.image = crop_image(positions, image)
+        self.image = crop_image(position, image)
         return self.image
 
     def get_image(self):

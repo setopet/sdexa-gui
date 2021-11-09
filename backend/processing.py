@@ -87,9 +87,9 @@ def insert_padding(image, new_size=512):
     return image
 
 
-def crop_image(positions, image, new_size=512):
+def crop_image(position, image, new_size=512):
     shape_x, shape_y = image.shape
-    y, x = positions  # Frontend x and y axis can't be trusted
+    y, x = position  # Frontend x and y axis can't be trusted
     # If one of the values is out of bound get the value which is the maximum value possible
     if x+new_size >= shape_x:
         x = shape_x - new_size
