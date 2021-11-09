@@ -2,15 +2,13 @@ import {baseUrl} from "./config.js";
 import {SelectionCanvas} from "./SelectionCanvas.js";
 
 
-export function Controller(fileService, modalService, alertService) {
+export function Controller(httpService, modalService, inputService, alertService) {
     'use strict';
     const vm = this;
 
-    // TODO: Fehlermanagement über .catch ermöglichen, indem bei jedem fetch() der StatusCode gecheckt wird
-    //  -> dafür fetch()-Calls in HttpService auslagern
     vm.uploadSurview = () => {
-        const file = fileService.getInputFile("surview");
-        fileService.uploadFile(file, baseUrl + "surview")
+        const file = inputService.getInputFile("surview").files[0];
+        httpService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
             .then(initSelectionCanvas)
             .then(() => openSurviewModal())
@@ -18,8 +16,8 @@ export function Controller(fileService, modalService, alertService) {
     }
 
     vm.uploadCtProjection = () => {
-        const file = fileService.getInputFile("ct_projection");
-        fileService
+        const file = inputService.getInputFile("ct_projection").files[0];
+        httpService
             .uploadFile(file, baseUrl + "projection")
             .then(getFullCtProjection)
             .then(initSelectionCanvas)
@@ -28,26 +26,26 @@ export function Controller(fileService, modalService, alertService) {
     }
 
     vm.switchSurviewView = () => {
-        fetch(baseUrl + "surview/segmentation", { method: 'PUT' })
+        httpService.put(baseUrl + "surview/segmentation")
             .then(reloadPage)
             .catch(alertService.error);
     }
 
     vm.switchProjectionView = () => {
-        fetch(baseUrl + "projection/registration", { method: 'PUT' })
+        httpService.put(baseUrl + "projection/registration")
             .then(reloadPage)
             .catch(alertService.error);
     }
 
     vm.downloadImage = (route, fileName) => {
-        fileService
+        httpService
             .downloadFile(baseUrl + route, fileName)
             .catch(alertService.error);
     }
 
     const putImagePosition = (url) => {
         const position = { 'posX': vm.selectionCanvas.getX(), 'posY': vm.selectionCanvas.getY() };
-        putJsonToUrl(url, position)
+        httpService.put(url, position)
             .then(reloadPage)
             .catch(alertService.error);
     }
@@ -72,23 +70,13 @@ export function Controller(fileService, modalService, alertService) {
     }
 
     const getFullSurview = () => {
-        return fetch(baseUrl + "surview/full")
+        return httpService.get(baseUrl + "surview/full")
             .then(response => response.blob())
     }
 
     const getFullCtProjection = () => {
-        return fetch(baseUrl + "projection/full")
+        return httpService.get(baseUrl + "projection/full")
             .then(response => response.blob())
-    }
-
-    const putJsonToUrl = (url, data) => {
-        return fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
     }
 
     const reloadPage = () => {

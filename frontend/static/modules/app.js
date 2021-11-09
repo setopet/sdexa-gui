@@ -1,5 +1,6 @@
 import {Controller} from "./Controller.js";
-import {FileService} from "./FileService.js";
+import {HttpService} from "./HttpService.js";
+import {InputService} from "./InputService.js";
 import {ModalService} from "./ModalService.js";
 import {AlertService} from "./AlertService.js";
 
@@ -8,8 +9,9 @@ function getInstance (factory, ...dependencies) {
     return factory.bind(instance)(...dependencies);
 }
 
-const fileService = getInstance(FileService);
+const httpService = getInstance(HttpService);
 const modalService = getInstance(ModalService);
+const inputService = getInstance(InputService)
 const alertService = getInstance(AlertService);
 
-window.$ctrl = getInstance(Controller, fileService, modalService, alertService);
+window.$ctrl = getInstance(Controller, httpService, modalService, inputService, alertService);

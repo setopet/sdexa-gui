@@ -14,7 +14,7 @@ class UserService:
         return self.sessions[session['user_id']]
 
     def generate_new_session(self) -> Session:
-        # Important: To avoid running out of memory, the server cleans up all stored sessions older than one day.
+        # Important: To avoid running out of memory, the service cleans up all stored sessions older than one day.
         self.cleanup_old_sessions()
         user_id = uuid.uuid4().hex
         new_session = Session(user_id, datetime.now())
