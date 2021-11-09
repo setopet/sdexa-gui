@@ -1,4 +1,5 @@
 export function Canvas(id) {
+    'use strict';
     this.canvas = document.getElementById(id);
 
     const setSize = element => {

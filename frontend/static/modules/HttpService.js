@@ -1,4 +1,6 @@
 export function HttpService() {
+    'use strict';
+
     this.get = url => {
         return request(url);
     }
@@ -40,8 +42,11 @@ export function HttpService() {
     // Enable error management on status codes from the server indicating failures
     const request = (url, requestObject) => {
         return fetch(url, requestObject).then(response => {
-            if (!response.ok)
-                throw Error(response.statusText);
+            if (!response.ok) {
+                return response.text().then(message => {
+                    throw Error(message);
+                });
+            }
             return response;
         })
     }

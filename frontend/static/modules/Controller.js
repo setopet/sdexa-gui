@@ -7,7 +7,7 @@ export function Controller(httpService, modalService, inputService, alertService
     const vm = this;
 
     vm.uploadSurview = () => {
-        const file = inputService.getInputFile("surview").files[0];
+        const file = inputService.getInputField("surview").files[0];
         httpService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
             .then(initSelectionCanvas)
@@ -16,7 +16,7 @@ export function Controller(httpService, modalService, inputService, alertService
     }
 
     vm.uploadCtProjection = () => {
-        const file = inputService.getInputFile("ct_projection").files[0];
+        const file = inputService.getInputField("ct_projection").files[0];
         httpService
             .uploadFile(file, baseUrl + "projection")
             .then(getFullCtProjection)

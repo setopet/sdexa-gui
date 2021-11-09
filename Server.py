@@ -1,6 +1,6 @@
 from io import BytesIO
 from PIL import Image
-from flask import render_template, request, send_file
+from flask import render_template, request, send_file, Response
 from Config import CONFIG
 from api import SUCCESS, NOT_FOUND, ERROR
 from Route import Route
@@ -55,9 +55,12 @@ class Server:
     def upload_surview(self):
         user_session = self.user_service.get_session()
         if not request.files.get('file'):
-            return ERROR
+            return 'File is missing!', 400
         file = request.files['file']
-        surview = Surview(file, window=(0, 2000))
+        try:
+            surview = Surview(file, window=(0, 2000))
+        except Exception as exception:
+            return str(exception), 400
         user_session.set_surview(surview)
         user_session.hide_surview_segmentation()
         return SUCCESS
@@ -111,9 +114,12 @@ class Server:
     def upload_projection(self):
         user_session = self.user_service.get_session()
         if not request.files.get('file'):
-            return ERROR
+            return 'File is missing!', 400
         file = request.files['file']
-        projection = Projection(file)
+        try:
+            projection = Projection(file)
+        except Exception as exception:
+            return str(exception), 400
         user_session.set_projection(projection)
         return SUCCESS
 

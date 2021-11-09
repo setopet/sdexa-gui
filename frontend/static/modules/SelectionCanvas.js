@@ -1,6 +1,7 @@
 import {Canvas} from "./Canvas.js";
 
 export function SelectionCanvas(id, image) {
+    'use strict';
     Canvas.call(this, id); // Inheritance from Canvas
 
     this.selectionCanvas = document.createElement('canvas');
@@ -8,7 +9,6 @@ export function SelectionCanvas(id, image) {
     this.lineWidth = 6; // take an even number
     let posX = 0;
     let posY = 0;
-
     this.getX = () => posX;
     this.getY = () => posY;
 
