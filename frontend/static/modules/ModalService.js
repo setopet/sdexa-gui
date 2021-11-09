@@ -1,10 +1,12 @@
 export function ModalService() {
     'use strict';
 
-    this.openFullscreen = (modalName) => {
-        const modal = new bootstrap.Modal(document.getElementById(modalName));
+    this.openFullscreen = (title, onClose) => {
+        const modal = new bootstrap.Modal(document.getElementById("fullscreen-modal"));
+        document.getElementById("fullscreen-modal-title").innerHTML = title;
+        document.getElementById("fullscreen-modal-ok-button").onclick = onClose;
         modal.show();
-        return modal;
+        return new Promise(this);
     }
 
     return this;

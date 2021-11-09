@@ -66,6 +66,11 @@ class Session:
             return self.filename_ct_projection
         return self.generate_ct_projection_file()
 
+    def get_full_ct_projection_image(self):
+        if self.ct_projection is None:
+            return None
+        return self.ct_projection.get_full_image()
+
     def generate_ct_projection_file(self):
         filename = self.get_timestamped_image_file(self.ct_projection.get_image())
         self.filename_ct_projection = filename

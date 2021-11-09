@@ -48,7 +48,7 @@ export function SelectionCanvas(id, image) {
     };
 
     this.init = () => {
-        this.drawImage(this.image).then(() => {
+        return this.drawImage(this.image).then(() => {
             this.selectionCanvas.width = this.width;
             this.selectionCanvas.height = this.height;
             return drawRectangle(512, 512, posX, posY);

@@ -15,14 +15,16 @@ class Server:
     def __init__(self):
         self.routes = [
             Route('/', self.get_root_page, ["GET"]),
-            Route('/surview', self.upload_surview, ["POST"]),
             Route('/ct-projection', self.upload_ct_projection, ["POST"]),
-            Route('/uploads/<image>', self.get_image, ["GET"]),
+            Route('/ct-projection/full', self.get_full_ct_projection, ["GET"]),
+            Route('/ct-projection/position', self.set_ct_projection_position, ["PUT"]),
+            Route('/surview', self.upload_surview, ["POST"]),
             Route('/surview/full', self.get_full_surview, ["GET"]),
-            Route('/surview/cropping', self.set_surview_cropping, ["POST"]),
+            Route('/surview/position', self.set_surview_position, ["PUT"]),
             Route('/surview/segmentation', self.perform_surview_segmention, ["PUT"]),
             Route('/surview/download', self.download_surview_image, ["GET"]),
-            Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"])
+            Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"]),
+            Route('/uploads/<image>', self.get_image, ["GET"]),
         ]
         self.session = None
         self.directory = CONFIG['UPLOAD_DIR']
@@ -56,7 +58,7 @@ class Server:
         session.set_surview(surview)
         return SUCCESS
 
-    def set_surview_cropping(self):
+    def set_surview_position(self):
         json = request.json
         if self.session is None or self.session.surview is None:
             return ERROR
@@ -90,6 +92,17 @@ class Server:
         if self.session is None:
             session = self.generate_new_session()
         session.set_ct_projection(ct_projection)
+        return SUCCESS
+
+    def get_full_ct_projection(self):
+        full_projection = self.session.get_full_ct_projection_image()
+        return self.send_jpeg(full_projection)
+
+    def set_ct_projection_position(self):
+        json = request.json
+        if self.session is None or self.session.ct_projection is None:
+            return ERROR
+        self.session.ct_projection.set_image_position((json['posX'], json['posY']))
         return SUCCESS
 
     def generate_new_session(self):
