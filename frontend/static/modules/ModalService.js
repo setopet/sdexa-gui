@@ -6,7 +6,7 @@ export function ModalService() {
         document.getElementById("fullscreen-modal-title").innerHTML = title;
         document.getElementById("fullscreen-modal-ok-button").onclick = onClose;
         modal.show();
-        return new Promise(this);
+        return Promise.resolve(this);
     }
 
     return this;

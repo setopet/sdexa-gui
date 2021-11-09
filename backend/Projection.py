@@ -3,7 +3,7 @@ from backend.processing import create_mask, overlay_with_mask, image_to_csv
 from backend.registration.registration import perform_registration
 
 
-class CtProjection(Image):
+class Projection(Image):
     def __init__(self, file, window=None):
         super().__init__(file, window)
         self.registration_result = None

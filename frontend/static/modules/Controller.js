@@ -1,6 +1,8 @@
 import {baseUrl} from "./config.js";
 import {SelectionCanvas} from "./SelectionCanvas.js";
 
+// TODO: Ebenfalls aufsplitten und sowas wie putJSONToUrl in HttpService umlagern (alles ausser getInputFile
+//  vom FileService könnte dann dorthin)
 export function Controller(fileService, modalService, alertService) {
     'use strict';
     const vm = this;
@@ -33,14 +35,14 @@ export function Controller(fileService, modalService, alertService) {
     }
 
     const getFullCtProjection = () => {
-        return fetch(baseUrl + "ct-projection/full")
+        return fetch(baseUrl + "projection/full")
             .then(response => response.blob())
     }
 
     vm.uploadCtProjection = () => {
         const file = fileService.getInputFile("ct_projection");
         fileService
-            .uploadFile(file, baseUrl + "ct-projection")
+            .uploadFile(file, baseUrl + "projection")
             .then(getFullCtProjection)
             .then(initSelectionCanvas)
             .then(() => openCtModal())
@@ -65,7 +67,7 @@ export function Controller(fileService, modalService, alertService) {
         const title =
             "Move the rectangle by clicking on the projection image to select the area for registration." +
             "Click the OK button when you are finished.";
-        return modalService.openFullscreen(title, () => putImagePosition(baseUrl + "ct-projection/position"));
+        return modalService.openFullscreen(title, () => putImagePosition(baseUrl + "projection/position"));
     }
 
     const initSelectionCanvas = blob =>  {

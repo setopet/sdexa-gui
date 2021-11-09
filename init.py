@@ -1,7 +1,6 @@
-import os
-from Server import Server
+from Controller import Controller
 from flask import Flask
-from Config import load_config, CONFIG
+from Config import config
 
 
 app = Flask(__name__,
@@ -16,14 +15,9 @@ def init_routes(server):
         app.add_url_rule(route.path, view_func=route.handle, methods=route.methods)
 
 
-def init_file_system():
-    os.makedirs(CONFIG['UPLOAD_DIR'], exist_ok=True)
-
-
 def init():
-    load_config()
-    init_file_system()
-    init_routes(Server())
+    config(app)
+    init_routes(Controller())
 
 
 init()

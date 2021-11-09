@@ -1,8 +1,8 @@
 <div>
-    {% if filename_ct != None %}
-        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_ct }}" alt="image"></div>
+    {% if render_projection %}
+        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/projection' }}" alt="image"></div>
     {% endif %}
-    {% if filename_ct == None %}
+    {% if not render_projection %}
         <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
     {% endif %}
 </div>

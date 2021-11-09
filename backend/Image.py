@@ -12,6 +12,9 @@ class Image:
         self.image = crop_image(position, image)
         return self.image
 
+    def set_window(self, window):
+        self.window = window
+
     def get_image(self):
         return to_normalized_uint8_rgb(self.image, self.window)
 

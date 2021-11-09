@@ -1,13 +1,13 @@
 <div>
-    {% if filename_surview != None %}
-        <div><img style="height: 512px; width: 512px" src="../uploads/{{ filename_surview }}" alt="image"></div>
+    {% if render_surview %}
+        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}" alt="image"></div>
     {% endif %}
-    {% if filename_surview == None %}
+    {% if not render_surview %}
         <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
     {% endif %}
 </div>
 <div>
-    {% if filename_surview != None %}
+    {% if render_surview %}
             <button class="btn-outline-dark" onclick="$ctrl.downloadImage()">Download Image</button>
             <button class="btn-outline-dark" onclick="$ctrl.downloadSegmentation()">Download Segmentation</button>
             <button class="btn-outline-dark" onclick="$ctrl.showSegmentation()">Show Segmentation</button>
