@@ -66,9 +66,10 @@ def get_array_from_file(file):
             array = array[:, :, 0]
     else:
         raise Exception("Invalid file type!")
+    dimensions = array.ndim
     array = array.squeeze()
     if array.ndim != 2:
-        raise Exception("Input has a wrong number of dimensions (" + str(array.ndim) + "). It should have 2!")
+        raise Exception("Input has a wrong number of dimensions (" + str(dimensions) + "). It should have 2!")
     return array
 
 

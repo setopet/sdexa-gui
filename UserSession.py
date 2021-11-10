@@ -1,4 +1,4 @@
-class Session:
+class UserSession:
     def __init__(self, user_id, start_date):
         self.user_id = user_id
         self.start_date = start_date

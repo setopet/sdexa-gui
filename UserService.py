@@ -1,23 +1,23 @@
 import uuid
 from datetime import datetime, timedelta
 from flask import session
-from Session import Session
+from UserSession import UserSession
 
 
 class UserService:
     def __init__(self):
         self.sessions = {}
 
-    def get_session(self) -> Session:
+    def get_session(self) -> UserSession:
         if 'user_id' not in session or self.sessions.get(session['user_id']) is None:
             session['user_id'] = self.generate_new_session().user_id
         return self.sessions[session['user_id']]
 
-    def generate_new_session(self) -> Session:
+    def generate_new_session(self) -> UserSession:
         # Important: To avoid running out of memory, the service cleans up all stored sessions older than one day.
         self.cleanup_old_sessions()
         user_id = uuid.uuid4().hex
-        new_session = Session(user_id, datetime.now())
+        new_session = UserSession(user_id, datetime.now())
         self.sessions[user_id] = new_session
         return new_session
 
