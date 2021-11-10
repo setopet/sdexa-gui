@@ -4,14 +4,14 @@ import {InputService} from "./InputService.js";
 import {ModalService} from "./ModalService.js";
 import {AlertService} from "./AlertService.js";
 
-function getInstance (factory, ...dependencies) {
+function getInstance (constructor, ...dependencies) {
     const instance = {};
-    return factory.bind(instance)(...dependencies);
+    return constructor.bind(instance)(...dependencies);
 }
 
 const httpService = getInstance(HttpService);
 const modalService = getInstance(ModalService);
-const inputService = getInstance(InputService)
+const inputService = getInstance(InputService);
 const alertService = getInstance(AlertService);
 
 window.$ctrl = getInstance(Controller, httpService, modalService, inputService, alertService);

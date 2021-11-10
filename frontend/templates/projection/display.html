@@ -12,13 +12,13 @@
                         onclick="$ctrl.downloadImage('projection/registration/download', 'registration.csv')">
                 Download Registration
             </button>
-            <button class="btn-outline-dark" onclick="$ctrl.switchProjectionView()">Show/Hide registration</button>
+            <button class="btn-outline-dark" onclick="$ctrl.switchImageView('projection/registration')">
+                Show/Hide registration</button>
         {% endif %}
     {% endif %}
 
     {% if not projection_present %}
-        <!-- unused canvas -->
-        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
+        <div style="height: 512px; width: 512px; border: 1px solid"></div>
     {% endif %}
 </div>
 

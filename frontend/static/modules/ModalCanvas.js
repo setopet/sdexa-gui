@@ -1,8 +1,8 @@
 import {Canvas} from "./Canvas.js";
 
-export function SelectionCanvas(id, image) {
+export function ModalCanvas(image) {
     'use strict';
-    Canvas.call(this, id); // Inheritance from Canvas
+    Canvas.call(this, "modal-canvas"); // Inheritance from Canvas
 
     this.selectionCanvas = document.createElement('canvas');
     this.image = image;
@@ -44,7 +44,7 @@ export function SelectionCanvas(id, image) {
     this.canvas.onmousedown = event => {
         posX = event.offsetX;
         posY = event.offsetY;
-        redraw();
+        return redraw();
     };
 
     this.init = () => {

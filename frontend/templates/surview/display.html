@@ -5,8 +5,7 @@
     {% endif %}
 
     {% if not surview_present %}
-        <!-- unused canvas -->
-        <canvas style="height: 512px; width: 512px; border: 1px solid"></canvas>
+        <div style="height: 512px; width: 512px; border: 1px solid"></div>
     {% endif %}
 </div>
 {% if surview_present %}
@@ -20,7 +19,7 @@
                 onclick="$ctrl.downloadImage('surview/segmentation/download', 'segmentation.csv')">
             Download Segmentation
         </button>
-        <button class="btn-outline-dark" onclick="$ctrl.switchSurviewView()">Show/Hide Segmentation</button>
+        <button class="btn-outline-dark" onclick="$ctrl.switchImageView('surview/segmentation')">Show/Hide Segmentation</button>
     </div>
 {% endif %}
 
