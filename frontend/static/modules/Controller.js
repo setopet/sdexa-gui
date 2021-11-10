@@ -2,14 +2,11 @@ import {baseUrl} from "./config.js";
 import {ModalCanvas} from "./ModalCanvas.js";
 
 
-export function Controller(httpService, modalService, inputService, alertService) {
+export function Controller(httpService, modalService, fileService, alertService) {
     'use strict';
     const vm = this;
 
-    // wenn ich über EventListener gehe, muss ich diese Methode sowieso so schreiben,
-    // dass das File woanders herkommen kann.
-    vm.uploadSurview = () => {
-        const file = inputService.getInputField("surview").files[0];
+    vm.uploadSurview = (file) => {
         httpService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
             .then(initModalCanvas)
@@ -17,8 +14,7 @@ export function Controller(httpService, modalService, inputService, alertService
             .catch(alertService.error);
     }
 
-    vm.uploadCtProjection = () => {
-        const file = inputService.getInputField("projection").files[0];
+    vm.uploadProjection = (file) => {
         httpService
             .uploadFile(file, baseUrl + "projection")
             .then(getFullCtProjection)
@@ -79,6 +75,15 @@ export function Controller(httpService, modalService, inputService, alertService
         location.href = '/';
         return Promise.resolve(this);
     }
+
+    const init = () => {
+        fileService.watchFileInput("surview-input", vm.uploadSurview);
+        fileService.watchFileDrop("surview-drop", vm.uploadSurview);
+        fileService.watchFileInput("projection-input", vm.uploadProjection);
+        fileService.watchFileDrop("projection-drop", vm.uploadProjection);
+    }
+
+    init();
 
     return vm;
 }
