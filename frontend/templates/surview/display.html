@@ -1,10 +1,16 @@
-<div>
-    <label class="btn btn-primary" for="surview-input">Select Surview [.csv,.txt,.npy,.jpg,.png]</label>
+<div style="width: 512px">
+    <label class="btn btn-primary select-image-button" for="surview-input">Select Surview [.csv,.txt,.npy,.jpg,.png]</label>
     <input style="display:none;" id="surview-input" name="surview" type="file" title="Upload Surview">
+    {% if surview_present %}
+        <button type="button" onclick="$ctrl.deleteImage('/surview')"
+                class="btn-close float-end close-image-button">
+        </button>
+    {% endif %}
 </div>
 <div>
     {% if surview_present %}
-        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}" alt="Error: image could not get loaded">
+        <div>
+            <img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}" alt="Error: image could not get loaded">
         </div>
     {% endif %}
 

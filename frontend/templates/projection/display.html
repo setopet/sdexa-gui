@@ -1,10 +1,16 @@
-<div>
-    <label class="btn btn-primary" for="projection-input">Select Projection [.csv,.txt,.npy,.jpg,.png]</label>
+<div style="width:512px">
+    <label class="btn btn-primary select-image-button" for="projection-input">Select Projection [.csv,.txt,.npy,.jpg,.png]</label>
     <input style="display:none;" id="projection-input" name="projection" type="file" title="Upload Projection">
+
+    {% if projection_present %}
+        <button type="button" onclick="$ctrl.deleteImage('/projection')"
+        class="btn-close float-end close-image-button"></button>
+    {% endif %}
 </div>
 <div>
     {% if projection_present %}
-        <div><img style="height: 512px; width: 512px" src="{{ base_url + '/projection' }}"
+        <div>
+            <img style="height: 512px; width: 512px" src="{{ base_url + '/projection' }}"
                   alt="Error: image could not get loaded">
         </div>
         <button class="btn-outline-dark"

@@ -15,6 +15,7 @@ class Server:
             Route('/', self.get_root_page, ["GET"]),
             Route('/surview', self.get_surview, ["GET"]),
             Route('/surview', self.upload_surview, ["POST"]),
+            Route('/surview', self.delete_surview, ["DELETE"]),
             Route('/surview/full', self.get_full_surview, ["GET"]),
             Route('/surview/position', self.set_surview_position, ["PUT"]),
             Route('/surview/download', self.download_surview_image, ["GET"]),
@@ -22,6 +23,7 @@ class Server:
             Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"]),
             Route('/projection', self.get_projection, ["GET"]),
             Route('/projection', self.upload_projection, ["POST"]),
+            Route('/projection', self.delete_projection, ["DELETE"]),
             Route('/projection/full', self.get_full_projection, ["GET"]),
             Route('/projection/position', self.set_projection_position, ["PUT"]),
             Route('/projection/download', self.download_projection_image, ["GET"]),
@@ -45,6 +47,11 @@ class Server:
         else:
             image = user_session.get_surview_image()
         return self.send_jpeg(image)
+
+    def delete_surview(self):
+        user_session = self.user_service.get_session()
+        user_session.delete_surview()
+        return SUCCESS
 
     def get_full_surview(self):
         user_session = self.user_service.get_session()
@@ -104,6 +111,11 @@ class Server:
         else:
             image = user_session.get_projection_image()
         return self.send_jpeg(image)
+
+    def delete_projection(self):
+        user_session = self.user_service.get_session()
+        user_session.delete_projection()
+        return SUCCESS
 
     def get_full_projection(self):
         user_session = self.user_service.get_session()

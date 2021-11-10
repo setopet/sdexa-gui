@@ -21,6 +21,9 @@ class UserSession:
             return None
         return self.surview.get_image()
 
+    def delete_surview(self):
+        self.surview = None
+
     def get_full_surview_image(self):
         if not self.has_surview():
             return None
@@ -60,6 +63,9 @@ class UserSession:
         if self.projection is None:
             return None
         return self.projection.get_image()
+
+    def delete_projection(self):
+        self.projection = None
 
     def get_full_projection_image(self):
         if self.projection is None:

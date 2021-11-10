@@ -15,6 +15,10 @@ export function HttpService() {
         })
     }
 
+    this.delete = (url) => {
+        return request(url, {method: 'DELETE'});
+    }
+
     this.downloadFile = (url, fileName) => {
         // Credits to https://stackoverflow.com/questions/32545632/how-can-i-download-a-file-using-window-fetch
         return request(url, { method: 'GET'})

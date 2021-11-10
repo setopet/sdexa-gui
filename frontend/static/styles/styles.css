@@ -1,3 +1,11 @@
 .row {
     padding-top: 30px;
 }
+
+.select-image-button {
+    width: 474px
+}
+
+.close-image-button {
+    border: 2px solid; height: 26px; width: 26px; background-color: blueviolet
+}

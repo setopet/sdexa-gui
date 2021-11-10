@@ -23,6 +23,12 @@ export function Controller(httpService, modalService, fileService, alertService)
             .catch(alertService.error);
     }
 
+    vm.deleteImage = (route) => {
+        httpService.delete(route)
+            .then(reloadPage)
+            .catch(alertService.error);
+    }
+
     vm.switchImageView = (route) => {
         httpService.put(baseUrl + route)
             .then(reloadPage)
