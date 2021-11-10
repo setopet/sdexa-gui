@@ -1,4 +1,4 @@
-export function LoadingSpinner(field_id) {
+export function LoadingAnimation(id) {
     'use strict';
 
     const getAnimationHtml = () => {
@@ -7,11 +7,11 @@ export function LoadingSpinner(field_id) {
         </div>`
     }
 
-    const savedHtml = document.getElementById(field_id).innerHTML;
-    document.getElementById(field_id).innerHTML = getAnimationHtml();
+    const savedHtml = document.getElementById(id).innerHTML;
+    document.getElementById(id).innerHTML = getAnimationHtml();
 
     this.stop = () => {
-        document.getElementById(field_id).innerHTML = savedHtml;
+        document.getElementById(id).innerHTML = savedHtml;
     }
 
     return this;

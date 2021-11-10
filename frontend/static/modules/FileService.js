@@ -10,15 +10,18 @@ export function FileService() {
 
     this.watchFileDrop = (field_id, callback) => {
         const dropField = getField(field_id);
+
         dropField.ondrop = (evt => {
             evt.preventDefault();
             dropField.style.backgroundColor = '';
             callback(evt.dataTransfer.files[0]);
         });
+
         dropField.ondragover = evt => {
             evt.preventDefault();
             dropField.style.backgroundColor = 'lightskyblue';
         };
+
         dropField.ondragleave = () => {
             dropField.style.backgroundColor = '';
         }

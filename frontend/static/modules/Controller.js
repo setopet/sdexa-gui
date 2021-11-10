@@ -1,36 +1,11 @@
 import {baseUrl} from "./config.js";
 import {ModalCanvas} from "./ModalCanvas.js";
-import {LoadingSpinner} from "./LoadingSpinner.js";
+import {LoadingAnimation} from "./LoadingAnimation.js";
 
 
 export function Controller(httpService, modalService, fileService, alertService) {
     'use strict';
     const vm = this;
-
-    vm.uploadSurview = (file) => {
-        const spinner = new LoadingSpinner("surview-spinner");
-        httpService.uploadFile(file, baseUrl + "surview")
-            .then(getFullSurview)
-            .then(initModalCanvas)
-            .then(() => openSurviewModal())
-            .catch(error => {
-                spinner.stop();
-                alertService.error(error);
-            });
-    }
-
-    vm.uploadProjection = (file) => {
-        const spinner = new LoadingSpinner("projection-spinner");
-        httpService
-            .uploadFile(file, baseUrl + "projection")
-            .then(getFullCtProjection)
-            .then(initModalCanvas)
-            .then(() => openProjectionModal())
-            .catch(error => {
-                spinner.stop();
-                alertService.error(error);
-            });
-    }
 
     vm.deleteImage = (route) => {
         httpService.delete(route)
@@ -48,6 +23,31 @@ export function Controller(httpService, modalService, fileService, alertService)
         httpService
             .downloadFile(baseUrl + route, fileName)
             .catch(alertService.error);
+    }
+
+    vm.uploadSurview = (file) => {
+        const animation = new LoadingAnimation("surview-spinner");
+        httpService.uploadFile(file, baseUrl + "surview")
+            .then(() => getFullImage("surview/full"))
+            .then(initModalCanvas)
+            .then(() => openSurviewModal())
+            .catch(error => {
+                animation.stop();
+                alertService.error(error);
+            });
+    }
+
+    vm.uploadProjection = (file) => {
+        const animation = new LoadingAnimation("projection-spinner");
+        httpService
+            .uploadFile(file, baseUrl + "projection")
+            .then(() => getFullImage("projection/full"))
+            .then(initModalCanvas)
+            .then(() => openProjectionModal())
+            .catch(error => {
+                animation.stop();
+                alertService.error(error);
+            });
     }
 
     const putImagePosition = (url) => {
@@ -81,13 +81,8 @@ export function Controller(httpService, modalService, fileService, alertService)
         return vm.modalCanvas.init();
     }
 
-    const getFullSurview = () => {
-        return httpService.get(baseUrl + "surview/full")
-            .then(response => response.blob())
-    }
-
-    const getFullCtProjection = () => {
-        return httpService.get(baseUrl + "projection/full")
+    const getFullImage = (route) => {
+        return httpService.get(baseUrl + route)
             .then(response => response.blob())
     }
 
