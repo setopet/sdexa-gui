@@ -1,5 +1,6 @@
 import {baseUrl} from "./config.js";
 import {ModalCanvas} from "./ModalCanvas.js";
+import {LoadingSpinner} from "./LoadingSpinner.js";
 
 
 export function Controller(httpService, modalService, fileService, alertService) {
@@ -7,20 +8,28 @@ export function Controller(httpService, modalService, fileService, alertService)
     const vm = this;
 
     vm.uploadSurview = (file) => {
+        const spinner = new LoadingSpinner("surview-spinner");
         httpService.uploadFile(file, baseUrl + "surview")
             .then(getFullSurview)
             .then(initModalCanvas)
             .then(() => openSurviewModal())
-            .catch(alertService.error);
+            .catch(error => {
+                spinner.stop();
+                alertService.error(error);
+            });
     }
 
     vm.uploadProjection = (file) => {
+        const spinner = new LoadingSpinner("projection-spinner");
         httpService
             .uploadFile(file, baseUrl + "projection")
             .then(getFullCtProjection)
             .then(initModalCanvas)
             .then(() => openProjectionModal())
-            .catch(alertService.error);
+            .catch(error => {
+                spinner.stop();
+                alertService.error(error);
+            });
     }
 
     vm.deleteImage = (route) => {

@@ -28,11 +28,5 @@ export function FileService() {
         return document.getElementById(field_id);
     }
 
-    this.onFileDrop = event => {
-        event.preventDefault();
-        console.log(event);
-    }
-
-
     return this;
 }
