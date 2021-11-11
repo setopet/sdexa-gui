@@ -1,12 +1,3 @@
-<div style="width:512px">
-    <label class="btn btn-primary select-image-button" for="projection-input">Select Projection</label>
-    <input style="display:none;" id="projection-input" name="projection" type="file" title="Upload Projection">
-
-    {% if projection_present %}
-        <button type="button" onclick="$ctrl.deleteImage('/projection')"
-        class="btn-close float-end close-image-button"></button>
-    {% endif %}
-</div>
 <div>
     {% if projection_present %}
         <div style="height: 512px; width: 512px; border: 1px solid">
