@@ -133,6 +133,7 @@ class Server:
         except Exception as exception:
             return str(exception), 400
         user_session.set_projection(projection)
+        user_session.hide_projection_registration()
         return SUCCESS
 
     def set_projection_position(self):

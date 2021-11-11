@@ -72,7 +72,7 @@ class UserSession:
             return None
         return self.projection.get_full_image()
 
-    def hide_projection_segmentation(self):
+    def hide_projection_registration(self):
         self.show_projection_registration = False
 
     def switch_projection_registration(self):
