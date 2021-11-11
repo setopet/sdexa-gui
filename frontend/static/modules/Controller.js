@@ -30,7 +30,8 @@ export function Controller(httpService, modalService, fileService, alertService)
         httpService.uploadFile(file, baseUrl + "surview")
             .then(() => getFullImage("surview/full"))
             .then(initModalCanvas)
-            .then(() => openSurviewModal())
+            .then(animation.stop)
+            .then(openSurviewModal)
             .catch(error => {
                 animation.stop();
                 alertService.error(error);
@@ -43,11 +44,19 @@ export function Controller(httpService, modalService, fileService, alertService)
             .uploadFile(file, baseUrl + "projection")
             .then(() => getFullImage("projection/full"))
             .then(initModalCanvas)
-            .then(() => openProjectionModal())
+            .then(animation.stop)
+            .then(openProjectionModal)
             .catch(error => {
                 animation.stop();
                 alertService.error(error);
             });
+    }
+
+    const setImageWindow = (route, window) => {
+        // wird aufgerufen von ModalService, diesem als Callback mitgegeben
+        // macht http request
+        // bei Rückkehr:
+        // An ModalCanvas (this.modalCanvas) wird setImage aufgerufen, welches redraw() initialisiert
     }
 
     const putImagePosition = (url) => {

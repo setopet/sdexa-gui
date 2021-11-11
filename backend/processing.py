@@ -65,7 +65,7 @@ def get_array_from_file(file):
         if array.ndim == 3:
             array = array[:, :, 0]
     else:
-        raise Exception("Invalid file type! Supported file types: .csv, .txt, .npy, .jpg, .png")
+        raise Exception("Invalid file type! Supported file types: .jpg, .png, .npy, .csv, .txt")
     dimensions = array.ndim
     array = array.squeeze()
     if array.ndim != 2:

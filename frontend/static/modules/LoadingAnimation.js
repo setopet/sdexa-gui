@@ -2,9 +2,10 @@ export function LoadingAnimation(id) {
     'use strict';
 
     const getAnimationHtml = () => {
-        return `<div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>`
+        return `
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>`
     }
 
     const savedHtml = document.getElementById(id).innerHTML;
@@ -12,6 +13,7 @@ export function LoadingAnimation(id) {
 
     this.stop = () => {
         document.getElementById(id).innerHTML = savedHtml;
+        return this;
     }
 
     return this;

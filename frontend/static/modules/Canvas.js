@@ -3,17 +3,17 @@ export function Canvas(id) {
     this.canvas = document.getElementById(id);
 
     const setSize = element => {
-        if(element.width < 512) {
-                this.width = 512;
-                this.canvas.width = 512;
+        if(element.width < 530) {
+                this.width = 530;
+                this.canvas.width = 530;
         } else {
             this.width = element.width;
             this.canvas.width = element.width;
         }
 
-        if (element.height < 512) {
-            this.height = 512;
-            this.canvas.height = 512;
+        if (element.height < 530) {
+            this.height = 530;
+            this.canvas.height = 530;
         } else {
             this.height = element.height;
             this.canvas.height = element.height;

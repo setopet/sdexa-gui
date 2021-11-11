@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timedelta
 from flask import session
-from UserSession import UserSession
+from server.UserSession import UserSession
 
 
 class UserService:

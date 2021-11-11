@@ -1,8 +1,8 @@
 import {Controller} from "./Controller.js";
-import {HttpService} from "./HttpService.js";
-import {FileService} from "./FileService.js";
-import {ModalService} from "./ModalService.js";
-import {AlertService} from "./AlertService.js";
+import {HttpService} from "./services/HttpService.js";
+import {FileService} from "./services/FileService.js";
+import {ModalService} from "./services/ModalService.js";
+import {AlertService} from "./services/AlertService.js";
 
 function getInstance (constructor, ...dependencies) {
     const instance = {};
