@@ -102,8 +102,12 @@ def crop_image(position, image, new_size=512):
     shape_x, shape_y = image.shape
     y, x = position  # Frontend x and y axis can't be trusted
     # If one of the values is out of bound get the value which is the maximum value possible
-    if x+new_size >= shape_x:
+    if x < 0:
+        x = 0
+    if y < 0:
+        y = 0
+    if x+new_size > shape_x:
         x = shape_x - new_size
-    if y+new_size >= shape_y:
+    if y+new_size > shape_y:
         y = shape_y - new_size
     return image[x:x + new_size, y:y + new_size]
