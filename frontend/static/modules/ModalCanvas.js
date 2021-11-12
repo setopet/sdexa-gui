@@ -35,6 +35,11 @@ export function ModalCanvas(image) {
         return Promise.resolve(this);
     }
 
+    this.setImage = blob => {
+        this.image = blob;
+        return redraw();
+    }
+
     const redraw = () => {
         return erase()
             .then(() => this.drawImage(this.image))

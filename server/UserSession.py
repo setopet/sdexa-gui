@@ -38,6 +38,9 @@ class UserSession:
     def set_surview_image_position(self, position_x, position_y):
         self.surview.set_image_position((position_x, position_y))
 
+    def set_surview_window(self, window):
+        self.surview.set_window(window)
+
     def get_surview_segmentation_overlay_image(self):
         if not self.has_surview():
             return None
@@ -80,6 +83,9 @@ class UserSession:
 
     def set_projection_image_position(self, position_x, position_y):
         self.projection.set_image_position((position_x, position_y))
+
+    def set_projection_window(self, window):
+        self.projection.set_window(window)
 
     def get_projection_image_csv(self):
         if self.projection is None:

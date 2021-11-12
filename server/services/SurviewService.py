@@ -14,6 +14,7 @@ class SurviewService(WebService):
             Route('/surview', self.delete_surview, ["DELETE"]),
             Route('/surview/full', self.get_full_surview, ["GET"]),
             Route('/surview/position', self.set_surview_position, ["PUT"]),
+            Route('/surview/window', self.set_surview_window, ["PUT"]),
             Route('/surview/download', self.download_surview_image, ["GET"]),
             Route('/surview/segmentation', self.switch_surview_segmention_view, ["PUT"]),
             Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"])
@@ -58,6 +59,15 @@ class SurviewService(WebService):
         if not user_session.has_surview():
             return ERROR
         user_session.set_surview_image_position(request.json['posX'], request.json['posY'])
+        return SUCCESS
+
+    def set_surview_window(self):
+        user_session = self.user_service.get_session()
+        if not user_session.has_surview():
+            return ERROR
+        minimum = self.string_to_float(request.json['min'])
+        maximum = self.string_to_float(request.json['max'])
+        user_session.set_surview_window((minimum, maximum))
         return SUCCESS
 
     def switch_surview_segmention_view(self):

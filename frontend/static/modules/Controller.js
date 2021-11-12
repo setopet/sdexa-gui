@@ -52,13 +52,6 @@ export function Controller(httpService, modalService, fileService, alertService)
             });
     }
 
-    const setImageWindow = (route, window) => {
-        // wird aufgerufen von ModalService, diesem als Callback mitgegeben
-        // macht http request
-        // bei Rückkehr:
-        // An ModalCanvas (this.modalCanvas) wird setImage aufgerufen, welches redraw() initialisiert
-    }
-
     const putImagePosition = (url) => {
         const position = { 'posX': vm.modalCanvas.getX(), 'posY': vm.modalCanvas.getY() };
         httpService.put(url, position)
@@ -66,22 +59,31 @@ export function Controller(httpService, modalService, fileService, alertService)
             .catch(alertService.error);
     }
 
+    const putImageWindow = (route) => (window) => {
+        httpService.put(baseUrl + route + "/window", window)
+            .then(() => getFullImage(route + "/full"))
+            .then(vm.modalCanvas.setImage)
+    }
+
     const openSurviewModal = () => {
         const title =
-            "Move the rectangle by clicking on the surview image to select the area for segmenation." +
+            "Move the rectangle by clicking on the surview image to select the area for segmenation. " +
             "Click the OK button when you are finished.";
         return modalService.openFullscreen(title,
             () => putImagePosition(baseUrl + "surview/position"),
-            () => vm.deleteImage("surview"));
+            () => vm.deleteImage("surview"),
+            putImageWindow("surview")
+        );
     }
 
     const openProjectionModal = () => {
         const title =
-            "Move the rectangle by clicking on the projection image to select the area for registration." +
+            "Move the rectangle by clicking on the projection image to select the area for registration. " +
             "Click the OK button when you are finished.";
         return modalService.openFullscreen(title,
             () => putImagePosition(baseUrl + "projection/position"),
-            () => vm.deleteImage("projection")
+            () => vm.deleteImage("projection"),
+            putImageWindow("projection")
         );
     }
 

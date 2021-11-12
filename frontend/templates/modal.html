@@ -8,11 +8,22 @@
       </div>
       <div class="modal-body">
           <div class="d-flex justify-content-center align-items-center">
-                <canvas style="border: 1px solid" id="modal-canvas"></canvas>
+                  <canvas style="border: 1px solid" id="modal-canvas"></canvas>
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="fullscreen-modal-close-button">
+          <span class="justify-content-start" style="margin-right: auto">
+            <label>
+                <input id="fullscreen-modal-window-min" style="width: 100px" placeholder="Min" type="number">
+            </label>
+            <label>
+                <input id="fullscreen-modal-window-max" style="width: 100px" placeholder="Max" type="number">
+            </label>
+            <button id="fullscreen-modal-window-button" style="margin-bottom: 5px" class="btn btn-secondary btn-sm">
+                Set Window</button>
+          </span>
+
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="fullscreen-modal-close-button">
             Close</button>
         <button type="button" class="btn btn-primary" id="fullscreen-modal-ok-button">OK</button>
       </div>

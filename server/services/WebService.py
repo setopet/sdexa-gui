@@ -18,3 +18,11 @@ class WebService:
         Image.fromarray(image).save(stream, format='JPEG')
         stream.seek(0)
         return send_file(stream, mimetype='image/jpeg')
+
+    @staticmethod
+    def string_to_float(string):
+        try:
+            return float(string)
+        except:
+            return None
+

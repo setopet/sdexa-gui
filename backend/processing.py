@@ -18,12 +18,13 @@ def to_rgb(image):
 
 
 def to_normalized_rgb(image, window=None):
-    if window is not None:
-        minimum, maximum = window
-        image = set_window(image, minimum, maximum)
+    image = set_window(image, window)
     image = normalize_array_for_uint8(image)
     return to_rgb(image)
 
+# Reproduzieren: Window 0,2000 setzen, ohne das Rechteck zu verschieben
+# Dann Recht eck ganz oben setzen
+# dann OK -> im Backend kommt Position -1 an
 
 def to_normalized_uint8_rgb(image, window=None):
     return to_uint8(to_normalized_rgb(image, window))
@@ -34,9 +35,15 @@ def normalize_array_for_uint8(image):
     return result * (255 / result.max())
 
 
-def set_window(image, minimum, maximum):
-    image = np.where(image >= minimum, image, np.zeros(image.shape))
-    return np.where(image <= maximum, image, np.zeros(image.shape))
+def set_window(image, window):
+    if window is None:
+        return image
+    minimum, maximum = window
+    if minimum is not None:
+        image = np.where(image >= minimum, image, np.zeros(image.shape))
+    if maximum is not None:
+        image = np.where(image <= maximum, image, np.zeros(image.shape))
+    return image
 
 
 def create_mask(image, threshold=0):
@@ -87,7 +94,7 @@ def insert_padding(image, new_size=512):
     if shape_x < new_size:
         image = np.pad(image, ((0, new_size - shape_x), (0, 0)), 'constant')
     if shape_y < new_size:
-        image = np.pad(image, ((0,0), (0, new_size-shape_y)), 'constant')
+        image = np.pad(image, ((0, 0), (0, new_size-shape_y)), 'constant')
     return image
 
 

@@ -14,6 +14,7 @@ class ProjectionService(WebService):
             Route('/projection', self.delete_projection, ["DELETE"]),
             Route('/projection/full', self.get_full_projection, ["GET"]),
             Route('/projection/position', self.set_projection_position, ["PUT"]),
+            Route('/projection/window', self.set_projection_window, ["PUT"]),
             Route('/projection/download', self.download_projection_image, ["GET"]),
             Route('/projection/registration', self.switch_projection_registration_view, ["PUT"]),
             Route('/projection/registration/download', self.download_projection_registration, ["GET"]),
@@ -60,6 +61,15 @@ class ProjectionService(WebService):
         if not user_session.has_projection():
             return ERROR
         user_session.set_projection_image_position(request.json['posX'], request.json['posY'])
+        return SUCCESS
+
+    def set_projection_window(self):
+        user_session = self.user_service.get_session()
+        if not user_session.has_projection():
+            return ERROR
+        minimum = self.string_to_float(request.json['min'])
+        maximum = self.string_to_float(request.json['max'])
+        user_session.set_projection_window((minimum, maximum))
         return SUCCESS
 
     def download_projection_image(self):
