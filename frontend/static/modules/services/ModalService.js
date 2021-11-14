@@ -1,6 +1,8 @@
+/** Opens modal dialogs **/
 export function ModalService() {
     'use strict';
 
+    /** Opens a fullscreen modal dialog and appends callbacks to the buttons. **/
     this.openFullscreen = (title, onFinish, onAbort, onWindowChange) => {
         const modal = new bootstrap.Modal(document.getElementById("fullscreen-modal"));
         document.getElementById("fullscreen-modal-title").innerHTML = title;

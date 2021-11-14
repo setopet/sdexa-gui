@@ -7,9 +7,9 @@ class WebService:
     def __init__(self, user_service):
         self.user_service = user_service
 
-    # Flask accepts only byte-encoded File-like objects for "send_file"
     @staticmethod
     def send_csv(csv):
+        # Flask accepts only byte-encoded File-like objects for "send_file"
         return send_file(BytesIO(csv.encode()), mimetype="text/csv")
 
     @staticmethod

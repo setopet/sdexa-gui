@@ -1,3 +1,5 @@
+/** Makes HTTP requests.
+ * Status codes from the server indicating errors (e.g. 404) will lead to rejected promises. **/
 export function HttpService() {
     'use strict';
 
@@ -44,7 +46,7 @@ export function HttpService() {
         });
     }
 
-    // Enable error management on status codes from the server indicating failures
+    /** Enable error management on status codes from the server indicating failures **/
     const request = (url, requestObject) => {
         return fetch(url, requestObject).then(response => {
             if (!response.ok) {

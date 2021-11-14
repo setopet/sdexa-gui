@@ -6,6 +6,8 @@ from server.api import NOT_FOUND, ERROR, SUCCESS
 
 
 class ProjectionService(WebService):
+    """Handles REST routes for the projection image of a UserSession.
+    """
     def __init__(self, user_service):
         super().__init__(user_service)
         self.routes = [

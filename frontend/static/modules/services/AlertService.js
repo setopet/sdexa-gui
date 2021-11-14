@@ -1,3 +1,4 @@
+/** Shows error messages inside the alert list. **/
 export function AlertService() {
     'use strict';
 
@@ -9,6 +10,7 @@ export function AlertService() {
             </div>`;
     }
 
+    /** Add an error alert with the messages of the error to the alert list. **/
     this.error = error => {
         const alertList = document.getElementById("alert-list");
         alertList.innerHTML += "\n" + getAlertHtml(error.message);

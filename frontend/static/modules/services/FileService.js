@@ -1,3 +1,4 @@
+/** Watches inputs and drop areas for new files. **/
 export function FileService() {
     'use strict';
 

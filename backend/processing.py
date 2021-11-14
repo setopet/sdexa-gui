@@ -22,9 +22,6 @@ def to_normalized_rgb(image, window=None):
     image = normalize_array_for_uint8(image)
     return to_rgb(image)
 
-# Reproduzieren: Window 0,2000 setzen, ohne das Rechteck zu verschieben
-# Dann Recht eck ganz oben setzen
-# dann OK -> im Backend kommt Position -1 an
 
 def to_normalized_uint8_rgb(image, window=None):
     return to_uint8(to_normalized_rgb(image, window))

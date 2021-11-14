@@ -6,6 +6,8 @@ from server.services.WebService import WebService
 
 
 class SurviewService(WebService):
+    """Handles REST routes for the surview image of a UserSession.
+    """
     def __init__(self, user_service):
         super().__init__(user_service)
         self.routes = [
@@ -33,6 +35,7 @@ class SurviewService(WebService):
     def delete_surview(self):
         user_session = self.user_service.get_session()
         user_session.delete_surview()
+        user_session.hide_projection_registration()
         return SUCCESS
 
     def get_full_surview(self):

@@ -2,7 +2,7 @@ import {baseUrl} from "./config.js";
 import {ModalCanvas} from "./ModalCanvas.js";
 import {LoadingAnimation} from "./LoadingAnimation.js";
 
-
+/** Central control object, which is visible in the templates. **/
 export function Controller(httpService, modalService, fileService, alertService) {
     'use strict';
     const vm = this;

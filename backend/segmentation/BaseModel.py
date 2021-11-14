@@ -1,16 +1,19 @@
-import pytorch_lightning as pl
-import segmentation_models_pytorch as smp
+import pytorch_lightning
+import segmentation_models_pytorch
 
 
-# Credits to Burak Aybar (TUM) for providing the pretrained model
-class BaseModel(pl.LightningModule):
+class BaseModel(pytorch_lightning.LightningModule):
+    """Class for loading and executing the pytorch model.
+    """
     def __init__(self):
         super(BaseModel, self).__init__()
         self.seed = 42
-        self.model = smp.Unet(
-            in_channels=1,  # model input channels (1 for gray-scale images, 3 for RGB, etc.)
-            classes=1,  # model output channels (number of classes in your dataset)
+        self.model = segmentation_models_pytorch.Unet(
+            in_channels=1,
+            classes=1,
         )
 
-    def forward(self, x):
-        return self.model(x.float())  # .float() is necessary, because pytorch expects type 'double' otherwise
+    def forward(self, image):
+        """Apply the model to the image.
+        """
+        return self.model(image.float())  # .float() is necessary, because pytorch expects type 'double' otherwise

@@ -7,6 +7,8 @@ from server.services.UserService import UserService
 
 
 class Server:
+    """Initializes services and gets their routes.
+    """
     def __init__(self):
         self.routes = [
             Route('/', self.get_root_page, ["GET"])

@@ -1,5 +1,6 @@
 import {Canvas} from "./Canvas.js";
 
+/** Draws a rectangle representing the selected area when the user clicks at the canvas. **/
 export function ModalCanvas(image) {
     'use strict';
     Canvas.call(this, "modal-canvas"); // Inheritance from Canvas

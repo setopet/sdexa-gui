@@ -1,3 +1,4 @@
+/** Draws an image on the canvas and adapts its size. **/
 export function Canvas(id) {
     'use strict';
     this.canvas = document.getElementById(id);

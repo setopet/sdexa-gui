@@ -1,3 +1,5 @@
+/** Replaces the inner HTML of its element with a loading animation.
+ * @param id: id of the element. **/
 export function LoadingAnimation(id) {
     'use strict';
 
@@ -9,6 +11,7 @@ export function LoadingAnimation(id) {
     }
 
     const savedHtml = document.getElementById(id).innerHTML;
+
     document.getElementById(id).innerHTML = getAnimationHtml();
 
     this.stop = () => {
