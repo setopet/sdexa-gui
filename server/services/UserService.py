@@ -5,12 +5,12 @@ from server import *
 
 
 class UserService:
-    """Manages UserSessions.
+    """Manages the sessions of all users for the server.
     """
     def __init__(self):
         self.sessions = {}
 
-    def get_session(self) -> UserSession:
+    def get_session(self):
         """Gets the UserSession belonging to the request.
         Creates a new one if the UserSession does not exist.
         :returns the UserSession.
@@ -19,7 +19,7 @@ class UserService:
             session['user_id'] = self.generate_new_session().user_id
         return self.sessions[session['user_id']]
 
-    def generate_new_session(self) -> UserSession:
+    def generate_new_session(self):
         """Generates a new UserSession.
         Important: Cleans up all sessions older than one day in order to avoid running out of memory.
         :returns the created UserSession

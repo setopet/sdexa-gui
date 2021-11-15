@@ -1,7 +1,7 @@
-import os
-import numpy as np
-from io import StringIO
-from PIL import Image as PILImage
+import os as _os
+import numpy as _np
+from io import StringIO as _StringIO
+from PIL import Image as _Image
 
 
 def to_uint8(image):
@@ -13,7 +13,7 @@ def to_normalized_uint8(image):
 
 
 def to_rgb(image):
-    return np.stack([image, image, image]).transpose((1, 2, 0))
+    return _np.stack([image, image, image]).transpose((1, 2, 0))
 
 
 def to_normalized_rgb(image, window=None):
@@ -36,15 +36,15 @@ def set_window(image, window):
         return image
     minimum, maximum = window
     if minimum is not None:
-        image = np.where(image >= minimum, image, np.zeros(image.shape))
+        image = _np.where(image >= minimum, image, _np.zeros(image.shape))
     if maximum is not None:
-        image = np.where(image <= maximum, image, np.zeros(image.shape))
+        image = _np.where(image <= maximum, image, _np.zeros(image.shape))
     return image
 
 
 def create_mask(image, threshold=0):
-    array = np.where(image >= threshold, image, np.zeros(image.shape))
-    return to_uint8(np.where(array == 0, array, np.ones(array.shape)))
+    array = _np.where(image >= threshold, image, _np.zeros(image.shape))
+    return to_uint8(_np.where(array == 0, array, _np.ones(array.shape)))
 
 
 def overlay_with_mask(image, mask, mask_intensity=50, window=None):
@@ -55,16 +55,16 @@ def overlay_with_mask(image, mask, mask_intensity=50, window=None):
 
 # TODO: ".nii"
 def get_array_from_file(file):
-    _, extension = os.path.splitext(file.filename)
+    _, extension = _os.path.splitext(file.filename)
     if extension == ".txt":
-        array = np.loadtxt(file, delimiter=",")
+        array = _np.loadtxt(file, delimiter=",")
     elif extension == ".csv":
-        array = np.loadtxt(file, delimiter=",")
+        array = _np.loadtxt(file, delimiter=",")
     elif extension == ".npy":
-        array = np.load(file)
+        array = _np.load(file)
     elif extension == ".jpg" or extension == ".jpeg" or extension == ".png":
-        image = PILImage.open(file)
-        array = np.asarray(image)
+        image = _Image.open(file)
+        array = _np.asarray(image)
         if array.ndim == 3:
             array = array[:, :, 0]
     else:
@@ -77,20 +77,20 @@ def get_array_from_file(file):
 
 
 def image_to_csv(image, format_string=None):
-    stream = StringIO()
+    stream = _StringIO()
     if format_string is not None:
-        np.savetxt(stream, image, fmt=format_string, delimiter=",")
+        _np.savetxt(stream, image, fmt=format_string, delimiter=",")
     else:
-        np.savetxt(stream, image, delimiter=",")
+        _np.savetxt(stream, image, delimiter=",")
     return stream.getvalue()
 
 
 def insert_padding(image, new_size=512):
     shape_x, shape_y = image.shape
     if shape_x < new_size:
-        image = np.pad(image, ((0, new_size - shape_x), (0, 0)), 'constant')
+        image = _np.pad(image, ((0, new_size - shape_x), (0, 0)), 'constant')
     if shape_y < new_size:
-        image = np.pad(image, ((0, 0), (0, new_size-shape_y)), 'constant')
+        image = _np.pad(image, ((0, 0), (0, new_size - shape_y)), 'constant')
     return image
 
 

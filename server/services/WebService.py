@@ -4,6 +4,8 @@ from flask import send_file
 
 
 class WebService:
+    """Super class for WebServices.
+    """
     def __init__(self, user_service):
         self.user_service = user_service
 

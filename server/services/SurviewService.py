@@ -4,7 +4,7 @@ from server import *
 
 
 class SurviewService(WebService):
-    """Handles REST routes for the surview image of a UserSession.
+    """Handles REST routes for the surview image.
     """
     def __init__(self, user_service):
         super().__init__(user_service)

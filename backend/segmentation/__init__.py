@@ -1,1 +1,1 @@
-from segmentation import perform_segmentation
+from .segmentation import perform_segmentation

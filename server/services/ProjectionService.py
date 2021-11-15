@@ -4,7 +4,7 @@ from server import *
 
 
 class ProjectionService(WebService):
-    """Handles REST routes for the projection image of a UserSession.
+    """Handles REST routes for the projection image.
     """
     def __init__(self, user_service):
         super().__init__(user_service)

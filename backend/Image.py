@@ -2,7 +2,7 @@ from backend import *
 
 
 class Image:
-    """Loads and manages the image.
+    """Loads and manages the image as array.
     """
     def __init__(self, file, window=None):
         self.full_image = get_array_from_file(file)

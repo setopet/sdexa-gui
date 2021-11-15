@@ -3,7 +3,7 @@ from backend import *
 
 
 class Surview(Image):
-    """Loads and manages the surview image.
+    """Loads and manages the surview image as array.
     """
     def __init__(self, file, window=None):
         super().__init__(file, window)
