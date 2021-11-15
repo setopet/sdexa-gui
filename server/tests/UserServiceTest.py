@@ -22,4 +22,3 @@ class UserServiceTest(unittest.TestCase):
         session.start_date = datetime.now() - timedelta(days=2)
         user_service.get_user_session({})
         self.assertNotEqual(user_service.get_user_session({'user_id': session.user_id}), session)
-
