@@ -1,6 +1,5 @@
 class UserSession:
-    """Saves and modifies the state of the application for an user.
-    """
+    """Saves and modifies the state of the application for an user."""
     def __init__(self, user_id, start_date):
         self.user_id = user_id
         self.start_date = start_date

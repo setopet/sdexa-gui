@@ -1,11 +1,10 @@
-from flask import request
+from flask import request, session
 from backend.Surview import Surview
 from server import *
 
 
 class SurviewService(WebService):
-    """Handles REST routes for the surview image.
-    """
+    """Handles REST routes for the surview image."""
     def __init__(self, user_service):
         super().__init__(user_service)
         self.routes = [
@@ -21,7 +20,7 @@ class SurviewService(WebService):
         ]
 
     def get_surview(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not user_session.has_surview():
             return NOT_FOUND
         if user_session.show_surview_segmentation:
@@ -31,19 +30,19 @@ class SurviewService(WebService):
         return self.send_jpeg(image)
 
     def delete_surview(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         user_session.delete_surview()
         user_session.hide_projection_registration()
         return SUCCESS
 
     def get_full_surview(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not user_session.has_surview():
             return NOT_FOUND
         return self.send_jpeg(user_session.get_full_surview_image())
 
     def upload_surview(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not request.files.get('file'):
             return 'File is missing!', 400
         file = request.files['file']
@@ -56,14 +55,14 @@ class SurviewService(WebService):
         return SUCCESS
 
     def set_surview_position(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not user_session.has_surview():
             return ERROR
         user_session.set_surview_image_position(request.json['posX'], request.json['posY'])
         return SUCCESS
 
     def set_surview_window(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not user_session.has_surview():
             return ERROR
         minimum = self.string_to_float(request.json['min'])
@@ -72,21 +71,21 @@ class SurviewService(WebService):
         return SUCCESS
 
     def switch_surview_segmention_view(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not user_session.has_surview():
             return ERROR
         user_session.switch_surview_segmentation()
         return SUCCESS
 
     def download_surview_image(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not user_session.has_surview():
             return NOT_FOUND
         csv = user_session.get_surview_image_csv()
         return self.send_csv(csv)
 
     def download_surview_segmentation(self):
-        user_session = self.user_service.get_session()
+        user_session = self.user_service.get_user_session(session)
         if not user_session.has_surview():
             return NOT_FOUND
         csv = user_session.get_surview_segmentation_csv()

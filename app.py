@@ -4,8 +4,7 @@ from Config import config
 
 
 def register_routes(server):
-    """Registers routes of the server.
-    """
+    """Registers routes of the server."""
     for route in server.routes:
         app.add_url_rule(route.path, view_func=route.handle, methods=route.methods)
 

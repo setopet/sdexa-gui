@@ -2,8 +2,7 @@ from backend import *
 
 
 class Projection(Image):
-    """Loads and manages the projection image as array.
-    """
+    """Loads and manages the projection image as array."""
     def __init__(self, file, window=None):
         super().__init__(file, window)
         self.registration_result = None

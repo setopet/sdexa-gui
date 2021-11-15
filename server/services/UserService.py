@@ -1,23 +1,21 @@
 import uuid
 from datetime import datetime, timedelta
-from flask import session
 from server import *
 
 
 class UserService:
-    """Manages the sessions of all users for the server.
-    """
+    """Manages the sessions of all users for the server."""
     def __init__(self):
-        self.sessions = {}
+        self.user_sessions = {}
 
-    def get_session(self):
+    def get_user_session(self, flask_session):
         """Gets the UserSession belonging to the request.
         Creates a new one if the UserSession does not exist.
         :returns the UserSession.
         """
-        if 'user_id' not in session or self.sessions.get(session['user_id']) is None:
-            session['user_id'] = self.generate_new_session().user_id
-        return self.sessions[session['user_id']]
+        if 'user_id' not in flask_session or self.user_sessions.get(flask_session['user_id']) is None:
+            flask_session['user_id'] = self.generate_new_session().user_id
+        return self.user_sessions[flask_session['user_id']]
 
     def generate_new_session(self):
         """Generates a new UserSession.
@@ -27,12 +25,12 @@ class UserService:
         self.cleanup_old_sessions()
         user_id = uuid.uuid4().hex
         new_session = UserSession(user_id, datetime.now())
-        self.sessions[user_id] = new_session
+        self.user_sessions[user_id] = new_session
         return new_session
 
     def cleanup_old_sessions(self):
-        """Cleans up all sessions older than one day.
-        """
-        for key, user_session in self.sessions.items():
+        """Cleans up all sessions older than one day."""
+        sessions = list(self.user_sessions.items())
+        for key, user_session in sessions:
             if user_session.get_start_date() < (datetime.now() - timedelta(days=1)):
-                self.sessions.pop(key)
+                self.user_sessions.pop(key)
