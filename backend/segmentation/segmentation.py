@@ -8,6 +8,7 @@ saved_models = {}
 
 def perform_segmentation(image, model_checkpoint_path):
     """Uses the pretrained pytorch model for segmentation of the image.
+    :returns an array of zeros and ones, where the ones indicate segments
     """
     if saved_models.get(model_checkpoint_path) is None:
         saved_models[model_checkpoint_path] = BaseModel.load_from_checkpoint(model_checkpoint_path)
