@@ -69,7 +69,7 @@ export function Controller(httpService, modalService, fileService, alertService)
         const title =
             "Move the rectangle by clicking on the surview image to select the area for segmenation. " +
             "Click the OK button when you are finished.";
-        return modalService.openFullscreen(title,
+        return modalService.open(title,
             () => putImagePosition(baseUrl + "surview/position"),
             () => vm.deleteImage("surview"),
             putImageWindow("surview")
@@ -80,7 +80,7 @@ export function Controller(httpService, modalService, fileService, alertService)
         const title =
             "Move the rectangle by clicking on the projection image to select the area for registration. " +
             "Click the OK button when you are finished.";
-        return modalService.openFullscreen(title,
+        return modalService.open(title,
             () => putImagePosition(baseUrl + "projection/position"),
             () => vm.deleteImage("projection"),
             putImageWindow("projection")
