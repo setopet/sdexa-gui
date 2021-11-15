@@ -4,6 +4,8 @@ from backend.registration.registration import perform_registration
 
 
 class Projection(Image):
+    """Loads and manages the projection.
+    """
     def __init__(self, file, window=None):
         super().__init__(file, window)
         self.registration_result = None

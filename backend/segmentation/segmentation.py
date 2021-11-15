@@ -7,10 +7,13 @@ saved_models = {}
 
 
 def perform_segmentation(image, model_checkpoint_path):
+    """Uses the pretrained pytorch model for segmentation of the image.
+    """
     if saved_models.get(model_checkpoint_path) is None:
         saved_models[model_checkpoint_path] = BaseModel.load_from_checkpoint(model_checkpoint_path)
     model = saved_models.get(model_checkpoint_path)
-    model.float()  # necessary, because pytorch expects type 'double' otherwise
-    tensor = model(transforms.ToTensor()(image)[None, ...])  # pytorch expects a batch of data, so a dimension is added
-    array = tensor.detach().numpy().squeeze().astype(int)  # TODO: Conversion seems to generate negative numbers
-    return np.where(array > 0, np.ones(array.shape), np.zeros(array.shape))
+    model.float()
+    input_tensor = transforms.ToTensor()(image)[None, ...]  # pytorch expects a batch of data
+    output_tensor = model.forward(input_tensor)
+    result = output_tensor.detach().numpy().squeeze().astype(int)
+    return np.where(result > 0, np.ones(result.shape), np.zeros(result.shape))

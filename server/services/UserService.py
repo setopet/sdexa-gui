@@ -5,14 +5,14 @@ from server.UserSession import UserSession
 
 
 class UserService:
-    """Manage UserSessions using flask sessions.
+    """Manages UserSessions.
     """
     def __init__(self):
         self.sessions = {}
 
     def get_session(self) -> UserSession:
         """Gets the UserSession belonging to the request.
-        If no UserSession exists creates a new one and set the user_id of the flask session.
+        Creates a new one if the UserSession does not exist.
         :returns the UserSession.
         """
         if 'user_id' not in session or self.sessions.get(session['user_id']) is None:
@@ -20,7 +20,7 @@ class UserService:
         return self.sessions[session['user_id']]
 
     def generate_new_session(self) -> UserSession:
-        """Generates a new UserSession with unique user_id.
+        """Generates a new UserSession.
         Important: Cleans up all sessions older than one day in order to avoid running out of memory.
         :returns the created UserSession
         """

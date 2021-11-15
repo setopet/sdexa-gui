@@ -10,7 +10,7 @@ app = Flask(__name__,
 
 
 def init_routes(server):
-    """Register all routes.
+    """Registers all routes of the server.
     """
     for route in server.routes:
         app.add_url_rule(route.path, view_func=route.handle, methods=route.methods)

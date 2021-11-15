@@ -2,7 +2,7 @@ from backend.processing import get_array_from_file, insert_padding, crop_image, 
 
 
 class Image:
-    """Loads and manages an image.
+    """Loads and manages the image.
     """
     def __init__(self, file, window=None):
         self.full_image = get_array_from_file(file)

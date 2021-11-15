@@ -16,4 +16,4 @@ class BaseModel(pytorch_lightning.LightningModule):
     def forward(self, image):
         """Apply the model to the image.
         """
-        return self.model(image.float())  # .float() is necessary, because pytorch expects type 'double' otherwise
+        return self.model(image.float())

@@ -5,6 +5,8 @@ from backend.segmentation.segmentation import perform_segmentation
 
 
 class Surview(Image):
+    """Loads and manages the surview.
+    """
     def __init__(self, file, window=None):
         super().__init__(file, window)
         self.segmentation = None
