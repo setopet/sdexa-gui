@@ -1,9 +1,6 @@
 from flask import render_template
 from Config import CONFIG
-from server.Route import Route
-from server.services.SurviewService import SurviewService
-from server.services.ProjectionService import ProjectionService
-from server.services.UserService import UserService
+from server import *
 
 
 class Server:

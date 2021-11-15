@@ -1,8 +1,6 @@
 from flask import request
 from backend.Surview import Surview
-from server.Route import Route
-from server.api import NOT_FOUND, ERROR, SUCCESS
-from server.services.WebService import WebService
+from server import *
 
 
 class SurviewService(WebService):

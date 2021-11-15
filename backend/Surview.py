@@ -1,11 +1,9 @@
 from Config import CONFIG
-from backend.Image import Image
-from backend.processing import to_uint8, image_to_csv, overlay_with_mask
-from backend.segmentation.segmentation import perform_segmentation
+from backend import *
 
 
 class Surview(Image):
-    """Loads and manages the surview.
+    """Loads and manages the surview image.
     """
     def __init__(self, file, window=None):
         super().__init__(file, window)

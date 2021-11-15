@@ -1,10 +1,8 @@
-from backend.Image import Image
-from backend.processing import create_mask, overlay_with_mask, image_to_csv
-from backend.registration.registration import perform_registration
+from backend import *
 
 
 class Projection(Image):
-    """Loads and manages the projection.
+    """Loads and manages the projection image.
     """
     def __init__(self, file, window=None):
         super().__init__(file, window)

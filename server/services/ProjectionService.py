@@ -1,8 +1,6 @@
 from flask import request
 from backend.Projection import Projection
-from server.services.WebService import WebService
-from server.Route import Route
-from server.api import NOT_FOUND, ERROR, SUCCESS
+from server import *
 
 
 class ProjectionService(WebService):

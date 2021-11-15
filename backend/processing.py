@@ -1,8 +1,7 @@
 import os
 import numpy as np
 from io import StringIO
-from PIL import Image
-from numpy import asarray
+from PIL import Image as PILImage
 
 
 def to_uint8(image):
@@ -64,8 +63,8 @@ def get_array_from_file(file):
     elif extension == ".npy":
         array = np.load(file)
     elif extension == ".jpg" or extension == ".jpeg" or extension == ".png":
-        image = Image.open(file)
-        array = asarray(image)
+        image = PILImage.open(file)
+        array = np.asarray(image)
         if array.ndim == 3:
             array = array[:, :, 0]
     else:
