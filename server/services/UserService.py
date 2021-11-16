@@ -5,17 +5,19 @@ from server import *
 
 class UserService:
     """Manages the sessions of all users for the server."""
-    def __init__(self):
+    def __init__(self, session_context):
         self.user_sessions = {}
+        self.session_context = session_context
 
-    def get_user_session(self, flask_session):
+    def get_user_session(self):
         """Gets the UserSession belonging to the request.
         Creates a new one if the UserSession does not exist.
         :returns the UserSession.
         """
-        if 'user_id' not in flask_session or self.user_sessions.get(flask_session['user_id']) is None:
-            flask_session['user_id'] = self.generate_new_session().user_id
-        return self.user_sessions[flask_session['user_id']]
+        session = self.session_context.get()
+        if 'user_id' not in session or self.user_sessions.get(session['user_id']) is None:
+            session['user_id'] = self.generate_new_session().user_id
+        return self.user_sessions[session['user_id']]
 
     def generate_new_session(self):
         """Generates a new UserSession.

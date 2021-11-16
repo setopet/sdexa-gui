@@ -1,3 +1,6 @@
+from backend import Projection, Surview
+
+
 class UserSession:
     """Saves and modifies the state of the application for an user."""
     def __init__(self, user_id, start_date):
@@ -11,8 +14,8 @@ class UserSession:
     def get_start_date(self):
         return self.start_date
 
-    def set_surview(self, surview):
-        self.surview = surview
+    def set_surview(self, file):
+        self.surview = Surview(file)
 
     def has_surview(self):
         return self.surview is not None
@@ -57,8 +60,8 @@ class UserSession:
             return None
         return self.surview.get_segmentation_csv()
 
-    def set_projection(self, ct_projection):
-        self.projection = ct_projection
+    def set_projection(self, file):
+        self.projection = Projection(file)
 
     def has_projection(self):
         return self.projection is not None

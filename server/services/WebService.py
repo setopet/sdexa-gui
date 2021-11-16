@@ -5,7 +5,8 @@ from flask import send_file
 
 class WebService:
     """Super class for WebServices. Provides useful methods for request handling."""
-    def __init__(self, user_service):
+    def __init__(self, request_context, user_service):
+        self.request_context = request_context
         self.user_service = user_service
 
     @staticmethod

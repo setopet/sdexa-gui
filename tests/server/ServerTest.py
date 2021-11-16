@@ -4,8 +4,9 @@ from tests.server.test_app import get_test_app
 
 
 class ServerTest(unittest.TestCase):
-    def setUp(self):
-        self.app = get_test_app()
+    @classmethod
+    def setUpClass(cls):
+        cls.app = get_test_app()
 
     def test_returns_home_page(self):
         server = Server()

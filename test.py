@@ -8,7 +8,7 @@ def load_tests(module):
 
 
 def run_tests(test_module):
-    print("Running tests for " + str(test_module))
+    print("RUNNING TESTS FOR " + str(test_module))
     print("----------------------------------------------------------------------")
     TextTestRunner(verbosity=2, stream=stdout).run(load_tests(test_module))
     print("\n")
