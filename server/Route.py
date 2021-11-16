@@ -2,11 +2,9 @@ class Route:
     """Represents a REST route.
     :param path: path of the route.
     :param handle: the handler function of the route
-    :param methods: HTTP methods associated with the route. Takes "GET" as default if not specified.
+    :param methods: HTTP methods associated with the route.
     """
-    def __init__(self, path, handle, methods=None):
-        if methods is None:
-            methods = ["GET"]
+    def __init__(self, path, handle, methods):
         self.path = path
         self.handle = handle
         self.methods = methods

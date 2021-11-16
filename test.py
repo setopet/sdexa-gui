@@ -1,19 +1,16 @@
 from sys import stdout
 from unittest import TestLoader, TextTestRunner
-import backend
-import server
+from tests import *
 
 
 def load_tests(module):
     return TestLoader().loadTestsFromModule(module)
 
 
-def run_tests(module):
-    test_runner = TextTestRunner(verbosity=2, stream=stdout)
-    tests = load_tests(module)
-    print("Running tests for " + str(module))
+def run_tests(test_module):
+    print("Running tests for " + str(test_module))
     print("----------------------------------------------------------------------")
-    test_runner.run(tests)
+    TextTestRunner(verbosity=2, stream=stdout).run(load_tests(test_module))
     print("\n")
 
 
