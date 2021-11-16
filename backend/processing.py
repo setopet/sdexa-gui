@@ -8,10 +8,6 @@ def to_uint8(image):
     return image.astype('uint8')
 
 
-def to_normalized_uint8(image):
-    return to_uint8(normalize_array_for_uint8(image))
-
-
 def to_rgb(image):
     return _np.stack([image, image, image]).transpose((1, 2, 0))
 
@@ -28,6 +24,9 @@ def to_normalized_uint8_rgb(image, window=None):
 
 def normalize_array_for_uint8(image):
     result = image - image.min()
+    maximum = result.max()
+    if maximum == 0:
+        return result
     return result * (255 / result.max())
 
 

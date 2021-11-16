@@ -1,4 +1,4 @@
-from Config import CONFIG
+from config import CONFIG
 from backend import *
 
 

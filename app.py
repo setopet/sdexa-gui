@@ -1,6 +1,6 @@
 from server.Server import Server
 from flask import Flask
-from Config import config
+from config import load_dev_config
 
 
 def register_routes(server):
@@ -12,7 +12,7 @@ app = Flask(__name__,
             static_url_path='',
             static_folder='frontend/static',
             template_folder='frontend/templates')
-config(app)
+load_dev_config(app)
 register_routes(Server())
 
 if __name__ == "__main__":

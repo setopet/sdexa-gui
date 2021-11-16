@@ -1,5 +1,5 @@
 from flask import render_template, session
-from Config import CONFIG
+from config import CONFIG
 from server import *
 
 

@@ -9,7 +9,7 @@ dev_config = {
 
 
 #  TODO
-def config(app):
+def load_dev_config(app):
     for key, value in dev_config.items():
         CONFIG[key] = value
     app.secret_key = CONFIG['SECRET_KEY']
