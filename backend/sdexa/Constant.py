@@ -1,8 +1,13 @@
 class Constant:
-    def __init__(self, value, unit=None, info=None):
+    def __init__(self, name, value, unit=None, description=None):
+        self.__name = name
         self.__value = value
         self.__unit = unit
-        self.__info = info
+        self.__description = description
+
+    @property
+    def name(self):
+        return self.__name
 
     @property
     def value(self):
@@ -13,8 +18,8 @@ class Constant:
         return self.__unit
 
     @property
-    def info(self):
-        return self.__info
+    def description(self):
+        return self.__description
 
     def __str__(self):
-        return f"CONSTANT value: {self.value}, unit: {self.unit}, note: {self.info}"
+        return f"CONSTANT value: {self.value}, unit: {self.unit}, description: {self.description}"
