@@ -1,5 +1,4 @@
 import numpy as np
-from backend import normalize_array
 from backend.sdexa.Result import Result
 from constants import *
 
@@ -13,11 +12,13 @@ def calibrate_bone_density_std(bone_density_std):
 
 
 def background_correction(image):
+    """To be done"""
     return image
 
 
 def calculate_epl(image, mu):
-    return image / (prepfactor.value * mu.value) * 0.1
+    mm_to_cm_inverse = 1/10  # unit correction
+    return image / (prefactor.value * mu.value) * mm_to_cm_inverse
 
 
 def calculate_line_integral_water(mu_water_p, mu_water_c, photo_epl, compton_epl):
@@ -28,15 +29,7 @@ def calculate_line_integral_soft_tissue(mu_soft_tissue_p, mu_soft_tissue_c, phot
     return mu_soft_tissue_p.value * st_density.value * photo_epl + mu_soft_tissue_c * st_density.value * compton_epl
 
 
-# TODO: Entfernen, wenn man das nicht braucht
-def get_marked_region(bone, mask_corrected, region_of_interest):
-    x0, x, y0, y = region_of_interest
-    array = np.zeros_like(mask_corrected)  # problem with different regions, vertebral bodies should be differentiated.
-    array[x0:x, y0:y] = np.max(bone)
-    return normalize_array(bone + array, 1)
-
-
-def apply_mask(image, mask, scatter, region_of_interest):
+def calculate_bone_density(image, mask, scatter, region_of_interest):
     """ Find soft tissue region for better data precision.
     The mask is not only needed for the aBMD, but is also used for the soft tissue area here.
     The soft tissue area should contain only soft tissue.

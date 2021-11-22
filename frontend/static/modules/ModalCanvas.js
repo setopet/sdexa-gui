@@ -19,7 +19,7 @@ export function ModalCanvas(image) {
         const rectangle = this.selectionCanvas.getContext("2d");
         rectangle.beginPath();
         rectangle.lineWidth = this.lineWidth
-        rectangle.strokeStyle = 'red';
+        rectangle.strokeStyle = 'orange';
         rectangle.rect(posX+spacing, posY+spacing, width-this.lineWidth, height-this.lineWidth);
         rectangle.stroke();
         context.drawImage(this.selectionCanvas, 0, 0);
