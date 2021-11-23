@@ -1,9 +1,12 @@
 import {baseUrl} from "./config.js";
-import {ModalCanvas} from "./ModalCanvas.js";
+import {SelectionCanvas} from "./canvas/SelectionCanvas.js";
 import {LoadingAnimation} from "./LoadingAnimation.js";
+import {SelectionModal} from "./modal/SelectionModal.js";
+import {ResultModal} from "./modal/ResultModal.js";
+import {ResultCanvas} from "./canvas/ResultCanvas.js";
 
 /** Central control object, which is visible in the templates. **/
-export function Controller(httpService, modalService, fileService, alertService) {
+export function Controller(httpService, fileService, alertService) {
     const vm = this;
 
     vm.deleteImage = (route) => {
@@ -31,25 +34,7 @@ export function Controller(httpService, modalService, fileService, alertService)
             .then(() => getImage("surview"))
             .then(blob => initModalCanvas(blob, 50, 50))
             .then(animation.stop)
-            .then(() => {
-                modalService.defaultWindowFields("0", "2000");
-                modalService.defaultSelectionSizeFields("50", "50");
-                return modalService.open("Hello", {
-                    onFinish: () => {
-                        const region = {
-                            posX: vm.modalCanvas.posX,
-                            posY: vm.modalCanvas.posY,
-                            dx: vm.modalCanvas.selectionSizeX,
-                            dy: vm.modalCanvas.selectionSizeY
-                        }
-                        return httpService.put("surview/sdexa/soft-tissue-region", region)
-                            .then(reloadPage);
-                    },
-                    onAbort: reloadPage,
-                    onWindowChange: null, // TODO: putImage lädt danach das full image
-                    onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
-                });
-            })
+            .then(openFlexibleSelectionModal)
             .catch(error => {
                 animation.stop();
                 alertService.error(error);
@@ -57,7 +42,44 @@ export function Controller(httpService, modalService, fileService, alertService)
     }
 
     vm.clickCalculate = () => {
-        httpService.put("/surview/sdexa/calculation");
+        const animation = new LoadingAnimation("calculate-abmd-button");
+        httpService.put("/surview/sdexa/calculation")
+            .then(() => getImage("/surview/sdexa/bone-density-image"))
+            .then(blob => {
+                const resultCanvas = new ResultCanvas();
+                return resultCanvas.drawImage(blob);
+            })
+            .then(() => {
+                animation.stop();
+                return new ResultModal().open();
+            })
+            .catch(error => {
+                animation.stop();
+                alertService.error(error);
+            });
+    }
+
+    const openFlexibleSelectionModal = () => {
+        const selectionModal = new SelectionModal("Hello", {
+            onFinish: putSoftTissueRegion,
+            onAbort: reloadPage,
+            onWindowChange: null, // TODO: putImage lädt danach das full image
+            onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
+        });
+        selectionModal.defaultWindowFields("0", "2000");
+        selectionModal.defaultSelectionSizeFields("50", "50");
+        return selectionModal.open();
+    }
+
+    const putSoftTissueRegion = () => {
+        const region = {
+            posX: vm.modalCanvas.posX,
+            posY: vm.modalCanvas.posY,
+            dx: vm.modalCanvas.selectionSizeX,
+            dy: vm.modalCanvas.selectionSizeY
+        }
+        return httpService.put("surview/sdexa/soft-tissue-region", region)
+            .then(reloadPage);
     }
 
     const uploadImage = (file, imageName, modalTitle) => {
@@ -69,6 +91,7 @@ export function Controller(httpService, modalService, fileService, alertService)
             .then(() => openSelectionModal(imageName, modalTitle))
             .catch(error => {
                 animation.stop();
+                console.log(error);
                 alertService.error(error);
             });
     }
@@ -87,17 +110,18 @@ export function Controller(httpService, modalService, fileService, alertService)
     }
 
     const openSelectionModal = (imageName, title) => {
-        modalService.defaultSelectionSizeFields("512", "512");
-        modalService.defaultWindowFields("0", "2000");
-        return modalService.open(title, {
+        const selectionModal = new SelectionModal(title, {
             onFinish: () => putImagePosition(baseUrl + imageName + "/position"),
             onAbort: () => vm.deleteImage(imageName),
             onWindowChange: putImageWindow(imageName)
         });
+        selectionModal.defaultSelectionSizeFields("512", "512");
+        selectionModal.defaultWindowFields("0", "2000");
+        return selectionModal.open();
     }
 
     const initModalCanvas = (blob, selectionSizeX, selectionSizeY) =>  {
-        vm.modalCanvas = new ModalCanvas(blob, selectionSizeX, selectionSizeY);
+        vm.modalCanvas = new SelectionCanvas(blob, selectionSizeX, selectionSizeY);
         return vm.modalCanvas.init();
     }
 
