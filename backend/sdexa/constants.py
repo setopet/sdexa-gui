@@ -1,10 +1,12 @@
+""" Based on a script of Lorenz Birnbacher (lorenz.birnbacher@tum.de)
+    Credits to xraylib (https://github.com/tschoonj/xraylib) for some of the used constants"""
+
 from backend.sdexa.Constant import Constant
 
 prefactor = Constant("prefactor", 2954.6394, None, "Philips dual-layer CT prefactor")
 mu_p = Constant("mu_p", .001832764, None, "Philips dual-layer CT prefactor")
 mu_c = Constant("mu_c", 0.0173672, None, "Philips dual-layer CT prefactor")
 
-# Credits to xraylib (https://github.com/tschoonj/xraylib) for some of the used constants
 density_h2o = Constant("density_h2o", 0.992, "g/cm3")
 mu_water_50_p = Constant("mu_water_50_p", 2.725E-2, "cm2/g", "CS_Photo_CP('H2O',50)")
 mu_water_50_c = Constant("mu_water_50_c", 1.9948E-1, "cm2/g", "CS_Compt_CP('H2O',50)+CS_Rayl_CP('H2O',50)")
