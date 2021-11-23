@@ -1,8 +1,6 @@
 /** Replaces the inner HTML of its element with a loading animation.
  * @param id: id of the element. **/
 export function LoadingAnimation(id) {
-    'use strict';
-
     const getAnimationHtml = () => {
         return `
             <div class="spinner-border" role="status">

@@ -4,7 +4,6 @@ import {LoadingAnimation} from "./LoadingAnimation.js";
 
 /** Central control object, which is visible in the templates. **/
 export function Controller(httpService, modalService, fileService, alertService) {
-    'use strict';
     const vm = this;
 
     vm.deleteImage = (route) => {
@@ -25,27 +24,35 @@ export function Controller(httpService, modalService, fileService, alertService)
             .catch(alertService.error);
     }
 
-    vm.uploadSurview = (file) => {
-        const animation = new LoadingAnimation("surview-spinner");
-        httpService.uploadFile(file, baseUrl + "surview")
+    vm.uploadScatter = (file) => {
+        const animation = new LoadingAnimation("scatter-input-label");
+        httpService
+            .uploadFile(file, baseUrl + "surview/scatter")
             .then(() => getFullImage("surview/full"))
-            .then(initModalCanvas)
+            .then(blob => initModalCanvas(blob, 50, 50))
             .then(animation.stop)
-            .then(openSurviewModal)
+            .then(() => {
+                modalService.defaultWindowFields("0", "2000");
+                modalService.defaultSelectionSizeFields("50", "50");
+                return modalService.open("Hello", {
+                    onFinish: () => {},
+                    onWindowChange: putImageWindow("surview"),
+                    onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
+                });
+            })
             .catch(error => {
                 animation.stop();
                 alertService.error(error);
             });
     }
 
-    vm.uploadProjection = (file) => {
-        const animation = new LoadingAnimation("projection-spinner");
-        httpService
-            .uploadFile(file, baseUrl + "projection")
-            .then(() => getFullImage("projection/full"))
-            .then(initModalCanvas)
+    const uploadImage = (file, imageName, modalTitle) => {
+        const animation = new LoadingAnimation(imageName + "-spinner");
+        httpService.uploadFile(file, baseUrl + imageName)
+            .then(() => getFullImage(imageName + "/full"))
+            .then(blob => initModalCanvas(blob, 512, 512))
             .then(animation.stop)
-            .then(openProjectionModal)
+            .then(() => openSelectionModal(imageName, modalTitle))
             .catch(error => {
                 animation.stop();
                 alertService.error(error);
@@ -53,42 +60,30 @@ export function Controller(httpService, modalService, fileService, alertService)
     }
 
     const putImagePosition = (url) => {
-        const position = { 'posX': vm.modalCanvas.getX(), 'posY': vm.modalCanvas.getY() };
+        const position = { 'posX': vm.modalCanvas.posX, 'posY': vm.modalCanvas.posY };
         httpService.put(url, position)
             .then(reloadPage)
             .catch(alertService.error);
     }
 
-    const putImageWindow = (route) => (window) => {
-        httpService.put(baseUrl + route + "/window", window)
+    const putImageWindow = (route) => (windowMin, windowMax) => {
+        httpService.put(baseUrl + route + "/window", { min: windowMin, max: windowMax })
             .then(() => getFullImage(route + "/full"))
-            .then(vm.modalCanvas.setImage)
+            .then(vm.modalCanvas.updateImage)
     }
 
-    const openSurviewModal = () => {
-        const title =
-            "Move the rectangle by clicking on the surview image to select the area for segmenation. " +
-            "Click the OK button when you are finished.";
-        return modalService.open(title,
-            () => putImagePosition(baseUrl + "surview/position"),
-            () => vm.deleteImage("surview"),
-            putImageWindow("surview")
-        );
+    const openSelectionModal = (imageName, title) => {
+        modalService.defaultSelectionSizeFields("512", "512");
+        modalService.defaultWindowFields("0", "2000");
+        return modalService.open(title, {
+            onFinish: () => putImagePosition(baseUrl + imageName + "/position"),
+            onAbort: () => vm.deleteImage(imageName),
+            onWindowChange: putImageWindow(imageName)
+        });
     }
 
-    const openProjectionModal = () => {
-        const title =
-            "Move the rectangle by clicking on the projection image to select the area for registration. " +
-            "Click the OK button when you are finished.";
-        return modalService.open(title,
-            () => putImagePosition(baseUrl + "projection/position"),
-            () => vm.deleteImage("projection"),
-            putImageWindow("projection")
-        );
-    }
-
-    const initModalCanvas = blob =>  {
-        vm.modalCanvas = new ModalCanvas(blob);
+    const initModalCanvas = (blob, selectionSizeX, selectionSizeY) =>  {
+        vm.modalCanvas = new ModalCanvas(blob, selectionSizeX, selectionSizeY);
         return vm.modalCanvas.init();
     }
 
@@ -103,10 +98,17 @@ export function Controller(httpService, modalService, fileService, alertService)
     }
 
     const init = () => {
-        fileService.watchFileInput("surview-input", vm.uploadSurview);
-        fileService.watchFileDrop("surview-drop", vm.uploadSurview);
-        fileService.watchFileInput("projection-input", vm.uploadProjection);
-        fileService.watchFileDrop("projection-drop", vm.uploadProjection);
+        const surviewUploadCallback = file => uploadImage(file, "surview",
+            "Move the rectangle by clicking on the surview image to select the area for segmenation. " +
+            "Click the OK button when you are finished.");
+        const projectionUploadCallback = file => uploadImage(file, "projection",
+            "Move the rectangle by clicking on the projection image to select the area for registration. " +
+            "Click the OK button when you are finished.");
+        fileService.watchFileInput("surview-input", surviewUploadCallback);
+        fileService.watchFileDrop("surview-drop", surviewUploadCallback);
+        fileService.watchFileInput("projection-input", projectionUploadCallback);
+        fileService.watchFileDrop("projection-drop", projectionUploadCallback);
+        fileService.watchFileInput("scatter-input", vm.uploadScatter);
     }
 
     init();

@@ -4,7 +4,7 @@ from flask import send_file
 
 
 class WebService:
-    """Super class for WebServices. Provides useful methods for request handling."""
+    """Super class for WebServices. Provides methods for request handling."""
     def __init__(self, request_context, user_service):
         self.request_context = request_context
         self.user_service = user_service
@@ -20,6 +20,12 @@ class WebService:
         Image.fromarray(image).save(stream, format='JPEG')
         stream.seek(0)
         return send_file(stream, mimetype='image/jpeg')
+
+    @staticmethod
+    def get_file(request):
+        if not request.files.get('file'):
+            return 'File is missing!', 400
+        return request.files['file']
 
     @staticmethod
     def string_to_float(string):

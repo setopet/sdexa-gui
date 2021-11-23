@@ -1,17 +1,62 @@
-import {Canvas} from "./Canvas.js";
-
 /** Draws a rectangle representing the selected area when the user clicks at the canvas. **/
-export function ModalCanvas(image) {
-    'use strict';
-    Canvas.call(this, "modal-canvas"); // Inheritance from Canvas
-
+export function ModalCanvas(image, selectionSizeX, selectionSizeY) {
+    this.minimumCanvasSize = 530;
+    this.canvas = document.getElementById("modal-canvas");
     this.selectionCanvas = document.createElement('canvas');
     this.image = image;
     this.lineWidth = 6; // take an even number
-    let posX = 0;
-    let posY = 0;
-    this.getX = () => posX;
-    this.getY = () => posY;
+    this.selectionSizeX = selectionSizeX;
+    this.selectionSizeY = selectionSizeY;
+    this.posX = 0;
+    this.posY = 0;
+
+    this.updateImage = blob => {
+        this.image = blob;
+        return redraw();
+    }
+
+    this.updateSelectionSize = (sizeX, sizeY) => {
+        this.selectionSizeX = sizeX;
+        this.selectionSizeY = sizeY;
+        return redraw();
+    }
+
+    this.canvas.onmousedown = event => {
+        this.posX = event.offsetX;
+        this.posY = event.offsetY;
+        return redraw();
+    }
+
+    const adaptSize = element => {
+        if(element.width < this.minimumCanvasSize) {
+                this.width = this.minimumCanvasSize;
+                this.canvas.width = this.minimumCanvasSize;
+        } else {
+            this.width = element.width;
+            this.canvas.width = element.width;
+        }
+
+        if (element.height < this.minimumCanvasSize) {
+            this.height = this.minimumCanvasSize;
+            this.canvas.height = this.minimumCanvasSize;
+        } else {
+            this.height = element.height;
+            this.canvas.height = element.height;
+        }
+    }
+
+    const drawImage = image => {
+        const element = new Image();
+        element.src = URL.createObjectURL(image);
+        const context = this.canvas.getContext("2d");
+        return new Promise(resolve => {
+            element.onload = event => {
+                adaptSize(element);
+                context.drawImage(event.target, 0, 0);
+                resolve(this);
+            };
+        });
+    }
 
     const drawRectangle = (width, height, posX, posY) => {
         const spacing = this.lineWidth/2;
@@ -36,28 +81,17 @@ export function ModalCanvas(image) {
         return Promise.resolve(this);
     }
 
-    this.setImage = blob => {
-        this.image = blob;
-        return redraw();
-    }
-
     const redraw = () => {
         return erase()
-            .then(() => this.drawImage(this.image))
-            .then(() => drawRectangle(512, 512, posX, posY))
-    };
-
-    this.canvas.onmousedown = event => {
-        posX = event.offsetX;
-        posY = event.offsetY;
-        return redraw();
+            .then(() => drawImage(this.image))
+            .then(() => drawRectangle(this.selectionSizeX, this.selectionSizeY, this.posX, this.posY))
     };
 
     this.init = () => {
-        return this.drawImage(this.image).then(() => {
+        return drawImage(this.image).then(() => {
             this.selectionCanvas.width = this.width;
             this.selectionCanvas.height = this.height;
-            return drawRectangle(512, 512, posX, posY);
+            return drawRectangle(this.selectionSizeX, this.selectionSizeY, this.posX, this.posY);
             }
         );
     }

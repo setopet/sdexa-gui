@@ -1,1 +1,1 @@
-from calculation import calculate_bone_density
+from backend.sdexa.calculation import calculate_bone_density

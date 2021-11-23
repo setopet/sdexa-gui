@@ -1,9 +1,9 @@
 /** Watches inputs and drop areas for new files. **/
 export function FileService() {
-    'use strict';
-
     this.watchFileInput = (field_id, callback) => {
         const inputField = getField(field_id);
+        if (inputField == null)
+            return;
         inputField.addEventListener("change", () => {
             callback(inputField.files[0]);
         })

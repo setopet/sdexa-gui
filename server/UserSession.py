@@ -20,6 +20,9 @@ class UserSession:
     def has_surview(self):
         return self.surview is not None
 
+    def has_scatter(self):
+        return self.has_surview() and self.surview.scatter is not None
+
     def get_surview_image(self):
         if not self.has_surview():
             return None
@@ -44,6 +47,9 @@ class UserSession:
 
     def set_surview_window(self, window):
         self.surview.set_window(window)
+
+    def set_surview_scatter_image(self, file):
+        self.surview.set_scatter(file)
 
     def get_surview_segmentation_overlay_image(self):
         if not self.has_surview():

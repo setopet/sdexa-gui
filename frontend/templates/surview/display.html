@@ -4,6 +4,8 @@
             <img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}"
                  alt="Error: image could not get loaded">
         </div>
+
+        
     {% endif %}
 
     <div {{ "hidden" if surview_present }}>
@@ -15,15 +17,25 @@
 </div>
 {% if surview_present %}
     <div>
-        <button class="btn-outline-dark"
-                onclick="$ctrl.downloadImage('surview/download', 'surview.csv')">
-            Download Image
-        </button>
-        <button class="btn-outline-dark"
-                onclick="$ctrl.downloadImage('surview/segmentation/download', 'segmentation.csv')">
-            Download Segmentation
-        </button>
-        <button class="btn-outline-dark" onclick="$ctrl.switchImageView('surview/segmentation')">Show/Hide Segmentation</button>
+        <div >
+           <label style="width: 512px; height: 38px"
+                  class="btn btn-success d-flex justify-content-center align-items-center"
+                  id="scatter-input-label" for="scatter-input">
+               Upload Scatter
+           </label>
+            <input style="display:none;" type="file"  id="scatter-input">
+        </div>
+        <div>
+           <button class="btn-outline-dark"
+                        onclick="$ctrl.downloadImage('surview/download', 'surview.csv')">
+                    Download Image
+                </button>
+                <button class="btn-outline-dark"
+                        onclick="$ctrl.downloadImage('surview/segmentation/download', 'segmentation.csv')">
+                    Download Segmentation
+                </button>
+                <button class="btn-outline-dark" onclick="$ctrl.switchImageView('surview/segmentation')">Show/Hide Segmentation</button>
+        </div>
     </div>
 {% endif %}
 

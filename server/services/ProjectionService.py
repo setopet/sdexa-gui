@@ -43,9 +43,7 @@ class ProjectionService(WebService):
     def upload_projection(self):
         user_session = self.user_service.get_user_session()
         request = self.request_context.get()
-        if not request.files.get('file'):
-            return 'File is missing!', 400
-        file = request.files['file']
+        file = self.get_file(request)
         try:
             user_session.set_projection(file)
         except Exception as exception:

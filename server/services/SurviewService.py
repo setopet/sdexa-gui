@@ -14,7 +14,8 @@ class SurviewService(WebService):
             Route('/surview/window', self.set_surview_window, ["PUT"]),
             Route('/surview/download', self.download_surview_image, ["GET"]),
             Route('/surview/segmentation', self.switch_surview_segmention_view, ["PUT"]),
-            Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"])
+            Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"]),
+            Route('/surview/scatter', self.upload_scatter, ["POST"])
         ]
 
     def get_surview(self):
@@ -42,14 +43,24 @@ class SurviewService(WebService):
     def upload_surview(self):
         user_session = self.user_service.get_user_session()
         request = self.request_context.get()
-        if not request.files.get('file'):
-            return 'File is missing!', 400
-        file = request.files['file']
+        file = self.get_file(request)
         try:
             user_session.set_surview(file)
         except Exception as exception:
             return str(exception), 400
         user_session.hide_surview_segmentation()
+        return SUCCESS
+
+    def upload_scatter(self):
+        user_session = self.user_service.get_user_session()
+        request = self.request_context.get()
+        if not user_session.has_surview:
+            return ERROR
+        file = self.get_file(request)
+        try:
+            user_session.set_surview_scatter_image(file)
+        except Exception as exception:
+            return str(exception), 400
         return SUCCESS
 
     def set_surview_position(self):

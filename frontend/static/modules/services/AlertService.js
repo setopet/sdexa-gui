@@ -1,7 +1,5 @@
 /** Shows error messages inside the alert list. **/
 export function AlertService() {
-    'use strict';
-
     const getAlertHtml = message => {
         return `
             <div class="alert alert-danger" role="alert">

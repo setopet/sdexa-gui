@@ -1,6 +1,6 @@
 import numpy as np
 from backend.sdexa.Result import Result
-from constants import *
+from backend.sdexa.constants import *
 
 
 def calibrate_bone_density_mean(bone_density_mean):

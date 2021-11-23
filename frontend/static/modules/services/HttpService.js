@@ -1,8 +1,6 @@
 /** Makes HTTP requests.
  * Status codes from the server indicating errors (e.g. 404) will lead to rejected promises. **/
 export function HttpService() {
-    'use strict';
-
     this.get = url => {
         return request(url);
     }
