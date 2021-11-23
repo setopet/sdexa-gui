@@ -8,18 +8,31 @@ def to_uint8(image):
     return image.astype('uint8')
 
 
+def to_normalized_image(image, window):
+    image = set_window(image, window)
+    return normalize_array(image, 255)
+
+
 def to_rgb(image):
     return _np.stack([image, image, image]).transpose((1, 2, 0))
 
 
-def to_normalized_rgb(image, window=None):
-    image = set_window(image, window)
-    image = normalize_array(image, 255)
+def to_red_rgb(image):
+    return _np.stack([image, _np.zeros(image.shape), _np.zeros(image.shape)]).transpose((1, 2, 0))
+
+
+def to_normalized_rgb(image, window):
+    image = to_normalized_image(image, window)
     return to_rgb(image)
 
 
 def to_normalized_uint8_rgb(image, window=None):
     return to_uint8(to_normalized_rgb(image, window))
+
+
+def to_normalized_red_uint8_rgb(image, window=None):
+    image = to_normalized_image(image, window)
+    return to_uint8(to_red_rgb(image))
 
 
 def normalize_array(image, max_value):

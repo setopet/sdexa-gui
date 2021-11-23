@@ -9,6 +9,13 @@ class WebService:
         self.request_context = request_context
         self.user_service = user_service
 
+    def get_json_values(self, *args):
+        json_values = []
+        json = self.request_context.get().json
+        for arg in args:
+            json_values.append(json[arg])
+        return json_values
+
     @staticmethod
     def send_csv(csv):
         # Flask accepts only byte-encoded File-like objects for "send_file"
@@ -31,6 +38,13 @@ class WebService:
     def string_to_float(string):
         try:
             return float(string)
+        except:
+            return None
+
+    @staticmethod
+    def string_to_int(string):
+        try:
+            return int(string)
         except:
             return None
 

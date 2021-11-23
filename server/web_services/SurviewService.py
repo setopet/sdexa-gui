@@ -1,6 +1,7 @@
 from server import *
 
 
+# TODO: Verallgemeinern zu 'ImageService'
 class SurviewService(WebService):
     """Handles REST routes for the surview image."""
     def __init__(self, request_context, user_service):
@@ -12,10 +13,7 @@ class SurviewService(WebService):
             Route('/surview/full', self.get_full_surview, ["GET"]),
             Route('/surview/position', self.set_surview_position, ["PUT"]),
             Route('/surview/window', self.set_surview_window, ["PUT"]),
-            Route('/surview/download', self.download_surview_image, ["GET"]),
-            Route('/surview/segmentation', self.switch_surview_segmention_view, ["PUT"]),
-            Route('/surview/segmentation/download', self.download_surview_segmentation, ["GET"]),
-            Route('/surview/scatter', self.upload_scatter, ["POST"])
+            Route('/surview/download', self.download_surview_image, ["GET"])
         ]
 
     def get_surview(self):
@@ -51,18 +49,6 @@ class SurviewService(WebService):
         user_session.hide_surview_segmentation()
         return SUCCESS
 
-    def upload_scatter(self):
-        user_session = self.user_service.get_user_session()
-        request = self.request_context.get()
-        if not user_session.has_surview:
-            return ERROR
-        file = self.get_file(request)
-        try:
-            user_session.set_surview_scatter_image(file)
-        except Exception as exception:
-            return str(exception), 400
-        return SUCCESS
-
     def set_surview_position(self):
         user_session = self.user_service.get_user_session()
         if not user_session.has_surview():
@@ -81,23 +67,9 @@ class SurviewService(WebService):
         user_session.set_surview_window((minimum, maximum))
         return SUCCESS
 
-    def switch_surview_segmention_view(self):
-        user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
-            return ERROR
-        user_session.switch_surview_segmentation()
-        return SUCCESS
-
     def download_surview_image(self):
         user_session = self.user_service.get_user_session()
         if not user_session.has_surview():
             return NOT_FOUND
         csv = user_session.get_surview_image_csv()
-        return self.send_csv(csv)
-
-    def download_surview_segmentation(self):
-        user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
-            return NOT_FOUND
-        csv = user_session.get_surview_segmentation_csv()
         return self.send_csv(csv)

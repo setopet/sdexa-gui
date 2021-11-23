@@ -4,11 +4,13 @@ from backend.sdexa.constants import *
 
 
 def calibrate_bone_density_mean(bone_density_mean):
-    return bone_density_mean * bone_density_calibration_factor_a + bone_density_calibration_factor_b
+    """Please check the description for the used constants"""
+    return bone_density_mean * bone_density_calibration_factor_a.value + bone_density_calibration_factor_b.value
 
 
 def calibrate_bone_density_std(bone_density_std):
-    return bone_density_std * bone_density_calibration_factor_a
+    """Please check the description for the used constants"""
+    return bone_density_std * bone_density_calibration_factor_a.value
 
 
 def background_correction(image):
@@ -26,7 +28,8 @@ def calculate_line_integral_water(mu_water_p, mu_water_c, photo_epl, compton_epl
 
 
 def calculate_line_integral_soft_tissue(mu_soft_tissue_p, mu_soft_tissue_c, photo_epl, compton_epl):
-    return mu_soft_tissue_p.value * st_density.value * photo_epl + mu_soft_tissue_c * st_density.value * compton_epl
+    return mu_soft_tissue_p.value * st_density.value * photo_epl + mu_soft_tissue_c.value * st_density.value \
+           * compton_epl
 
 
 def calculate_bone_density(image, mask, scatter, region_of_interest):
@@ -44,9 +47,9 @@ def calculate_bone_density(image, mask, scatter, region_of_interest):
     p200 = calculate_line_integral_water(mu_water_200_p, mu_water_200_c, photo_epl, compton_epl)
     p50_st = calculate_line_integral_soft_tissue(mu_soft_tissue_50_p, mu_soft_tissue_50_c, photo_epl, compton_epl)
     p200_st = calculate_line_integral_soft_tissue(mu_soft_tissue_200_p, mu_soft_tissue_200_c, photo_epl, compton_epl)
-    x0, x, y0, y = region_of_interest
-    r_st = np.mean(p50_st[x0:x, y0:y] / p200_st[x0:x, y0:y])
-    bone = (-r_st * p200 + p50) / (mu_bone_50 - mu_bone_200 * r_st)
+    x0, y0, dx, dy = region_of_interest
+    r_st = np.mean(p50_st[x0:x0+dx, y0:y0+dy] / p200_st[x0:x0+dx, y0:y0+dy])
+    bone = (-r_st * p200 + p50) / (mu_bone_50.value - mu_bone_200.value * r_st)
     bone_density_matrix = mask_corrected * bone
     bone_density_mean = np.mean(bone[np.where(mask_corrected > 0.5)])
     bone_density_std = np.std(bone[np.where(mask_corrected > 0.5)])

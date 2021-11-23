@@ -28,15 +28,25 @@ export function Controller(httpService, modalService, fileService, alertService)
         const animation = new LoadingAnimation("scatter-input-label");
         httpService
             .uploadFile(file, baseUrl + "surview/scatter")
-            .then(() => getFullImage("surview/full"))
+            .then(() => getImage("surview"))
             .then(blob => initModalCanvas(blob, 50, 50))
             .then(animation.stop)
             .then(() => {
                 modalService.defaultWindowFields("0", "2000");
                 modalService.defaultSelectionSizeFields("50", "50");
                 return modalService.open("Hello", {
-                    onFinish: () => {},
-                    onWindowChange: putImageWindow("surview"),
+                    onFinish: () => {
+                        const region = {
+                            posX: vm.modalCanvas.posX,
+                            posY: vm.modalCanvas.posY,
+                            dx: vm.modalCanvas.selectionSizeX,
+                            dy: vm.modalCanvas.selectionSizeY
+                        }
+                        return httpService.put("surview/sdexa/soft-tissue-region", region)
+                            .then(reloadPage);
+                    },
+                    onAbort: reloadPage,
+                    onWindowChange: null, // TODO: putImage lädt danach das full image
                     onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
                 });
             })
@@ -46,10 +56,14 @@ export function Controller(httpService, modalService, fileService, alertService)
             });
     }
 
+    vm.clickCalculate = () => {
+        httpService.put("/surview/sdexa/calculation");
+    }
+
     const uploadImage = (file, imageName, modalTitle) => {
         const animation = new LoadingAnimation(imageName + "-spinner");
         httpService.uploadFile(file, baseUrl + imageName)
-            .then(() => getFullImage(imageName + "/full"))
+            .then(() => getImage(imageName + "/full"))
             .then(blob => initModalCanvas(blob, 512, 512))
             .then(animation.stop)
             .then(() => openSelectionModal(imageName, modalTitle))
@@ -68,7 +82,7 @@ export function Controller(httpService, modalService, fileService, alertService)
 
     const putImageWindow = (route) => (windowMin, windowMax) => {
         httpService.put(baseUrl + route + "/window", { min: windowMin, max: windowMax })
-            .then(() => getFullImage(route + "/full"))
+            .then(() => getImage(route + "/full"))
             .then(vm.modalCanvas.updateImage)
     }
 
@@ -87,7 +101,7 @@ export function Controller(httpService, modalService, fileService, alertService)
         return vm.modalCanvas.init();
     }
 
-    const getFullImage = (route) => {
+    const getImage = (route) => {
         return httpService.get(baseUrl + route)
             .then(response => response.blob())
     }

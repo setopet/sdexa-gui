@@ -5,11 +5,13 @@ class Image:
     """Loads and manages the image as array."""
     def __init__(self, file, window=None):
         self.full_image = get_array_from_file(file)
-        self.image = self.set_image_position((0, 0))
+        self.position = (0, 0)
+        self.image = self.set_image_position(self.position)
         self.window = window
 
     def set_image_position(self, position):
         """Set the position on the full image for the selected section."""
+        self.position = position
         image = insert_padding(self.full_image)
         self.image = crop_image(position, image)
         return self.image

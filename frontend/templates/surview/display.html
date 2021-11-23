@@ -4,8 +4,6 @@
             <img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}"
                  alt="Error: image could not get loaded">
         </div>
-
-        
     {% endif %}
 
     <div {{ "hidden" if surview_present }}>
@@ -19,11 +17,19 @@
     <div>
         <div >
            <label style="width: 512px; height: 38px"
-                  class="btn btn-success d-flex justify-content-center align-items-center"
+                  class="btn btn-secondary d-flex justify-content-center align-items-center"
                   id="scatter-input-label" for="scatter-input">
                Upload Scatter
            </label>
             <input style="display:none;" type="file"  id="scatter-input">
+        </div>
+        <div>
+           <button {{ "disabled" if not scatter_present }} style="width: 512px; height: 38px"
+                  class="btn btn-success d-flex justify-content-center align-items-center"
+                  id="scatter-input-label"
+                  onclick="$ctrl.clickCalculate()">
+               Calculate aBMD
+           </button>
         </div>
         <div>
            <button class="btn-outline-dark"

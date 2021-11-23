@@ -1,3 +1,5 @@
+import numpy as np
+
 from backend.sdexa import calculate_bone_density
 from config import CONFIG
 from backend import *
@@ -9,6 +11,8 @@ class Surview(Image):
         super().__init__(file, window)
         self.segmentation = None
         self.scatter = None
+        self.soft_tissue_region = None
+        self.abmd_result = None
 
     def get_surview_array(self):
         return self.image
@@ -27,7 +31,19 @@ class Surview(Image):
     def set_scatter(self, file):
         self.scatter = get_array_from_file(file)
 
+    def set_soft_tissue_region(self, region):
+        self.soft_tissue_region = region
+
     def calculate_bone_density(self):
         if self.scatter is None:
-            raise Exception("Bone densitiy cannot be calculated without scatter image!")
-        return calculate_bone_density()
+            raise Exception("Bone density cannot be calculated without scatter image!")
+        scatter = self.scatter
+        scatter = insert_padding(scatter)
+        scatter = crop_image(self.position, scatter)
+        self.abmd_result =\
+            calculate_bone_density(self.image, self.get_segmentation(), scatter, self.soft_tissue_region)
+
+    def get_bone_density_image(self):
+        bone_density_matrix = self.abmd_result.bone_density_matrix
+        image = np.where( bone_density_matrix > 0, bone_density_matrix, np.zeros(bone_density_matrix.shape))
+        return to_normalized_red_uint8_rgb(image)

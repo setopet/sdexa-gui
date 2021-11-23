@@ -1,6 +1,8 @@
 from backend import Projection, Surview
 
 
+# TODO: sollte nur noch surview, projection setzen und einfache Checks zur Verfügung stellen
+#  keine if-Checks und reines Durchreichen von "set image position" etc.. Das können die Services direkt machen
 class UserSession:
     """Saves and modifies the state of the application for an user."""
     def __init__(self, user_id, start_date):
@@ -50,6 +52,9 @@ class UserSession:
 
     def set_surview_scatter_image(self, file):
         self.surview.set_scatter(file)
+
+    def set_surview_soft_tissue_region(self, region):
+        self.surview.set_soft_tissue_region(region)
 
     def get_surview_segmentation_overlay_image(self):
         if not self.has_surview():

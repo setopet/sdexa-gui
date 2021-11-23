@@ -1,12 +1,12 @@
 <div id="alert-list">
     {% if not projection_present and not surview_present %}
         <div class="alert alert-info" role="alert">
-            Supported file types: .jpg, .png, .npy, .csv, .txt
+            <strong>Supported file types:</strong> .jpg, .png, .npy, .csv, .txt
             <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endif %}
 
-    {% if surview_present %}
+    {% if surview_present and not scatter_present %}
         <div class="alert alert-success" role="alert">
             For <strong>areal bone mineral density (aBMD) </strong> calculation upload a scatter image.
             <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
