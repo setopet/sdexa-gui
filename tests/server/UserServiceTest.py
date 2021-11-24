@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import unittest
 import server
 from datetime import datetime, timedelta
@@ -24,7 +25,7 @@ class UserServiceTest(unittest.TestCase):
     def test_removes_old_sessions(self):
         self.session_context.get.return_value = {}
         user_session = self.user_service.get_user_session()
-        user_session.start_date = datetime.now() - timedelta(days=2)
+        user_session._start_date = datetime.now() - timedelta(days=2)
         self.session_context.get.return_value = {}
         self.user_service.get_user_session()  # first session should be cleaned up when creating a second one
         self.session_context.get.return_value = {'user_id': user_session.user_id}

@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import numpy as np
 from backend.segmentation.BaseModel import BaseModel
 from torchvision.transforms import transforms

@@ -1,3 +1,4 @@
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
 import {baseUrl} from "./config.js";
 import {SelectionCanvas} from "./canvas/SelectionCanvas.js";
 import {LoadingAnimation} from "./LoadingAnimation.js";
@@ -62,7 +63,7 @@ export function Controller(httpService, fileService, alertService) {
     const openFlexibleSelectionModal = () => {
         const selectionModal = new SelectionModal("Hello", {
             onFinish: putSoftTissueRegion,
-            onAbort: reloadPage,
+            onAbort: () => httpService.delete("/surview/scatter"),
             onWindowChange: null, // TODO: putImage lädt danach das full image
             onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
         });

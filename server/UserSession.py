@@ -1,75 +1,39 @@
-from backend import Projection, Surview
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
+from backend import Projection
 
 
-# TODO: sollte nur noch surview, projection setzen und einfache Checks zur Verfügung stellen
-#  keine if-Checks und reines Durchreichen von "set image position" etc.. Das können die Services direkt machen
+# TODO: Teilweise überflüsstig, sollte nur noch surview, projection setzen und einfache Checks zur Verfügung stellen
+#  keine None-Checks und reines Durchreichen von "set image position" etc.. Das können die Services direkt machen
 class UserSession:
     """Saves and modifies the state of the application for an user."""
     def __init__(self, user_id, start_date):
         self.user_id = user_id
-        self.start_date = start_date
-        self.surview = None
-        self.projection = None
-        self.show_surview_segmentation = False
+        self._start_date = start_date
+        self._surview = None
+        self.projection = None  # TODO: Property draus machen
         self.show_projection_registration = False
 
-    def get_start_date(self):
-        return self.start_date
+    @property
+    def surview(self):
+        return self._surview
 
-    def set_surview(self, file):
-        self.surview = Surview(file)
+    @surview.setter
+    def surview(self, surview):
+        self._surview = surview
+
+    @surview.deleter
+    def surview(self):
+        self._surview = None
+
+    @property
+    def start_date(self):
+        return self._start_date
 
     def has_surview(self):
-        return self.surview is not None
+        return self._surview is not None
 
     def has_scatter(self):
-        return self.has_surview() and self.surview.scatter is not None
-
-    def get_surview_image(self):
-        if not self.has_surview():
-            return None
-        return self.surview.get_image()
-
-    def delete_surview(self):
-        self.surview = None
-
-    def get_full_surview_image(self):
-        if not self.has_surview():
-            return None
-        return self.surview.get_full_image()
-
-    def hide_surview_segmentation(self):
-        self.show_surview_segmentation = False
-
-    def switch_surview_segmentation(self):
-        self.show_surview_segmentation = not self.show_surview_segmentation
-
-    def set_surview_image_position(self, position_x, position_y):
-        self.surview.set_image_position((position_x, position_y))
-
-    def set_surview_window(self, window):
-        self.surview.set_window(window)
-
-    def set_surview_scatter_image(self, file):
-        self.surview.set_scatter(file)
-
-    def set_surview_soft_tissue_region(self, region):
-        self.surview.set_soft_tissue_region(region)
-
-    def get_surview_segmentation_overlay_image(self):
-        if not self.has_surview():
-            return None
-        return self.surview.get_segmentation_overlay_image()
-
-    def get_surview_image_csv(self):
-        if not self.has_surview():
-            return None
-        return self.surview.get_image_csv()
-
-    def get_surview_segmentation_csv(self):
-        if not self.has_surview():
-            return None
-        return self.surview.get_segmentation_csv()
+        return self.has_surview() and self._surview.scatter is not None
 
     def set_projection(self, file):
         self.projection = Projection(file)
@@ -108,11 +72,11 @@ class UserSession:
         return self.projection.get_image_csv()
 
     def get_projection_registration_overlay_image(self):
-        if self.projection is None or self.surview is None:
+        if self.projection is None or self._surview is None:
             return None
-        return self.projection.get_registration_overlay_image(self.surview.get_surview_array())
+        return self.projection.get_registration_overlay_image(self._surview.get_surview_array())
 
     def get_projection_registration_csv(self):
-        if self.projection is None or self.surview is None:
+        if self.projection is None or self._surview is None:
             return None
-        return self.projection.get_registration_result_csv(self.surview.get_surview_array())
+        return self.projection.get_registration_result_csv(self._surview.get_surview_array())

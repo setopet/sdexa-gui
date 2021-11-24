@@ -1,3 +1,4 @@
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
 /** Shows error messages inside the alert list. **/
 export function AlertService() {
     const getAlertHtml = message => {

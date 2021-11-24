@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import SimpleITK as siTk
 
 

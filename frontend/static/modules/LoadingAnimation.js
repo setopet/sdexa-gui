@@ -1,3 +1,4 @@
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
 /** Replaces the inner HTML of its element with a loading animation.
  * @param id: id of the element. **/
 export function LoadingAnimation(id) {

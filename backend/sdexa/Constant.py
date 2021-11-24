@@ -1,3 +1,6 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
+
+
 class Constant:
     def __init__(self, name, value, unit=None, description=None):
         self.__name = name

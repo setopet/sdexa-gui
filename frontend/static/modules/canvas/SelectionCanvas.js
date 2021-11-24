@@ -1,3 +1,4 @@
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
 import {Canvas} from "./Canvas.js";
 
 /** Draws a rectangle representing the selected area when the user clicks at the canvas. **/

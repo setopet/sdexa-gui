@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import unittest
 import numpy as np
 from unittest.mock import Mock

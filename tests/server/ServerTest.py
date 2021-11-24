@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import unittest
 from server.Server import Server
 from tests.server.test_app import get_test_app

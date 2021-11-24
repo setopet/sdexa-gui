@@ -1,4 +1,5 @@
-/** Draws an image on the canvas and adapts its size. **/ 
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
+/** Draws an image on the canvas and adapts its size. **/
 export function Canvas(id, minimumCanvasSize) {
     this.canvas = document.getElementById(id);
 

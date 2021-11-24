@@ -1,5 +1,4 @@
 """Based on a script of Burak Aybar (burak.aybar@tum.de) who also provided the pretrained model"""
-
 import pytorch_lightning
 import segmentation_models_pytorch
 

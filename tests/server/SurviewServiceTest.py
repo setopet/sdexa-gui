@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import unittest
 import numpy as np
 from unittest.mock import Mock
@@ -17,6 +18,7 @@ class SurviewServiceTest(unittest.TestCase):
         self.request_context = Mock(name="request_context_mock")
         self.surview_service = SurviewService(self.request_context, self.user_service)
 
+    # TODO: Nach Refactoring hat sich die Aufrufstruktur geändert
     def test_gets_surview(self):
         self.user_session.has_surview.return_value = True
         self.user_session.show_surview_segmentation = False
@@ -26,6 +28,7 @@ class SurviewServiceTest(unittest.TestCase):
             self.assertEqual(result.content_type, 'image/jpeg')
             self.assertEqual(result.status_code, SUCCESS[1])
 
+    # TODO: Nach Refactoring hat sich die Aufrufstruktur geändert
     def test_uploads_surview(self):
         self.request_context.get.return_value.files = {'file': 'this is a file'}
         self.surview_service.upload_surview()

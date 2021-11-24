@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import os as _os
 import numpy as _np
 from io import StringIO as _StringIO

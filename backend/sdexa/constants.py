@@ -1,6 +1,5 @@
 """ Based on a script of Lorenz Birnbacher (lorenz.birnbacher@tum.de)
-    Credits to xraylib (https://github.com/tschoonj/xraylib) for some of the used constants"""
-
+    Credits to ttps://github.com/tschoonj/xraylib for some of the used constants"""
 from backend.sdexa.Constant import Constant
 
 prefactor = Constant("prefactor", 2954.6394, None, "Philips dual-layer CT prefactor")

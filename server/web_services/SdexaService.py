@@ -1,7 +1,7 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 from server import *
 
 
-# TODO: Könnte eine ganze Ergebnisseite als HTML zurückgeben wo die ganzen Werte vorausgefüllt sind anhand des Calculation Results
 class SdexaService(WebService):
     def __init__(self, request_context, user_service):
         super().__init__(request_context, user_service)
@@ -13,17 +13,21 @@ class SdexaService(WebService):
 
     def put_soft_tissue_region(self):
         user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
+        surview = user_session.surview
+        if surview is None:
             return ERROR
         region = tuple(map(self.string_to_int, self.get_json_values("posX", "posY", "dx", "dy")))
-        user_session.set_surview_soft_tissue_region(region)
+        surview.set_soft_tissue_region(region)
         return SUCCESS
 
     def calculate_bone_density(self):
         user_session = self.user_service.get_user_session()
         if not user_session.has_scatter():
             return NOT_FOUND
-        user_session.surview.calculate_bone_density()
+        try:
+            user_session.surview.calculate_bone_density()
+        except Exception as exception:
+            return str(exception), 400
         return SUCCESS
 
     def get_bone_density_image(self):

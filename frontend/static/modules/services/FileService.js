@@ -1,3 +1,4 @@
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
 /** Watches inputs and drop areas for new files. **/
 export function FileService() {
     this.watchFileInput = (field_id, callback) => {

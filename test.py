@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 from sys import stdout
 from unittest import TestLoader, TextTestRunner
 from tests import *

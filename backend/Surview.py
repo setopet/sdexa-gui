@@ -1,5 +1,5 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import numpy as np
-
 from backend.sdexa import calculate_bone_density
 from config import CONFIG
 from backend import *
@@ -11,7 +11,7 @@ class Surview(Image):
         super().__init__(file, window)
         self.segmentation = None
         self.scatter = None
-        self.soft_tissue_region = None
+        self.soft_tissue_region = (0, 0, 50, 50)
         self.abmd_result = None
 
     def get_surview_array(self):
@@ -29,7 +29,14 @@ class Surview(Image):
         return image_to_csv(to_uint8(self.get_segmentation()), format_string="%i")
 
     def set_scatter(self, file):
-        self.scatter = get_array_from_file(file)
+        scatter = get_array_from_file(file)
+        if scatter.shape != self.full_image.shape:
+            raise Exception(f"Scatter image shape {scatter.shape} "
+                            f" is not identical to surview image shape {self.full_image.shape}!")
+        self.scatter = scatter
+
+    def delete_scatter(self):
+        self.scatter = None
 
     def set_soft_tissue_region(self, region):
         self.soft_tissue_region = region

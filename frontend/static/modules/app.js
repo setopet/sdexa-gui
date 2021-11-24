@@ -1,3 +1,4 @@
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
 import {Controller} from "./Controller.js";
 import {HttpService} from "./services/HttpService.js";
 import {FileService} from "./services/FileService.js";

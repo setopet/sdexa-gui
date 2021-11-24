@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import uuid
 from datetime import datetime, timedelta
 from server import *
@@ -34,5 +35,5 @@ class UserService:
         """Cleans up all sessions older than one day."""
         sessions = list(self.user_sessions.items())
         for key, user_session in sessions:
-            if user_session.get_start_date() < (datetime.now() - timedelta(days=1)):
+            if user_session.start_date < (datetime.now() - timedelta(days=1)):
                 self.user_sessions.pop(key)

@@ -1,3 +1,6 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
+
+
 class Route:
     """Represents a REST route.
     :param path: path of the route.

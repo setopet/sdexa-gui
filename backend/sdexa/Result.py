@@ -1,3 +1,6 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
+
+
 class Result:
     def __init__(self, bone_density_matrix, bone_density_mean, bone_density_std):
         self.__bone_density_matrix = bone_density_matrix

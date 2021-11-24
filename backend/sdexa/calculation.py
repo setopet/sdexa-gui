@@ -1,5 +1,4 @@
 """Based on a script of Lorenz Birnbacher (lorenz.birnbacher@tum.de)"""
-
 import numpy as np
 from backend.sdexa.Result import Result
 from backend.sdexa.constants import *

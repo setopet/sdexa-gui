@@ -1,3 +1,5 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
+from backend import Surview
 from server import *
 
 
@@ -18,58 +20,58 @@ class SurviewService(WebService):
 
     def get_surview(self):
         user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
+        surview = user_session.surview
+        if surview is None:
             return NOT_FOUND
-        if user_session.show_surview_segmentation:
-            image = user_session.get_surview_segmentation_overlay_image()
-        else:
-            image = user_session.get_surview_image()
-        return self.send_jpeg(image)
+        return self.send_jpeg(surview.get_image())
 
     def delete_surview(self):
         user_session = self.user_service.get_user_session()
-        user_session.delete_surview()
-        user_session.hide_projection_registration()
+        del user_session.surview
         return SUCCESS
 
     def get_full_surview(self):
         user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
+        surview = user_session.surview
+        if surview is None:
             return NOT_FOUND
-        return self.send_jpeg(user_session.get_full_surview_image())
+        return self.send_jpeg(surview.get_full_image())
 
     def upload_surview(self):
         user_session = self.user_service.get_user_session()
         request = self.request_context.get()
         file = self.get_file(request)
         try:
-            user_session.set_surview(file)
+            surview = Surview(file)
+            user_session.surview = surview
         except Exception as exception:
             return str(exception), 400
-        user_session.hide_surview_segmentation()
         return SUCCESS
 
     def set_surview_position(self):
         user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
+        surview = user_session.surview
+        if surview is None:
             return ERROR
         request = self.request_context.get()
-        user_session.set_surview_image_position(request.json['posX'], request.json['posY'])
+        surview.set_image_position((request.json['posX'], request.json['posY']))
         return SUCCESS
 
     def set_surview_window(self):
         user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
+        surview = user_session.surview
+        if surview is None:
             return ERROR
         request = self.request_context.get()
         minimum = self.string_to_float(request.json['min'])
         maximum = self.string_to_float(request.json['max'])
-        user_session.set_surview_window((minimum, maximum))
+        surview.set_window((minimum, maximum))
         return SUCCESS
 
     def download_surview_image(self):
         user_session = self.user_service.get_user_session()
-        if not user_session.has_surview():
+        surview = user_session.surview
+        if surview is None:
             return NOT_FOUND
-        csv = user_session.get_surview_image_csv()
+        csv = surview.get_image_csv()
         return self.send_csv(csv)
