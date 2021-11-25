@@ -38,25 +38,25 @@ class ImageTest(unittest.TestCase):
     def test_sets_position_x(self):
         array = np.pad(np.ones((513, 1)), ((0, 0), (0, 512)), 'constant')
         image = get_image_from_array(array)
-        image.set_image_position((1, 0))
+        image.set_image_region((1, 0))
         self.assertTrue(np.array_equal(image.image, np.zeros((512, 512))))
 
     def test_sets_position_y(self):
         array = np.pad(np.ones((1, 513)), ((0, 512), (0, 0)), 'constant')
         image = get_image_from_array(array)
-        image.set_image_position((0, 1))
+        image.set_image_region((0, 1))
         self.assertTrue(np.array_equal(image.image, np.zeros((512, 512))))
 
     def test_sets_position_negative(self):
         array = np.ones((513, 513))
         image = get_image_from_array(array)
-        image.set_image_position((-1, -1))
+        image.set_image_region((-1, -1))
         self.assertTrue(np.array_equal(image.image, np.ones((512, 512))))
 
     def test_sets_position_out_of_bound(self):
         array = np.ones((512, 512))
         image = get_image_from_array(array)
-        image.set_image_position((42, 42))
+        image.set_image_region((42, 42))
         self.assertTrue(np.array_equal(image.image, np.ones((512, 512))))
 
     def test_returns_jpg_convertible_image(self):

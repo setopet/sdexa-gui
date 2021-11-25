@@ -53,8 +53,8 @@ class SurviewService(WebService):
         surview = user_session.surview
         if surview is None:
             return ERROR
-        request = self.request_context.get()
-        surview.set_image_position((request.json['posX'], request.json['posY']))
+        region = tuple(map(self.string_to_int, self.get_json_values("posX", "posY", "dx", "dy")))
+        surview.set_image_region(region)
         return SUCCESS
 
     def set_surview_window(self):

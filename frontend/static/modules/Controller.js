@@ -35,7 +35,7 @@ export function Controller(httpService, fileService, alertService) {
             .then(() => getImage("surview"))
             .then(blob => initModalCanvas(blob, 50, 50))
             .then(animation.stop)
-            .then(openFlexibleSelectionModal)
+            .then(openSoftTissueSelectionModal)
             .catch(error => {
                 animation.stop();
                 alertService.error(error);
@@ -60,9 +60,9 @@ export function Controller(httpService, fileService, alertService) {
             });
     }
 
-    const openFlexibleSelectionModal = () => {
+    const openSoftTissueSelectionModal = () => {
         const selectionModal = new SelectionModal("Hello", {
-            onFinish: putSoftTissueRegion,
+            onFinish: () => putSelectionRegion("surview/sdexa/soft-tissue-region"),
             onAbort: () => httpService.delete("/surview/scatter"),
             onWindowChange: null, // TODO: putImage lädt danach das full image
             onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
@@ -72,14 +72,14 @@ export function Controller(httpService, fileService, alertService) {
         return selectionModal.open();
     }
 
-    const putSoftTissueRegion = () => {
+    const putSelectionRegion = (route) => {
         const region = {
             posX: vm.modalCanvas.posX,
             posY: vm.modalCanvas.posY,
             dx: vm.modalCanvas.selectionSizeX,
             dy: vm.modalCanvas.selectionSizeY
         }
-        return httpService.put("surview/sdexa/soft-tissue-region", region)
+        return httpService.put(route, region)
             .then(reloadPage);
     }
 
@@ -97,13 +97,6 @@ export function Controller(httpService, fileService, alertService) {
             });
     }
 
-    const putImagePosition = (url) => {
-        const position = { 'posX': vm.modalCanvas.posX, 'posY': vm.modalCanvas.posY };
-        httpService.put(url, position)
-            .then(reloadPage)
-            .catch(alertService.error);
-    }
-
     const putImageWindow = (route) => (windowMin, windowMax) => {
         httpService.put(baseUrl + route + "/window", { min: windowMin, max: windowMax })
             .then(() => getImage(route + "/full"))
@@ -112,9 +105,10 @@ export function Controller(httpService, fileService, alertService) {
 
     const openSelectionModal = (imageName, title) => {
         const selectionModal = new SelectionModal(title, {
-            onFinish: () => putImagePosition(baseUrl + imageName + "/position"),
+            onFinish: () => putSelectionRegion(baseUrl + imageName + "/position"),
             onAbort: () => vm.deleteImage(imageName),
-            onWindowChange: putImageWindow(imageName)
+            onWindowChange: putImageWindow(imageName),
+            onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
         });
         selectionModal.defaultSelectionSizeFields("512", "512");
         selectionModal.defaultWindowFields("0", "2000");

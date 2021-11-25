@@ -39,14 +39,16 @@ class Surview(Image):
         self.scatter = None
 
     def set_soft_tissue_region(self, region):
-        self.soft_tissue_region = region
+        x, y, dx, dy = region  # Frontend x and y axis can't be trusted
+        self.soft_tissue_region = (x, y, dx, dy)
 
     def calculate_bone_density(self):
         if self.scatter is None:
             raise Exception("Bone density cannot be calculated without scatter image!")
         scatter = self.scatter
-        scatter = insert_padding(scatter)
-        scatter = crop_image(self.position, scatter)
+        x, y, dx, dy = self.region
+        scatter = insert_padding(scatter[x:x+dx, y:y+dy])
+        scatter = crop_image((x, y), scatter)
         self.abmd_result =\
             calculate_bone_density(self.image, self.get_segmentation(), scatter, self.soft_tissue_region)
 

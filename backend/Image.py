@@ -6,15 +6,16 @@ class Image:
     """Loads and manages the image as array."""
     def __init__(self, file, window=None):
         self.full_image = get_array_from_file(file)
-        self.position = (0, 0)
-        self.image = self.set_image_position(self.position)
+        self.region = None
+        self.image = self.set_image_region((0, 0, 0, 0))
         self.window = window
 
-    def set_image_position(self, position):
+    def set_image_region(self, region):
         """Set the position on the full image for the selected section."""
-        self.position = position
-        image = insert_padding(self.full_image)
-        self.image = crop_image(position, image)
+        y, x, dy, dx = region  # Frontend x and y axis can't be trusted
+        self.region = (x, y, dx, dy)
+        image = insert_padding(self.full_image[x:x+dx, y:y+dy])
+        self.image = crop_image((x, y), image)
         return self.image
 
     def set_window(self, window):

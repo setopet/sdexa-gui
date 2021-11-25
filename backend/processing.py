@@ -101,15 +101,17 @@ def image_to_csv(image, format_string=None):
 def insert_padding(image, new_size=512):
     shape_x, shape_y = image.shape
     if shape_x < new_size:
-        image = _np.pad(image, ((0, new_size - shape_x), (0, 0)), 'constant')
+        pad_left = (new_size - shape_x)//2
+        image = _np.pad(image, ((pad_left, new_size - (shape_x + pad_left)), (0, 0)), 'constant')
     if shape_y < new_size:
-        image = _np.pad(image, ((0, 0), (0, new_size - shape_y)), 'constant')
+        pad_down = (new_size - shape_y)//2
+        image = _np.pad(image, ((0, 0), (pad_down, new_size - (shape_y + pad_down))), 'constant')
     return image
 
 
 def crop_image(position, image, new_size=512):
     shape_x, shape_y = image.shape
-    y, x = position  # Frontend x and y axis can't be trusted
+    x, y = position
     # If one of the values is out of bound get the value which is the maximum value possible
     if x < 0:
         x = 0

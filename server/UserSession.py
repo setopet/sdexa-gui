@@ -61,7 +61,7 @@ class UserSession:
         self.show_projection_registration = not self.show_projection_registration
 
     def set_projection_image_position(self, position_x, position_y):
-        self.projection.set_image_position((position_x, position_y))
+        self.projection.set_image_region((position_x, position_y))
 
     def set_projection_window(self, window):
         self.projection.set_window(window)
