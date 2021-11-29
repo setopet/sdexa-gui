@@ -51,9 +51,9 @@ export function Controller(httpService, fileService, alertService) {
                 return resultCanvas.drawImage(blob);
             })
             .then(() => httpService.getJson("/surview/sdexa/bone-density-results"))
-            .then(results => {
+            .then(data => {
                 animation.stop();
-                return new ResultModal(results["abmd_mean"], results["abmd_std"]).open();
+                return new ResultModal(data["abmd_mean"], data["abmd_std"]).open();
             })
             .catch(error => {
                 animation.stop();
@@ -65,7 +65,11 @@ export function Controller(httpService, fileService, alertService) {
         const selectionModal = new SelectionModal("Select the soft tissue ", {
             onFinish: () => putSelectionRegion("surview/sdexa/soft-tissue-region"),
             onAbort: () => httpService.delete("/surview/scatter"),
-            onWindowChange: () => putImageWindow("surview"),
+            onWindowChange: (windowMin, windowMax) => {
+                httpService.put(baseUrl + "surview/window", { min: windowMin, max: windowMax })
+                    .then(() => getImage("surview"))
+                    .then(vm.modalCanvas.updateImage)
+            },
             onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
         });
         selectionModal.defaultWindowFields("0", "2000");
@@ -98,7 +102,7 @@ export function Controller(httpService, fileService, alertService) {
             });
     }
 
-    const putImageWindow = (route) => (windowMin, windowMax) => {
+    const getPutImageWindowFunction = (route) => (windowMin, windowMax) => {
         httpService.put(baseUrl + route + "/window", { min: windowMin, max: windowMax })
             .then(() => getImage(route + "/full"))
             .then(vm.modalCanvas.updateImage)
@@ -108,7 +112,7 @@ export function Controller(httpService, fileService, alertService) {
         const selectionModal = new SelectionModal(title, {
             onFinish: () => putSelectionRegion(baseUrl + imageName + "/position"),
             onAbort: () => vm.deleteImage(imageName),
-            onWindowChange: putImageWindow(imageName),
+            onWindowChange: getPutImageWindowFunction(imageName),
             onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
         });
         selectionModal.defaultSelectionSizeFields("512", "512");

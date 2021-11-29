@@ -29,7 +29,7 @@ export function Canvas(id, minimumCanvasSize) {
             element.onload = event => {
                 adaptSize(element);
                 context.drawImage(event.target, 0, 0);
-                resolve(this);
+                resolve(event.target);
             };
         });
     }

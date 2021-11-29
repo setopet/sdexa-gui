@@ -6,7 +6,6 @@ export function SelectionCanvas(image, selectionSizeX, selectionSizeY) {
     Canvas.call(this, "selection-modal-canvas", 512);  // Inheritance from Canvas
 
     this.selectionCanvas = document.createElement('canvas');
-    this.image = image;
     this.lineWidth = 6; // take an even number
     this.selectionSizeX = selectionSizeX;
     this.selectionSizeY = selectionSizeY;
@@ -14,8 +13,7 @@ export function SelectionCanvas(image, selectionSizeX, selectionSizeY) {
     this.posY = 0;
 
     this.updateImage = blob => {
-        this.image = blob;
-        return redraw();
+        return loadImage(blob);
     }
 
     this.updateSelectionSize = (sizeX, sizeY) => {
@@ -53,19 +51,29 @@ export function SelectionCanvas(image, selectionSizeX, selectionSizeY) {
         return Promise.resolve(this);
     }
 
-    const redraw = () => {
+    const loadImage = (imageBlob) => {
         return erase()
-            .then(() => this.drawImage(this.image))
-            .then(() => drawRectangle(this.selectionSizeX, this.selectionSizeY, this.posX, this.posY))
+            .then(() => this.drawImage(imageBlob))
+            .then(image => {
+                this.selectionCanvas.width = this.width;
+                this.selectionCanvas.height = this.height;
+                this.image = image;
+            })
+            .then(() => drawRectangle(this.selectionSizeX, this.selectionSizeY, this.posX, this.posY));
     };
 
+    /** Redraw the image without reloading it **/
+    const redrawImage = () => {
+        const context = this.canvas.getContext("2d");
+        context.drawImage(this.image, 0, 0);
+    }
+
+    const redraw = () => erase()
+            .then(redrawImage)
+            .then(() => drawRectangle(this.selectionSizeX, this.selectionSizeY, this.posX, this.posY));
+
     this.init = () => {
-        return this.drawImage(this.image).then(() => {
-            this.selectionCanvas.width = this.width;
-            this.selectionCanvas.height = this.height;
-            return drawRectangle(this.selectionSizeX, this.selectionSizeY, this.posX, this.posY);
-            }
-        );
+        return loadImage(image);
     }
 
     return this;
