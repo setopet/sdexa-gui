@@ -4,6 +4,7 @@ from server import *
 
 
 class SdexaService(WebService):
+    """Handles REST routes for the bone density calculation"""
     def __init__(self, request_context, user_service):
         super().__init__(request_context, user_service)
         self.routes = [

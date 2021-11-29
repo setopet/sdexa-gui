@@ -2,38 +2,48 @@
 from backend import Projection
 
 
-# TODO: Teilweise überflüsstig, sollte nur noch surview, projection setzen und einfache Checks zur Verfügung stellen
-#  keine None-Checks und reines Durchreichen von "set image position" etc.. Das können die Services direkt machen
 class UserSession:
     """Saves and modifies the state of the application for an user."""
     def __init__(self, user_id, start_date):
         self.user_id = user_id
         self._start_date = start_date
-        self._surview = None
-        self.projection = None  # TODO: Property draus machen
+        self.__surview = None
+        self.__projection = None
         self.show_projection_registration = False
 
     @property
     def surview(self):
-        return self._surview
+        return self.__surview
 
     @surview.setter
     def surview(self, surview):
-        self._surview = surview
+        self.__surview = surview
 
     @surview.deleter
     def surview(self):
-        self._surview = None
+        self.__surview = None
+
+    @property
+    def projection(self):
+        return self.__projection
+
+    @projection.setter
+    def projection(self, projection):
+        self.__projection = projection
+
+    @projection.deleter
+    def projection(self):
+        self.__projection = None
 
     @property
     def start_date(self):
         return self._start_date
 
     def has_surview(self):
-        return self._surview is not None
+        return self.__surview is not None
 
     def has_scatter(self):
-        return self.has_surview() and self._surview.scatter is not None
+        return self.has_surview() and self.__surview.scatter is not None
 
     def set_projection(self, file):
         self.projection = Projection(file)
@@ -72,11 +82,11 @@ class UserSession:
         return self.projection.get_image_csv()
 
     def get_projection_registration_overlay_image(self):
-        if self.projection is None or self._surview is None:
+        if self.projection is None or self.__surview is None:
             return None
-        return self.projection.get_registration_overlay_image(self._surview.get_surview_array())
+        return self.projection.get_registration_overlay_image(self.__surview.get_surview_array())
 
     def get_projection_registration_csv(self):
-        if self.projection is None or self._surview is None:
+        if self.projection is None or self.__surview is None:
             return None
-        return self.projection.get_registration_result_csv(self._surview.get_surview_array())
+        return self.projection.get_registration_result_csv(self.__surview.get_surview_array())

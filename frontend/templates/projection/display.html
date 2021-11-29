@@ -1,8 +1,35 @@
 <div>
     {% if projection_present %}
-        <div style="height: 512px; width: 512px; border: 1px solid">
-            <img src="{{ base_url + '/projection' }}"
-                  alt="Error: image could not get loaded">
+        <div id="projectionCarousel"
+                 class="carousel slide image"
+                 data-bs-interval="false"
+                 data-bs-ride="carousel">
+              <div class="carousel-inner">
+              {% if surview_present %}
+                <div class="carousel-item">
+                    <img src="{{ base_url + '/projection/registration' }}"
+                    alt="Error: image could not get loaded">
+                      <div class="carousel-caption d-none d-md-block">
+                          <p><small>Registration of the projection onto the surview</small></p>
+                      </div>
+                </div>
+              {% endif %}
+                <div class="carousel-item active">
+                    <img src="{{ base_url + '/projection' }}"
+                    alt="Error: image could not get loaded">
+                      <div class="carousel-caption d-none d-md-block">
+                          <p><small>CT 2D projection</small></p>
+                      </div>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#projectionCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#projectionCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
         </div>
         <button class="btn-outline-dark"
                     onclick="$ctrl.downloadImage('projection/download', 'projection.csv')">
@@ -13,8 +40,6 @@
                         onclick="$ctrl.downloadImage('projection/registration/download', 'registration.csv')">
                 Download Registration
             </button>
-            <button class="btn-outline-dark" onclick="$ctrl.switchImageView('projection/registration')">
-                Show/Hide registration</button>
         {% endif %}
     {% endif %}
     <div {{ "hidden" if projection_present }}>

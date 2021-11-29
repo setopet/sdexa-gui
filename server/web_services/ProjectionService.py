@@ -1,78 +1,50 @@
-"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
+from backend import Image, Projection
 from server import *
 
 
-# TODO: Verallgemeinern zu 'ImageService'
-class ProjectionService(WebService):
-    """Handles REST routes for the projection image."""
+class ProjectionService(ImageService):
     def __init__(self, request_context, user_service):
         super().__init__(request_context, user_service)
         self.routes = [
-            Route('/projection', self.get_projection, ["GET"]),
-            Route('/projection', self.upload_projection, ["POST"]),
-            Route('/projection', self.delete_projection, ["DELETE"]),
-            Route('/projection/full', self.get_full_projection, ["GET"]),
-            Route('/projection/position', self.set_projection_position, ["PUT"]),
-            Route('/projection/window', self.set_projection_window, ["PUT"]),
+            Route('/projection', self.get_projection_image, ["GET"]),
+            Route('/projection', self.upload_projection_image, ["POST"]),
+            Route('/projection', self.delete_projection_image, ["DELETE"]),
+            Route('/projection/full', self.get_full_projection_image, ["GET"]),
+            Route('/projection/position', self.set_projection_image_position, ["PUT"]),
+            Route('/projection/window', self.set_projection_image_window, ["PUT"]),
             Route('/projection/download', self.download_projection_image, ["GET"])
         ]
 
-    def get_projection(self):
+    def get_image_from_session(self) -> Image:
         user_session = self.user_service.get_user_session()
-        if not user_session.has_projection():
-            return NOT_FOUND
-        if user_session.show_projection_registration:
-            if not user_session.has_surview():
-                return ERROR
-            image = user_session.get_projection_registration_overlay_image()
-        else:
-            image = user_session.get_projection_image()
-        return self.send_jpeg(image)
+        return user_session.projection
 
-    def delete_projection(self):
+    def set_image_on_session(self, file):
         user_session = self.user_service.get_user_session()
-        user_session.delete_projection()
-        return SUCCESS
+        projection = Projection(file)
+        user_session.projection = projection
 
-    def get_full_projection(self):
+    def delete_image_from_session(self):
         user_session = self.user_service.get_user_session()
-        if not user_session.has_projection():
-            return NOT_FOUND
-        return self.send_jpeg(user_session.get_full_projection_image())
+        del user_session.projection
 
-    def upload_projection(self):
-        user_session = self.user_service.get_user_session()
-        request = self.request_context.get()
-        file = self.get_file(request)
-        try:
-            user_session.set_projection(file)
-        except Exception as exception:
-            return str(exception), 400
-        user_session.hide_projection_registration()
-        return SUCCESS
+    def get_projection_image(self):
+        return self.get_image()
 
-    def set_projection_position(self):
-        user_session = self.user_service.get_user_session()
-        if not user_session.has_projection():
-            return ERROR
-        request = self.request_context.get()
-        user_session.set_projection_image_position(request.json['posX'], request.json['posY'])
-        return SUCCESS
+    def upload_projection_image(self):
+        return self.upload_image()
 
-    def set_projection_window(self):
-        user_session = self.user_service.get_user_session()
-        if not user_session.has_projection():
-            return ERROR
-        request = self.request_context.get()
-        minimum = self.string_to_float(request.json['min'])
-        maximum = self.string_to_float(request.json['max'])
-        user_session.set_projection_window((minimum, maximum))
-        return SUCCESS
+    def delete_projection_image(self):
+        return self.delete_image()
+
+    def get_full_projection_image(self):
+        return self.get_full_image()
+
+    def set_projection_image_position(self):
+        return self.set_image_position()
+
+    def set_projection_image_window(self):
+        return self.set_image_window()
 
     def download_projection_image(self):
-        user_session = self.user_service.get_user_session()
-        if not user_session.has_projection():
-            return NOT_FOUND
-        csv = user_session.get_projection_image_csv()
-        return self.send_csv(csv)
-
+        return self.download_image()

@@ -20,3 +20,9 @@
 .modal-footer-span {
     margin-right: auto
 }
+
+.image {
+    height: 512px;
+    width: 512px;
+    border: 1px solid
+}

@@ -3,6 +3,7 @@ from server import *
 
 
 class ScatterService(WebService):
+    """Handles REST routes for the surview scatter image"""
     def __init__(self, request_context, user_service):
         super().__init__(request_context, user_service)
         self.routes = [

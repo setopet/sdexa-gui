@@ -1,4 +1,5 @@
 /** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
+/** Manages a canvas for visualizing a selection on an image. **/
 export function SelectionModal(title, callbacks) {
     this.defaultSelectionSizeFields = (valueX, valueY) => {
         document.getElementById("modal-selection-x").value = valueX;

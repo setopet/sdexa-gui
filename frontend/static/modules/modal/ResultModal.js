@@ -1,4 +1,5 @@
 /** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
+/** Opens a result modal, visualizing the result of the bone density calculation **/
 export function ResultModal(result) {
     document.getElementById("abmd-mean-cell").innerText = result["abmd_mean"];
     document.getElementById("abmd-std-cell").innerText = result["abmd_std"];
@@ -14,10 +15,11 @@ export function ResultModal(result) {
         return Promise.resolve(this);
     }
 
+    /** Displays image information at the modal page. **/
     this.updateImageData = (imageData) => {
         positionXElement.innerHTML = `X: ${imageData.x}`;
         positionYElement.innerHTML = `Y: ${imageData.y}`;
-        positionValueElement.innerHTML = `Value: ${reverseNormalisation(imageData.value)}`;
+        positionValueElement.innerHTML = `Value (uncalibrated): ${reverseNormalisation(imageData.value)}`;
     }
 
     const reverseNormalisation = (value) => {

@@ -5,6 +5,7 @@ from .RequestContext import RequestContext
 from .SessionContext import SessionContext
 from server.UserService import UserService
 from .web_services.WebService import WebService
+from .web_services.ImageService import ImageService
 from .web_services.SurviewService import SurviewService
 from .web_services.SegmentationService import SegmentationService
 from .web_services.ScatterService import ScatterService

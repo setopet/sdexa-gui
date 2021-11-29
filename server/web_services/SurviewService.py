@@ -1,77 +1,50 @@
-"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
-from backend import Surview
+from backend import Image, Surview
 from server import *
 
 
-# TODO: Verallgemeinern zu 'ImageService'
-class SurviewService(WebService):
-    """Handles REST routes for the surview image."""
+class SurviewService(ImageService):
     def __init__(self, request_context, user_service):
         super().__init__(request_context, user_service)
         self.routes = [
-            Route('/surview', self.get_surview, ["GET"]),
-            Route('/surview', self.upload_surview, ["POST"]),
-            Route('/surview', self.delete_surview, ["DELETE"]),
-            Route('/surview/full', self.get_full_surview, ["GET"]),
-            Route('/surview/position', self.set_surview_position, ["PUT"]),
-            Route('/surview/window', self.set_surview_window, ["PUT"]),
+            Route('/surview', self.get_surview_image, ["GET"]),
+            Route('/surview', self.upload_surview_image, ["POST"]),
+            Route('/surview', self.delete_surview_image, ["DELETE"]),
+            Route('/surview/full', self.get_full_surview_image, ["GET"]),
+            Route('/surview/position', self.set_surview_image_position, ["PUT"]),
+            Route('/surview/window', self.set_surview_image_window, ["PUT"]),
             Route('/surview/download', self.download_surview_image, ["GET"])
         ]
 
-    def get_surview(self):
+    def get_image_from_session(self) -> Image:
         user_session = self.user_service.get_user_session()
-        surview = user_session.surview
-        if surview is None:
-            return NOT_FOUND
-        return self.send_jpeg(surview.get_image())
+        return user_session.surview
 
-    def delete_surview(self):
+    def set_image_on_session(self, file):
+        user_session = self.user_service.get_user_session()
+        surview = Surview(file)
+        user_session.surview = surview
+
+    def delete_image_from_session(self):
         user_session = self.user_service.get_user_session()
         del user_session.surview
-        return SUCCESS
 
-    def get_full_surview(self):
-        user_session = self.user_service.get_user_session()
-        surview = user_session.surview
-        if surview is None:
-            return NOT_FOUND
-        return self.send_jpeg(surview.get_full_image())
+    def get_surview_image(self):
+        return self.get_image()
 
-    def upload_surview(self):
-        user_session = self.user_service.get_user_session()
-        request = self.request_context.get()
-        file = self.get_file(request)
-        try:
-            surview = Surview(file)
-            user_session.surview = surview
-        except Exception as exception:
-            return str(exception), 400
-        return SUCCESS
+    def upload_surview_image(self):
+        return self.upload_image()
 
-    def set_surview_position(self):
-        user_session = self.user_service.get_user_session()
-        surview = user_session.surview
-        if surview is None:
-            return ERROR
-        region = tuple(map(self.string_to_int, self.get_json_values("posX", "posY", "dx", "dy")))
-        surview.set_image_region(region)
-        return SUCCESS
+    def delete_surview_image(self):
+        return self.delete_image()
 
-    def set_surview_window(self):
-        user_session = self.user_service.get_user_session()
-        surview = user_session.surview
-        if surview is None:
-            return ERROR
-        request = self.request_context.get()
-        minimum = self.string_to_float(request.json['min'])
-        maximum = self.string_to_float(request.json['max'])
-        surview.set_window((minimum, maximum))
-        return SUCCESS
+    def get_full_surview_image(self):
+        return self.get_full_image()
+
+    def set_surview_image_position(self):
+        return self.set_image_position()
+
+    def set_surview_image_window(self):
+        return self.set_image_window()
 
     def download_surview_image(self):
-        user_session = self.user_service.get_user_session()
-        surview = user_session.surview
-        if surview is None:
-            return NOT_FOUND
-        csv = surview.get_image_csv()
-        return self.send_csv(csv)
+        return self.download_image()

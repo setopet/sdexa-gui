@@ -1,31 +1,30 @@
 <div>
     {% if surview_present %}
-        <div id="carouselExampleControls"
-                 class="carousel slide"
-                 style="height: 512px; width: 512px; border: 1px solid"
+        <div id="surviewCarousel"
+                 class="carousel slide image"
                  data-bs-interval="false"
                  data-bs-ride="carousel">
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img style="height: 512px; width: 512px" src="{{ base_url + '/surview/segmentation' }}"
+                    <img src="{{ base_url + '/surview/segmentation' }}"
                     alt="Error: image could not get loaded">
                       <div class="carousel-caption d-none d-md-block">
                           <p><small>Segmentation of the vertebral bodies</small></p>
                       </div>
                 </div>
                 <div class="carousel-item">
-                    <img style="height: 512px; width: 512px" src="{{ base_url + '/surview' }}"
+                    <img src="{{ base_url + '/surview' }}"
                     alt="Error: image could not get loaded">
                       <div class="carousel-caption d-none d-md-block">
                           <p><small>CT surview scan of the patient</small></p>
                       </div>
                 </div>
               </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <button class="carousel-control-prev" type="button" data-bs-target="#surviewCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
               </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <button class="carousel-control-next" type="button" data-bs-target="#surviewCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
               </button>
@@ -33,8 +32,7 @@
     {% endif %}
 
     <div {{ "hidden" if surview_present }}>
-        <div class="d-flex justify-content-center align-items-center" id="surview-drop"
-            style="height: 512px; width: 512px; border: 1px solid">
+        <div class="d-flex justify-content-center align-items-center image" id="surview-drop">
         <div id="surview-spinner"><strong>Drag and drop a file here</strong></div>
     </div>
     </div>
