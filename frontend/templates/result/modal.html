@@ -1,5 +1,5 @@
 <div class="modal fade" id="result-modal" tabindex="-1" aria-labelledby="result-modal-title" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content" style="background-color: black">
       <div class="modal-header">
         <h5 class="modal-title" id="result-modal-title" style="color: white">aBMD calculation results</h5>
@@ -25,6 +25,14 @@
               </div>
           </div>
       </div>
+      <div class="modal-footer">
+        <span class="justify-content-start modal-footer-span">
+            <button onclick="$ctrl.downloadImage('surview/sdexa/download', 'abmd.csv')"
+                    class="btn btn-outline-light">Download aBMD matrix</button>
+        </span>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="result-modal-close-button">
+            Close</button>
+     </div>
     </div>
   </div>
 </div>

@@ -16,3 +16,7 @@
     text-align: center;
     border: 1px solid white
 }
+
+.modal-footer-span {
+    margin-right: auto
+}

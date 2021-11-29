@@ -72,3 +72,8 @@ class Surview(Image):
         if self.abmd_result is None:
             return None
         return self.abmd_result.bone_density_std
+
+    def get_bone_density_image_csv(self):
+        if self.abmd_result is None:
+            return None
+        return image_to_csv(self.abmd_result.bone_density_matrix)

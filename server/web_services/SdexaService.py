@@ -11,6 +11,7 @@ class SdexaService(WebService):
             Route('/surview/sdexa/soft-tissue-region', self.put_soft_tissue_region, ["PUT"]),
             Route('/surview/sdexa/bone-density-image', self.get_bone_density_image, ["GET"]),
             Route('/surview/sdexa/bone-density-results', self.get_bone_density_results, ["GET"]),
+            Route('/surview/sdexa/download', self.download_bone_density_matrix, ["GET"])
         ]
 
     def put_soft_tissue_region(self):
@@ -47,3 +48,9 @@ class SdexaService(WebService):
             abmd_std=f"{user_session.surview.get_bone_density_std(): .2f}"
         )
 
+    def download_bone_density_matrix(self):
+        user_session = self.user_service.get_user_session()
+        if not user_session.has_scatter() or user_session.surview.abmd_result is None:
+            return NOT_FOUND
+        csv = user_session.surview.get_bone_density_image_csv()
+        return self.send_csv(csv)
