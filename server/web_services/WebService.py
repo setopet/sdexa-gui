@@ -43,6 +43,10 @@ class WebService:
             return None
 
     @staticmethod
+    def float_to_string(float_value):
+        return f"{float_value: .2f}"
+
+    @staticmethod
     def string_to_int(string):
         try:
             return int(string)

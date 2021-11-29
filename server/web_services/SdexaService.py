@@ -43,9 +43,12 @@ class SdexaService(WebService):
         user_session = self.user_service.get_user_session()
         if not user_session.has_scatter() or user_session.surview.abmd_result is None:
             return NOT_FOUND
+        surview = user_session.surview
         return jsonify(
-            abmd_mean=f"{user_session.surview.get_bone_density_mean(): .2f}",
-            abmd_std=f"{user_session.surview.get_bone_density_std(): .2f}"
+            abmd_mean=self.float_to_string(surview.get_bone_density_mean()),
+            abmd_std=self.float_to_string(surview.get_bone_density_std()),
+            abmd_max=self.float_to_string(surview.abmd_result.bone_density_matrix.max()),
+            abmd_min=self.float_to_string(surview.abmd_result.bone_density_matrix.min())
         )
 
     def download_bone_density_matrix(self):

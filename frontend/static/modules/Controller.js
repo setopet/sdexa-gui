@@ -47,13 +47,15 @@ export function Controller(httpService, fileService, alertService) {
         httpService.put("/surview/sdexa/calculation")
             .then(() => getImage("/surview/sdexa/bone-density-image"))
             .then(blob => {
-                const resultCanvas = new ResultCanvas();
-                return resultCanvas.drawImage(blob);
+                vm.resultCanvas = new ResultCanvas();
+                return vm.resultCanvas.drawImage(blob);
             })
             .then(() => httpService.getJson("/surview/sdexa/bone-density-results"))
             .then(data => {
                 animation.stop();
-                return new ResultModal(data["abmd_mean"], data["abmd_std"]).open();
+                const resultModal = new ResultModal(data);
+                vm.resultCanvas.watchMouseHover(resultModal.updateImageData);
+                return resultModal.open();
             })
             .catch(error => {
                 animation.stop();
@@ -62,7 +64,8 @@ export function Controller(httpService, fileService, alertService) {
     }
 
     const openSoftTissueSelectionModal = () => {
-        const selectionModal = new SelectionModal("Select the soft tissue ", {
+        const selectionModal = new SelectionModal("Select an area of soft tissue area for the aBMD calculation. " +
+            "You can adapt the window and selection size to ensure that there is not hard tissue in the selected area.", {
             onFinish: () => putSelectionRegion("surview/sdexa/soft-tissue-region"),
             onAbort: () => httpService.delete("/surview/scatter"),
             onWindowChange: (windowMin, windowMax) => {
