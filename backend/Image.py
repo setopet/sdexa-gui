@@ -12,8 +12,8 @@ class Image:
 
     def set_image_region(self, region):
         """Set the position on the full image for the selected section."""
-        y, x, dy, dx = region  # Frontend x and y axis can't be trusted
-        self.region = (x, y, dx, dy)
+        self.region = self.get_corrected_region(region)
+        x, y, dx, dy = self.region
         image = insert_padding(self.full_image[x:x+dx, y:y+dy])
         self.image = crop_image((x, y), image)
         return self.image
@@ -33,3 +33,8 @@ class Image:
     def get_image_csv(self):
         """Get the section of the image as csv."""
         return image_to_csv(self.image)
+
+    @staticmethod
+    def get_corrected_region(region):
+        y, x, dy, dx = region  # Frontend x and y axis can't be trusted
+        return max(x, 0), max(y, 0), max(dx, 0), max(dy, 0)

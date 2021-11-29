@@ -102,10 +102,10 @@ def insert_padding(image, new_size=512):
     shape_x, shape_y = image.shape
     if shape_x < new_size:
         pad_left = (new_size - shape_x)//2
-        image = _np.pad(image, ((pad_left, new_size - (shape_x + pad_left)), (0, 0)), 'constant')
+        image = _np.pad(image, ((pad_left, new_size - (shape_x + pad_left)), (0, 0)), 'constant', constant_values=1)
     if shape_y < new_size:
         pad_down = (new_size - shape_y)//2
-        image = _np.pad(image, ((0, 0), (pad_down, new_size - (shape_y + pad_down))), 'constant')
+        image = _np.pad(image, ((0, 0), (pad_down, new_size - (shape_y + pad_down))), 'constant', constant_values=1)
     return image
 
 

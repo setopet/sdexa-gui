@@ -39,8 +39,7 @@ class Surview(Image):
         self.scatter = None
 
     def set_soft_tissue_region(self, region):
-        x, y, dx, dy = region  # Frontend x and y axis can't be trusted
-        self.soft_tissue_region = (x, y, dx, dy)
+        self.soft_tissue_region = self.get_corrected_region(region)
 
     def calculate_bone_density(self):
         if self.scatter is None:
