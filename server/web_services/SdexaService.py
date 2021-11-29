@@ -43,7 +43,7 @@ class SdexaService(WebService):
         if not user_session.has_scatter() or user_session.surview.abmd_result is None:
             return NOT_FOUND
         return jsonify(
-            abmd_mean=f"{user_session.surview.get_bone_density_mean(): 1.2}",
-            abmd_std=f"{user_session.surview.get_bone_density_std(): 1.2}"
+            abmd_mean=f"{user_session.surview.get_bone_density_mean(): .2f}",
+            abmd_std=f"{user_session.surview.get_bone_density_std(): .2f}"
         )
 
