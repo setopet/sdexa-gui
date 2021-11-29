@@ -3,7 +3,7 @@ import {Canvas} from "./Canvas.js";
 
 /** Draws a rectangle representing the selected area when the user clicks at the canvas. **/
 export function SelectionCanvas(image, selectionSizeX, selectionSizeY) {
-    Canvas.call(this, "selection-modal-canvas", 530);  // Inheritance from Canvas
+    Canvas.call(this, "selection-modal-canvas", 512);  // Inheritance from Canvas
 
     this.selectionCanvas = document.createElement('canvas');
     this.image = image;

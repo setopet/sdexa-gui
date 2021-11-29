@@ -50,7 +50,6 @@ class Surview(Image):
             dy = shape_y - x
         self.soft_tissue_region = x, y, dx, dy
 
-
     def calculate_bone_density(self):
         if self.scatter is None:
             raise Exception("Bone density cannot be calculated without scatter image!")

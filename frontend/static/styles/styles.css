@@ -9,3 +9,10 @@
 .close-image-button {
     border: 2px solid; height: 26px; width: 26px; background-color: lightgrey
 }
+
+.results-table {
+    background-color: white;
+    margin-top:10px; width: 520px;
+    text-align: center;
+    border: 1px solid white
+}
