@@ -50,9 +50,10 @@ export function Controller(httpService, fileService, alertService) {
                 const resultCanvas = new ResultCanvas();
                 return resultCanvas.drawImage(blob);
             })
-            .then(() => {
+            .then(() => httpService.getJson("/surview/sdexa/bone-density-results"))
+            .then(results => {
                 animation.stop();
-                return new ResultModal().open();
+                return new ResultModal(results["abmd_mean"], results["abmd_std"]).open();
             })
             .catch(error => {
                 animation.stop();
@@ -61,10 +62,10 @@ export function Controller(httpService, fileService, alertService) {
     }
 
     const openSoftTissueSelectionModal = () => {
-        const selectionModal = new SelectionModal("Hello", {
+        const selectionModal = new SelectionModal("Select the soft tissue ", {
             onFinish: () => putSelectionRegion("surview/sdexa/soft-tissue-region"),
             onAbort: () => httpService.delete("/surview/scatter"),
-            onWindowChange: null, // TODO: putImage lädt danach das full image
+            onWindowChange: () => putImageWindow("surview"),
             onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
         });
         selectionModal.defaultWindowFields("0", "2000");

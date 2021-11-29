@@ -6,6 +6,10 @@ export function HttpService() {
         return request(url);
     }
 
+    this.getJson = (url) => {
+        return this.get(url).then(response => response.json());
+    }
+
     this.put = (url, data) => {
         return request(url, {
             method: 'PUT',

@@ -33,25 +33,43 @@ class Surview(Image):
         if scatter.shape != self.full_image.shape:
             raise Exception(f"Scatter image shape {scatter.shape} "
                             f" is not identical to surview image shape {self.full_image.shape}!")
+        x, y, dx, dy = self.region
+        scatter = insert_padding(scatter[x:x+dx, y:y+dy])
+        scatter = crop_image((x, y), scatter)
         self.scatter = scatter
 
     def delete_scatter(self):
         self.scatter = None
 
     def set_soft_tissue_region(self, region):
-        self.soft_tissue_region = self.get_corrected_region(region)
+        x, y, dx, dy = self.get_corrected_region(region)
+        shape_x, shape_y = self.image.shape
+        if x + dx > shape_x:
+            dx = shape_x - x
+        if y + dy > shape_y:
+            dy = shape_y - x
+        self.soft_tissue_region = x, y, dx, dy
+
 
     def calculate_bone_density(self):
         if self.scatter is None:
             raise Exception("Bone density cannot be calculated without scatter image!")
-        scatter = self.scatter
-        x, y, dx, dy = self.region
-        scatter = insert_padding(scatter[x:x+dx, y:y+dy])
-        scatter = crop_image((x, y), scatter)
         self.abmd_result =\
-            calculate_bone_density(self.image, self.get_segmentation(), scatter, self.soft_tissue_region)
+            calculate_bone_density(self.image, self.get_segmentation(), self.scatter, self.soft_tissue_region)
 
     def get_bone_density_image(self):
+        if self.abmd_result is None:
+            return None
         bone_density_matrix = self.abmd_result.bone_density_matrix
         image = np.where( bone_density_matrix > 0, bone_density_matrix, np.zeros(bone_density_matrix.shape))
-        return to_normalized_red_uint8_rgb(image)
+        return to_normalized_uint8_rgb(image)
+
+    def get_bone_density_mean(self):
+        if self.abmd_result is None:
+            return None
+        return self.abmd_result.bone_density_mean
+
+    def get_bone_density_std(self):
+        if self.abmd_result is None:
+            return None
+        return self.abmd_result.bone_density_std
