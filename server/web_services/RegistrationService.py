@@ -23,7 +23,7 @@ class RegistrationService(WebService):
     def get_projection_registration(self):
         user_session = self.user_service.get_user_session()
         projection = user_session.projection
-        if projection is None or projection.registration is None or not user_session.has_surview():
+        if projection is None or projection.registration is None:
             return NOT_FOUND
         return self.send_jpeg(projection.get_registration_overlay_image(user_session.surview.get_surview_array()))
 
