@@ -1,6 +1,7 @@
+import math
 from unittest import TestCase
 from backend import Surview
-from tests.backend.helpers import *
+from tests.helpers import *
 
 
 class SdexaTest(TestCase):
@@ -9,5 +10,7 @@ class SdexaTest(TestCase):
         image.set_scatter(get_txt_from_array(zeros))
         image.segmentation = zeros
         image.calculate_bone_density()
-        result = image.abmd_result.bone_density_matrix
-        self.assertEqual(result.shape, standard_shape)
+        result = image.abmd_result
+        self.assertEqual(result.bone_density_matrix.shape, standard_shape)
+        self.assertFalse(math.isnan(result.bone_density_mean))
+        self.assertFalse(math.isnan(result.bone_density_std))

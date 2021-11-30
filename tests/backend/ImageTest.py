@@ -1,6 +1,6 @@
 """@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import unittest
-from tests.backend.helpers import *
+from tests.helpers import *
 from backend import Image
 
 

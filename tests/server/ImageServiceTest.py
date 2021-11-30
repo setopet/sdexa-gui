@@ -1,15 +1,15 @@
 """@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import unittest
-import numpy as np
-from unittest.mock import Mock, patch, PropertyMock
-from server import SUCCESS, ProjectionService, UserSession
-from tests.server.test_app import get_test_app
+from unittest.mock import Mock, PropertyMock
+from server import SUCCESS, ProjectionService
+from tests.server.app import get_app
+from tests.helpers import *
 
 
 class ImageServiceTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = get_test_app()
+        cls.app = get_app()
 
     def setUp(self):
         self.user_session = Mock(name="user_session_mock")
@@ -18,8 +18,7 @@ class ImageServiceTest(unittest.TestCase):
         self.request_context = Mock(name="request_context_mock")
         self.projection_service = ProjectionService(self.request_context, self.user_service)
 
-    def test_gets_projection(self):
-        self.user_session.has_projection.return_value = True
+    def test_gets_image(self):
         with self.app.test_request_context():
             image_mock = Mock()
             image_mock.get_image.return_value=np.ones((512, 512, 3)).astype('uint8')
@@ -29,7 +28,18 @@ class ImageServiceTest(unittest.TestCase):
             self.assertEqual(result.content_type, 'image/jpeg')
             self.assertEqual(result.status_code, SUCCESS[1])
 
-    def test_uploads_projection(self):
+    def test_uploads_image(self):
         self.request_context.get.return_value.files = {'file': 'this is a file'}
         self.projection_service.upload_projection_image()
         self.user_session.set_projection.assert_called_with('this is a file')
+
+    def test_downloads_image(self):
+        with self.app.test_request_context():
+            image_mock = Mock()
+            image_mock.get_image_csv.return_value = get_txt_from_array(ones.astype('uint8')).getvalue()
+            property_mock = PropertyMock(return_value=image_mock)
+            type(self.user_session).projection = property_mock
+            result = self.projection_service.download_projection_image()
+            self.assertTrue("text/csv" in result.content_type)
+            self.assertEqual(result.status_code, SUCCESS[1])
+

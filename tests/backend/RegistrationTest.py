@@ -1,6 +1,6 @@
 from unittest import TestCase
 from backend import Projection
-from tests.backend.helpers import *
+from tests.helpers import *
 
 
 class RegistrationTest(TestCase):
