@@ -26,9 +26,10 @@ class ImageTest(unittest.TestCase):
         self.assertTrue(np.array_equal(image.full_image, array))
 
     def test_pads_image(self):
-        array = [[0, 1], [1, 0]]
+        array = np.zeros((512, 512))
         image = get_image_from_array(array)
-        self.assertTrue(np.array_equal(image.image[0:2, 0:2], array))
+        image.set_image_region((255, 255, 2, 2))
+        self.assertEqual(image.image.shape, (512, 512))
 
     def test_crops_image(self):
         array = np.ones((600, 600))
@@ -38,26 +39,32 @@ class ImageTest(unittest.TestCase):
     def test_sets_position_x(self):
         array = np.pad(np.ones((513, 1)), ((0, 0), (0, 512)), 'constant')
         image = get_image_from_array(array)
-        image.set_image_region((1, 0))
+        image.set_image_region((1, 0, 512, 512))
         self.assertTrue(np.array_equal(image.image, np.zeros((512, 512))))
 
     def test_sets_position_y(self):
         array = np.pad(np.ones((1, 513)), ((0, 512), (0, 0)), 'constant')
         image = get_image_from_array(array)
-        image.set_image_region((0, 1))
+        image.set_image_region((0, 1, 512, 512))
         self.assertTrue(np.array_equal(image.image, np.zeros((512, 512))))
+
+    def test_sets_region(self):
+        array = np.pad(np.ones((512, 512)), ((512, 0), (512, 0)), 'constant')
+        image = get_image_from_array(array)
+        image.set_image_region((512, 512, 512, 512))
+        self.assertTrue(np.array_equal(image.image, np.ones((512, 512))))
 
     def test_sets_position_negative(self):
         array = np.ones((513, 513))
         image = get_image_from_array(array)
-        image.set_image_region((-1, -1))
+        image.set_image_region((-1, -1, 512, 512))
         self.assertTrue(np.array_equal(image.image, np.ones((512, 512))))
 
     def test_sets_position_out_of_bound(self):
         array = np.ones((512, 512))
         image = get_image_from_array(array)
-        image.set_image_region((42, 42))
-        self.assertTrue(np.array_equal(image.image, np.ones((512, 512))))
+        image.set_image_region((42, 42, 512, 512))
+        self.assertEqual(image.image.shape, (512, 512))
 
     def test_returns_jpg_convertible_image(self):
         array = np.ones((512, 512))

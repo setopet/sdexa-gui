@@ -1,7 +1,7 @@
 /** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
-/** Manages a canvas element for drawing and obtaining information of an image  **/
 import {Canvas} from "./Canvas.js";
 
+/** Manages a canvas element for drawing and obtaining information of an image  **/
 export function ResultCanvas() {
     Canvas.call(this, "result-modal-canvas");
 

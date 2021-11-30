@@ -3,5 +3,6 @@ from flask import session
 
 
 class SessionContext:
+    """Gets the session context."""
     def get(self):
         return session

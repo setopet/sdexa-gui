@@ -1,12 +1,12 @@
 """@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 from abc import abstractmethod
 
-from backend import Surview, Image
+from backend import Image
 from server import *
 
 
 class ImageService(WebService):
-    """Handles REST routes for the surview image."""
+    """Provides methods to handle REST routes for images."""
     def __init__(self, request_context, user_service):
         super().__init__(request_context, user_service)
 

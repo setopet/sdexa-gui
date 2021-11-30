@@ -7,7 +7,7 @@ class Image:
     def __init__(self, file, window=None):
         self.full_image = get_array_from_file(file)
         self.region = None
-        self.image = self.set_image_region((0, 0, 0, 0))
+        self.image = self.set_image_region((0, 0, 512, 512))
         self.window = window
 
     def set_image_region(self, region):

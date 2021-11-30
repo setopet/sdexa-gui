@@ -1,12 +1,12 @@
 """@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import unittest
 import numpy as np
-from unittest.mock import Mock
-from server import SUCCESS, ProjectionService
+from unittest.mock import Mock, patch, PropertyMock
+from server import SUCCESS, ProjectionService, UserSession
 from tests.server.test_app import get_test_app
 
 
-class ProjectionServiceTest(unittest.TestCase):
+class ImageServiceTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = get_test_app()
@@ -20,14 +20,16 @@ class ProjectionServiceTest(unittest.TestCase):
 
     def test_gets_projection(self):
         self.user_session.has_projection.return_value = True
-        self.user_session.show_projection_registration = False
-        self.user_session.get_projection_image.return_value = np.ones((512, 512, 3)).astype('uint8')
         with self.app.test_request_context():
-            result = self.projection_service.get_projection()
+            image_mock = Mock()
+            image_mock.get_image.return_value=np.ones((512, 512, 3)).astype('uint8')
+            property_mock = PropertyMock(return_value=image_mock)
+            type(self.user_session).projection = property_mock
+            result = self.projection_service.get_projection_image()
             self.assertEqual(result.content_type, 'image/jpeg')
             self.assertEqual(result.status_code, SUCCESS[1])
 
     def test_uploads_projection(self):
         self.request_context.get.return_value.files = {'file': 'this is a file'}
-        self.projection_service.upload_projection()
+        self.projection_service.upload_projection_image()
         self.user_session.set_projection.assert_called_with('this is a file')

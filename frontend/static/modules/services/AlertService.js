@@ -16,13 +16,14 @@ export function AlertService() {
         alertList.innerHTML += "\n" + getAlertHtml(message, "info");
     }
 
-    /** Adds an error alert with the messages of the error to the alert list. **/
+    /** Adds an error alert with the message of the error to the alert list. **/
     this.error = error => {
         alertList.innerHTML += "\n" + getAlertHtml(`
             <strong>An error occured while processing your request:</strong> ${error.message}`,
             "danger");
     }
 
+    /** Clears the alert list  **/
     this.clear = () => {
         alertList.innerHTML = "";
     }

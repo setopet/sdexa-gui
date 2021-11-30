@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 from backend import Image, Projection
 from server import *
 
@@ -21,8 +22,7 @@ class ProjectionService(ImageService):
 
     def set_image_on_session(self, file):
         user_session = self.user_service.get_user_session()
-        projection = Projection(file)
-        user_session.projection = projection
+        user_session.set_projection(file)
 
     def delete_image_from_session(self):
         user_session = self.user_service.get_user_session()

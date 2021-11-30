@@ -1,3 +1,4 @@
+"""@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 from backend import Image, Surview
 from server import *
 
@@ -21,12 +22,12 @@ class SurviewService(ImageService):
 
     def set_image_on_session(self, file):
         user_session = self.user_service.get_user_session()
-        surview = Surview(file)
-        user_session.surview = surview
+        user_session.set_surview(file)
 
     def delete_image_from_session(self):
         user_session = self.user_service.get_user_session()
-        user_session.projection.delete_registration()
+        if user_session.projection is not None:
+            user_session.projection.delete_registration()
         del user_session.surview
 
     def get_surview_image(self):
