@@ -1,4 +1,5 @@
 """Based on a script of Lorenz Birnbacher (lorenz.birnbacher@tum.de)"""
+import math
 import numpy as np
 from backend.sdexa.Result import Result
 from backend.sdexa.constants import *
@@ -20,7 +21,7 @@ def background_correction(image):
 
 
 def calculate_epl(image, mu):
-    mm_to_cm_inverse = 1/10  # unit correction
+    mm_to_cm_inverse = 1/10  # 1/mm to 1/cm
     return image / (prefactor.value * mu.value) * mm_to_cm_inverse
 
 
@@ -52,9 +53,18 @@ def calculate_bone_density(image, mask, scatter, region_of_interest):
     r_st = np.mean(p50_st[x0:x0+dx, y0:y0+dy] / p200_st[x0:x0+dx, y0:y0+dy])
     bone = (-r_st * p200 + p50) / (mu_bone_50.value - mu_bone_200.value * r_st)
     bone_density_matrix = mask_corrected * bone
-    bone_density_mean = np.mean(bone[np.where(mask_corrected > 0.5)])
-    bone_density_std = np.std(bone[np.where(mask_corrected > 0.5)])
+    bone_above_threshold = bone[np.where(mask_corrected > 0.5)]
+    if bone_above_threshold.size == 0:
+        bone_above_threshold = [0]
+    bone_density_mean = np.nanmean(bone_above_threshold)
+    bone_density_std = np.nanstd(bone_above_threshold)
+    mean_value_calibrated = calibrate_bone_density_mean(bone_density_mean)
+    std_value_calibrated = calibrate_bone_density_std(bone_density_std)
+    if math.isnan(mean_value_calibrated):
+        mean_value_calibrated = 0
+    if math.isnan(std_value_calibrated):
+        std_value_calibrated = 0
     return Result(
-        bone_density_matrix,
-        calibrate_bone_density_mean(bone_density_mean),
-        calibrate_bone_density_std(bone_density_std))
+        np.where(np.isnan(bone_density_matrix), np.zeros(bone_density_matrix.shape), bone_density_matrix),
+        mean_value_calibrated,
+        std_value_calibrated)

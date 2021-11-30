@@ -19,10 +19,11 @@ class Projection(Image):
             return None
         return image_to_csv(self.registration, format_string="%i")
 
-    def register_on_image(self, image):
+    def register_on_image(self, image, number_iterations=10000):
         self.registration = create_mask(perform_registration(
             to_uint8(normalize_array(image)),
-            to_uint8(normalize_array(self.image))), 20)
+            to_uint8(normalize_array(self.image)),
+            number_iterations), 20)
 
     def delete_registration(self):
         self.registration = None

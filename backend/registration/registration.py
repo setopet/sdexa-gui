@@ -2,7 +2,7 @@
 import SimpleITK as siTk
 
 
-def perform_registration(fixed_image_array, moving_image_array):
+def perform_registration(fixed_image_array, moving_image_array, number_iterations):
     """:returns the moving image registered on the fixed image."""
     fixed_image = siTk.GetImageFromArray(fixed_image_array)
     moving_image = siTk.GetImageFromArray(moving_image_array)
@@ -11,13 +11,13 @@ def perform_registration(fixed_image_array, moving_image_array):
     image_filter.SetMovingImage(moving_image)
     image_filter.LogToFileOff()
     image_filter.LogToConsoleOff()
+    image_filter.SetParameter("MaximumNumberOfIterations", str(number_iterations))
     set_parameters(image_filter)
     return siTk.GetArrayFromImage(image_filter.Execute())
 
 
 def set_parameters(image_filter):
     image_filter.SetParameter("Transform", "TranslationTransform")
-    image_filter.SetParameter("MaximumNumberOfIterations", "10000")
     image_filter.SetParameter("AutomaticParameterEstimation", "true")
     image_filter.SetParameter("CheckNumberOfSamples", "true")
     image_filter.SetParameter("DefaultPixelValue", "0")
