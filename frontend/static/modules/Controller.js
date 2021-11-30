@@ -1,10 +1,10 @@
 /** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
-import {baseUrl} from "./config.js";
 import {SelectionCanvas} from "./canvas/SelectionCanvas.js";
 import {LoadingAnimation} from "./LoadingAnimation.js";
 import {SelectionModal} from "./modal/SelectionModal.js";
 import {ResultModal} from "./modal/ResultModal.js";
 import {ResultCanvas} from "./canvas/ResultCanvas.js";
+
 
 /** Central control object, which is visible in the templates. **/
 export function Controller(httpService, fileService, alertService) {
@@ -17,21 +17,21 @@ export function Controller(httpService, fileService, alertService) {
     }
 
     vm.switchImageView = (route) => {
-        httpService.put(baseUrl + route)
+        httpService.put(route)
             .then(reloadPage)
             .catch(alertService.error);
     }
 
     vm.downloadImage = (route, fileName) => {
         httpService
-            .downloadFile(baseUrl + route, fileName)
+            .downloadFile(route, fileName)
             .catch(alertService.error);
     }
 
     vm.uploadScatter = (file) => {
         const animation = new LoadingAnimation("scatter-input-label");
         httpService
-            .uploadFile(file, baseUrl + "surview/scatter")
+            .uploadFile(file, "surview/scatter")
             .then(() => getImage("surview"))
             .then(blob => initModalCanvas(blob, 50, 50))
             .then(animation.stop)
@@ -85,7 +85,7 @@ export function Controller(httpService, fileService, alertService) {
             onFinish: () => putSelectionRegion("surview/sdexa/soft-tissue-region"),
             onAbort: () => httpService.delete("/surview/scatter"),
             onWindowChange: (windowMin, windowMax) => {
-                httpService.put(baseUrl + "surview/window", { min: windowMin, max: windowMax })
+                httpService.put("surview/window", { min: windowMin, max: windowMax })
                     .then(() => getImage("surview"))
                     .then(vm.modalCanvas.updateImage)
             },
@@ -109,7 +109,7 @@ export function Controller(httpService, fileService, alertService) {
 
     const uploadImage = (file, imageName, modalTitle) => {
         const animation = new LoadingAnimation(imageName + "-spinner");
-        httpService.uploadFile(file, baseUrl + imageName)
+        httpService.uploadFile(file, imageName)
             .then(() => getImage(imageName + "/full"))
             .then(blob => initModalCanvas(blob, 512, 512))
             .then(animation.stop)
@@ -122,14 +122,14 @@ export function Controller(httpService, fileService, alertService) {
     }
 
     const getPutImageWindowFunction = (route) => (windowMin, windowMax) => {
-        httpService.put(baseUrl + route + "/window", { min: windowMin, max: windowMax })
+        httpService.put(route + "/window", { min: windowMin, max: windowMax })
             .then(() => getImage(route + "/full"))
             .then(vm.modalCanvas.updateImage)
     }
 
     const openSelectionModal = (imageName, title) => {
         const selectionModal = new SelectionModal(title, {
-            onFinish: () => putSelectionRegion(baseUrl + imageName + "/position"),
+            onFinish: () => putSelectionRegion(imageName + "/position"),
             onAbort: () => vm.deleteImage(imageName),
             onWindowChange: getPutImageWindowFunction(imageName),
             onSelectionSizeChange: vm.modalCanvas.updateSelectionSize
@@ -145,7 +145,7 @@ export function Controller(httpService, fileService, alertService) {
     }
 
     const getImage = (route) => {
-        return httpService.get(baseUrl + route)
+        return httpService.get(route)
             .then(response => response.blob())
     }
 
