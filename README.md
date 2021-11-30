@@ -24,3 +24,8 @@ It is also usable for other kinds of tasks related to medical image processing, 
      ```
     $ python app.py
     ```
+
+- If you want to use the software locally, visit `http://localhost:5000` in your browser. If that does not work, take the <u>url</u> from the console output:
+    ```
+    * Running on <url should show up here> (Press CTRL+C to quit)
+    ```
