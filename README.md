@@ -5,8 +5,13 @@ This web application is a software primarily for calculating the <b>areal bone m
 It is also usable for other kinds of tasks related to medical image processing, like <b>image registration</b>.
 
 
-### Getting started: 
+### Getting started:
+- Install Python 3.9
+
+
 - It is recommended to create a new virtual environment (https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+
+
 - Install the required dependencies:
     ```
     $ pip install -r requirements.txt
@@ -19,11 +24,13 @@ It is also usable for other kinds of tasks related to medical image processing, 
     ```
     $ python test.py
     ```
-    
+
+
 - Start the app
      ```
     $ python app.py
     ```
+  
 
 - If you want to use the software locally, visit `http://localhost:5000` in your browser. If that does not work, take the <u>url</u> from the console output:
     ```
