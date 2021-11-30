@@ -19,7 +19,7 @@ export function ResultModal(result) {
     this.updateImageData = (imageData) => {
         positionXElement.innerHTML = `X: ${imageData.x}`;
         positionYElement.innerHTML = `Y: ${imageData.y}`;
-        positionValueElement.innerHTML = `Value (uncalibrated): ${reverseNormalisation(imageData.value)}`;
+        positionValueElement.innerHTML = `Value: ${reverseNormalisation(imageData.value)}`;
     }
 
     const reverseNormalisation = (value) => {
