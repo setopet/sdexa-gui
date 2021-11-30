@@ -1,6 +1,6 @@
 """@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 from flask import Flask
-from config import load_dev_config
+from config import CONFIG
 
 
 def get_app():
@@ -9,5 +9,5 @@ def get_app():
                 static_url_path='',
                 template_folder=root_path + 'frontend/templates',
                 static_folder=root_path + 'frontend/static')
-    load_dev_config(app)
+    app.secret_key = CONFIG['SECRET_KEY']
     return app

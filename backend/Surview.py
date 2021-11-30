@@ -1,7 +1,7 @@
 """@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 import numpy as np
-from backend.sdexa import calculate_bone_density
 from config import CONFIG
+from backend.sdexa import calculate_bone_density
 from backend import *
 
 

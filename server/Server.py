@@ -22,7 +22,6 @@ class Server:
     def get_root_page(self):
         user_session = self.user_service.get_user_session()
         return render_template('index.html',
-                               base_url=CONFIG['BASE_URL'],
                                surview_present=user_session.has_surview(),
                                scatter_present=user_session.has_scatter(),
                                projection_present=user_session.has_projection(),

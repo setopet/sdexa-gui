@@ -1,0 +1,2 @@
+CHECKPOINT_PATH: './backend/segmentation/checkpoints/0912_194939.ckpt'
+SECRET_KEY: '010f7321c62f46569f6552d1d7ec1fde'
