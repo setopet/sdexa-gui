@@ -25,4 +25,5 @@ class Server:
                                base_url=CONFIG['BASE_URL'],
                                surview_present=user_session.has_surview(),
                                scatter_present=user_session.has_scatter(),
-                               projection_present=user_session.has_projection())
+                               projection_present=user_session.has_projection(),
+                               registration_present=user_session.has_registration())

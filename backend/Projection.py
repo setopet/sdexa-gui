@@ -6,14 +6,23 @@ class Projection(Image):
     """Loads and manages the projection image as array."""
     def __init__(self, file, window=None):
         super().__init__(file, window)
-        self.registration_result = None
+        self.registration = None
         return
 
-    def get_registration_overlay_image(self, surview):
-        return overlay_with_mask(surview, self.get_registration_mask(surview), 50, self.window)
+    def get_registration_overlay_image(self, image):
+        if self.registration is None:
+            return None
+        return overlay_with_mask(image, self.registration, 50, self.window)
 
-    def get_registration_result_csv(self, surview):
-        return image_to_csv(self.get_registration_mask(surview), format_string="%i")
+    def get_registration_result_csv(self):
+        if self.registration is None:
+            return None
+        return image_to_csv(self.registration, format_string="%i")
 
-    def get_registration_mask(self, surview):
-        return create_mask(perform_registration(surview, self.image), 15)
+    def register_on_image(self, image):
+        self.registration = create_mask(perform_registration(
+            to_uint8(normalize_array(image)),
+            to_uint8(normalize_array(self.image))), 20)
+
+    def delete_registration(self):
+        self.registration = None

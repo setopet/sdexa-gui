@@ -51,6 +51,9 @@ class UserSession:
     def has_projection(self):
         return self.projection is not None
 
+    def has_registration(self):
+        return self.projection is not None and self.projection.registration is not None
+
     def get_projection_image(self):
         if self.projection is None:
             return None
@@ -59,34 +62,3 @@ class UserSession:
     def delete_projection(self):
         self.projection = None
 
-    def get_full_projection_image(self):
-        if self.projection is None:
-            return None
-        return self.projection.get_full_image()
-
-    def hide_projection_registration(self):
-        self.show_projection_registration = False
-
-    def switch_projection_registration(self):
-        self.show_projection_registration = not self.show_projection_registration
-
-    def set_projection_image_position(self, position_x, position_y):
-        self.projection.set_image_region((position_x, position_y))
-
-    def set_projection_window(self, window):
-        self.projection.set_window(window)
-
-    def get_projection_image_csv(self):
-        if self.projection is None:
-            return None
-        return self.projection.get_image_csv()
-
-    def get_projection_registration_overlay_image(self):
-        if self.projection is None or self.__surview is None:
-            return None
-        return self.projection.get_registration_overlay_image(self.__surview.get_surview_array())
-
-    def get_projection_registration_csv(self):
-        if self.projection is None or self.__surview is None:
-            return None
-        return self.projection.get_registration_result_csv(self.__surview.get_surview_array())

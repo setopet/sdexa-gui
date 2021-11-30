@@ -63,6 +63,22 @@ export function Controller(httpService, fileService, alertService) {
             });
     }
 
+    vm.clickPerformRegistration = () => {
+        alertService.clear();
+        alertService.message("<strong>Image registration is in process.</strong> This might take a minute. " +
+            "Please wait for the page to reload.");
+        const animation = new LoadingAnimation("perform-registration-button")
+        httpService.put("projection/registration")
+            .then(() => {
+                animation.stop();
+                return reloadPage();
+            })
+            .catch(error => {
+                animation.stop();
+                alertService.error(error);
+            });
+    }
+
     const openSoftTissueSelectionModal = () => {
         const selectionModal = new SelectionModal("Select an area of soft tissue area for the aBMD calculation. " +
             "You can adapt the window and selection size to ensure that there is not hard tissue in the selected area.", {

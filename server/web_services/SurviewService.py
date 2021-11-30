@@ -26,6 +26,7 @@ class SurviewService(ImageService):
 
     def delete_image_from_session(self):
         user_session = self.user_service.get_user_session()
+        user_session.projection.delete_registration()
         del user_session.surview
 
     def get_surview_image(self):

@@ -31,7 +31,7 @@ def to_normalized_uint8_rgb(image, window=None):
     return to_uint8(to_normalized_rgb(image, window))
 
 
-def normalize_array(image, max_value):
+def normalize_array(image, max_value=255):
     result = image - image.min()
     maximum = result.max()
     if maximum == 0:

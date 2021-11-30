@@ -5,7 +5,14 @@
                  data-bs-interval="false"
                  data-bs-ride="carousel">
               <div class="carousel-inner">
-              {% if surview_present %}
+                <div class="carousel-item active">
+                    <img src="{{ base_url + '/projection' }}"
+                    alt="Error: image could not get loaded">
+                      <div class="carousel-caption d-none d-md-block">
+                          <p><small>CT 2D projection</small></p>
+                      </div>
+                </div>
+                {% if registration_present %}
                 <div class="carousel-item">
                     <img src="{{ base_url + '/projection/registration' }}"
                     alt="Error: image could not get loaded">
@@ -14,13 +21,6 @@
                       </div>
                 </div>
               {% endif %}
-                <div class="carousel-item active">
-                    <img src="{{ base_url + '/projection' }}"
-                    alt="Error: image could not get loaded">
-                      <div class="carousel-caption d-none d-md-block">
-                          <p><small>CT 2D projection</small></p>
-                      </div>
-                </div>
               </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#projectionCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -31,11 +31,19 @@
                 <span class="visually-hidden">Next</span>
               </button>
         </div>
+        {% if surview_present %}
+            <div >
+               <button class="btn btn-secondary big-button d-flex justify-content-center align-items-center "
+                      id="perform-registration-button" onclick="$ctrl.clickPerformRegistration()">
+                   Perform Registration
+               </button>
+            </div>
+        {% endif %}
         <button class="btn-outline-dark"
                     onclick="$ctrl.downloadImage('projection/download', 'projection.csv')">
             Download Image
         </button>
-        {% if surview_present %}
+        {% if surview_present and registration_present %}
             <button class="btn-outline-dark"
                         onclick="$ctrl.downloadImage('projection/registration/download', 'registration.csv')">
                 Download Registration

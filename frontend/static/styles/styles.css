@@ -26,3 +26,8 @@
     width: 512px;
     border: 1px solid
 }
+
+.big-button {
+    width: 512px;
+    height: 38px
+}
