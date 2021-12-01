@@ -1,6 +1,5 @@
 """@author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM"""
 from flask import render_template
-from config import CONFIG
 from server import *
 
 

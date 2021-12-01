@@ -1,8 +1,8 @@
 <div class="modal fade" id="result-modal" tabindex="-1" aria-labelledby="result-modal-title" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
     <div class="modal-content" style="background-color: black">
       <div class="modal-header">
-        <h5 class="modal-title" id="result-modal-title" style="color: white">aBMD calculation results</h5>
+        <h5 class="modal-title" id="result-modal-title" style="color: white">SDEXA - Click and select a segment</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="result-modal-close-button-top"
                 aria-label="Close"></button>
       </div>
@@ -11,8 +11,8 @@
           <div>
                 <table class="table table-dark results-table">
                     <tr>
-                        <th scope="col">aBMD mean</th>
-                        <th scope="col">aBMD std</th>
+                        <th scope="col">aBMD mean [g/cm²]</th>
+                        <th scope="col">aBMD std [g/cm²]</th>
                     </tr>
                     <tr>
                         <td id="abmd-mean-cell"></td>
@@ -32,6 +32,7 @@
             <span style="color:white" id="result-modal-position-x"></span>
             <span style="color:white" id="result-modal-position-y"></span>
             <span style="color:white" id="result-modal-position-value"></span>
+            <span style="color:yellow; margin-left:90px" id="result-modal-segment-mean"></span>
         </span>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="result-modal-close-button">
             Close</button>

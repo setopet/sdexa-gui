@@ -25,13 +25,14 @@ export function Canvas(id, minimumCanvasSize) {
         const element = new Image();
         element.src = URL.createObjectURL(image);
         const context = this.canvas.getContext("2d");
-        return new Promise(resolve => {
+        this.promise = new Promise(resolve => {
             element.onload = event => {
                 adaptSize(element);
                 context.drawImage(event.target, 0, 0);
                 resolve(event.target);
             };
         });
+        return this.promise;
     }
  
     return this; 
