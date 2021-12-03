@@ -18,10 +18,6 @@ def to_rgb(image):
     return _np.stack([image, image, image]).transpose((1, 2, 0))
 
 
-def to_red_rgb(image):
-    return _np.stack([image, _np.zeros(image.shape), _np.zeros(image.shape)]).transpose((1, 2, 0))
-
-
 def to_normalized_rgb(image, window):
     image = to_normalized_image(image, window)
     return to_rgb(image)

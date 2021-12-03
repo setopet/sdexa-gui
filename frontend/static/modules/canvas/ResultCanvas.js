@@ -2,7 +2,7 @@
 import {Canvas} from "./Canvas.js";
 import {Pixel} from "./Pixel.js";
 
-/** Manages a canvas element for drawing and obtaining information of an image  **/
+/** Manages a canvas element for obtaining information and segmentation from an image  **/
 export function ResultCanvas(blob) {
     Canvas.call(this, "result-modal-canvas");
     this.segment = [];
@@ -38,10 +38,9 @@ export function ResultCanvas(blob) {
     }
 
     const getImageDataFromMousePosition = mouseEvent => {
-        const context = this.canvas.getContext("2d");
         const x = mouseEvent.offsetX;
         const y = mouseEvent.offsetY;
-        const value = context.getImageData(x, y, 1, 1).data[0];
+        const value = this.pixels[y][x].getValue();
         return {
             x: x,
             y: y,
