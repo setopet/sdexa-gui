@@ -52,4 +52,3 @@ class WebService:
             return int(string)
         except:
             return None
-

@@ -16,12 +16,6 @@ export function Controller(httpService, fileService, alertService) {
             .catch(alertService.error);
     }
 
-    vm.switchImageView = (route) => {
-        httpService.put(route)
-            .then(reloadPage)
-            .catch(alertService.error);
-    }
-
     vm.downloadImage = (route, fileName) => {
         httpService
             .downloadFile(route, fileName)
@@ -155,21 +149,29 @@ export function Controller(httpService, fileService, alertService) {
         return Promise.resolve(this);
     }
 
-    const init = () => {
-        const surviewUploadCallback = file => uploadImage(file, "surview",
-            "Move the rectangle by clicking on the surview image to select the area for segmenation. " +
-            "Click the OK button when you are finished.");
-        const projectionUploadCallback = file => uploadImage(file, "projection",
-            "Move the rectangle by clicking on the projection image to select the area for registration. " +
-            "Click the OK button when you are finished.");
-        fileService.watchFileInput("surview-input", surviewUploadCallback);
-        fileService.watchFileDrop("surview-drop", surviewUploadCallback);
-        fileService.watchFileInput("projection-input", projectionUploadCallback);
-        fileService.watchFileDrop("projection-drop", projectionUploadCallback);
-        fileService.watchFileInput("scatter-input", vm.uploadScatter);
-    }
+    const surviewUploadCallback = file => uploadImage(file, "surview",
+        "Move the rectangle by clicking on the surview image to select the area for segmenation. " +
+        "Click the OK button when you are finished.");
 
-    init();
+    const projectionUploadCallback = file => uploadImage(file, "projection",
+        "Move the rectangle by clicking on the projection image to select the area for registration. " +
+        "Click the OK button when you are finished.");
+
+    fileService.watchFileInput("surview-input", surviewUploadCallback);
+    fileService.watchFileDrop("surview-drop", surviewUploadCallback);
+    fileService.watchFileInput("projection-input", projectionUploadCallback);
+    fileService.watchFileDrop("projection-drop", projectionUploadCallback);
+    fileService.watchFileInput("segmentation-input", file => {
+        const animation = new LoadingAnimation("segmentation-input-label");
+        httpService.uploadFile(file, "/surview/segmentation").then(() => {
+            animation.stop();
+            return reloadPage();
+        }).catch(error => {
+            animation.stop();
+            alertService.error(error);
+        });
+    })
+    fileService.watchFileInput("scatter-input", vm.uploadScatter);
 
     return vm;
 }

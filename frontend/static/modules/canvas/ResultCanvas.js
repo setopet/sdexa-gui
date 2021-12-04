@@ -8,6 +8,8 @@ export function ResultCanvas(blob) {
     this.segment = [];
     this.threshold = 10; // Threshold über Knopf einstellen
 
+    /** Watches mouse click on the canvas and passes the current segment to
+     * @param onClick **/
     this.watchMouseClick = (onClick) => {
             this.canvas.onclick = event => {
             const imageData = getImageDataFromMousePosition(event);
@@ -48,10 +50,11 @@ export function ResultCanvas(blob) {
         };
     }
 
-    const markSegment = (x, y, opacity) => {
+    /* Gets the new segment and marks it in yellow */
+    const markSegment = (posX, posY, opacity) => {
         const context = this.canvas.getContext("2d");
         clearSegment();
-        const segment = getSegment(y, x);  // offsetX and Y are counterintuitive, so we switch them
+        const segment = getSegment(posY, posX);  // offsetX and Y are counterintuitive, so we switch them
         for (let pixel of segment) {
             pixel.setYellow(this.imageData.data, opacity);
         }
@@ -59,6 +62,7 @@ export function ResultCanvas(blob) {
         this.segment = segment;
     }
 
+    /* Clears the segment and restores original grey shades */
     const clearSegment = () => {
         const context = this.canvas.getContext("2d");
         for (let pixel of this.segment) {
@@ -73,6 +77,7 @@ export function ResultCanvas(blob) {
         return context.getImageData(0, 0, this.width, this.height);
     }
 
+    /* Converts the ImageData 1D array to a 2D pixel matrix for better accessibility */
     const getPixels = (imageData) => {
         const pixels = new Array(this.height);
         for (let i = 0; i < pixels.length; i++) {
@@ -88,6 +93,7 @@ export function ResultCanvas(blob) {
         return pixels;
     }
 
+    /* Performs a DFS with threshold to get the segment */
     const getSegment = (posX, posY) => {
         const startPixel = this.pixels[posX][posY];
         const visited = new Set();
@@ -107,6 +113,7 @@ export function ResultCanvas(blob) {
         return segment;
     }
 
+    /* Gets all neighboring pixels */
     const getNeighbors = (pixel) => {
         const neighbors = [];
         const x = pixel.getX();
@@ -126,7 +133,6 @@ export function ResultCanvas(blob) {
         if (y < this.pixels[0].length-1) {
             neighbors.push(this.pixels[x][y+1]);
         }
-
         if (x < this.pixels.length) {
             neighbors.push(this.pixels[x+1][y]);
             if (y > 0) {

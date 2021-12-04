@@ -113,3 +113,9 @@ def crop_image(position, image, new_size=512):
     if y+new_size > shape_y:
         y = shape_y - new_size
     return image[x:x + new_size, y:y + new_size]
+
+
+def pad_and_crop_image(image, region):
+    x, y, dx, dy = region
+    image = insert_padding(image[x:x + dx, y:y + dy])
+    return crop_image((x, y), image)

@@ -39,9 +39,18 @@
 </div>
 {% if surview_present %}
     <div>
-        <div >
-           <label style="width: 512px; height: 38px"
-                  class="btn btn-secondary d-flex justify-content-center align-items-center"
+        <div>
+           <label
+                  class="big-button btn btn-secondary d-flex justify-content-center align-items-center"
+                  id="segmentation-input-label" for="segmentation-input">
+               Custom Segmentation
+           </label>
+            <input style="display:none;" type="file"  id="segmentation-input">
+        </div>
+
+        <div>
+           <label
+                  class="big-button btn btn-primary d-flex justify-content-center align-items-center"
                   id="scatter-input-label" for="scatter-input">
                Upload Scatter
            </label>

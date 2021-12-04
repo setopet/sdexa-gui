@@ -13,9 +13,7 @@ class Image:
     def set_image_region(self, region):
         """Set the position on the full image for the selected section."""
         self.region = self.get_corrected_region(region)
-        x, y, dx, dy = self.region
-        image = insert_padding(self.full_image[x:x+dx, y:y+dy])
-        self.image = crop_image((x, y), image)
+        self.image = pad_and_crop_image(self.full_image, self.region)
         return self.image
 
     def set_window(self, window):

@@ -5,16 +5,6 @@ from backend.sdexa.Result import Result
 from backend.sdexa.constants import *
 
 
-def calibrate_bone_density_mean(bone_density_mean):
-    """Please check the description for the used constants"""
-    return bone_density_mean * bone_density_calibration_factor_a.value + bone_density_calibration_factor_b.value
-
-
-def calibrate_bone_density_std(bone_density_std):
-    """Please check the description for the used constants"""
-    return bone_density_std * bone_density_calibration_factor_a.value
-
-
 def background_correction(image):
     """To be done"""
     return image
@@ -41,7 +31,6 @@ def calculate_bone_density(image, mask, scatter, region_of_interest):
     Here, potential adaption to mask y-offset and width of soft tissue area.
     """
     image_corrected = background_correction(image)
-    mask_corrected = background_correction(mask)
     scatter_corrected = background_correction(scatter)
     photo_epl = calculate_epl(image_corrected, mu_p)
     compton_epl = calculate_epl(scatter_corrected, mu_c)
@@ -52,16 +41,13 @@ def calculate_bone_density(image, mask, scatter, region_of_interest):
     x0, y0, dx, dy = region_of_interest
     r_st = np.mean(p50_st[x0:x0+dx, y0:y0+dy] / p200_st[x0:x0+dx, y0:y0+dy])
     bone = (-r_st * p200 + p50) / (mu_bone_50.value - mu_bone_200.value * r_st)
-    bone_density_matrix = mask_corrected * bone
-    calculation_values = bone_density_matrix[np.where(mask_corrected > 0.5)]
-    if calculation_values.size == 0:
-        calculation_values = [0]
+    bone_density_matrix = mask * bone
+    calculation_values = bone_density_matrix[np.where(mask)]
+    calculation_values = [0] if calculation_values.size == 0 else calculation_values
     bone_density_mean = np.nanmean(calculation_values)
     bone_density_std = np.nanstd(calculation_values)
-    mean_value_calibrated = calibrate_bone_density_mean(bone_density_mean)
-    std_value_calibrated = calibrate_bone_density_std(bone_density_std)
     return Result(
         np.where(np.isnan(bone_density_matrix), np.zeros(bone_density_matrix.shape), bone_density_matrix),
-        0 if math.isnan(mean_value_calibrated) else mean_value_calibrated,
-        0 if math.isnan(std_value_calibrated) else std_value_calibrated
+        0 if math.isnan(bone_density_mean) else bone_density_mean,
+        0 if math.isnan(bone_density_std) else bone_density_std
     )

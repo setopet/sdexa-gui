@@ -22,6 +22,13 @@ class Surview(Image):
             self.segmentation = perform_segmentation(self.image, CONFIG['CHECKPOINT_PATH'])
         return self.segmentation
 
+    def set_custom_segmentation(self, file):
+        custom_segmentation = create_mask(get_array_from_file(file))
+        if custom_segmentation.shape == (512, 512):
+            self.segmentation = custom_segmentation
+        elif custom_segmentation.shape == self.full_image.shape:
+            self.segmentation = pad_and_crop_image(custom_segmentation, self.region)
+
     def get_segmentation_overlay_image(self):
         return overlay_with_mask(self.image, self.get_segmentation(), 50, self.window)
 
@@ -33,10 +40,7 @@ class Surview(Image):
         if scatter.shape != self.full_image.shape:
             raise Exception(f"Scatter image shape {scatter.shape} "
                             f" is not identical to surview image shape {self.full_image.shape}!")
-        x, y, dx, dy = self.region
-        scatter = insert_padding(scatter[x:x+dx, y:y+dy])
-        scatter = crop_image((x, y), scatter)
-        self.scatter = scatter
+        self.scatter = pad_and_crop_image(scatter, self.region)
 
     def delete_scatter(self):
         self.scatter = None

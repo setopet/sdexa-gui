@@ -27,9 +27,3 @@ mu_soft_tissue_200_c = Constant("mu_soft_tissue_200_c", 1.36283E-1, "cm2/g",
 mu_adipose_tissue_50 = Constant("mu_adipose_tissue_50", 2.120E-1, "cm2/g", "TISSUE, ADIPOSE (ICRU-44)")
 mu_adipose_tissue_200 = Constant("mu_adipose_tissue_200", 1.364E-1, "cm2/g", "TISSUE, ADIPOSE (ICRU-44)")
 
-bone_density_calibration_factor_a = Constant("bone_density_calibration_factor_a", 1.0745, None,
-                                             "Values by prior work, have to be checked."
-                                             " Are determined without background correction")
-bone_density_calibration_factor_b = Constant("bone_density_calibration_factor_b", 0.1359, None,
-                                             "Values by prior work, have to be checked."
-                                             " Are determined without background correction")

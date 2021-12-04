@@ -1,5 +1,8 @@
+/** @author Sebastian Peter (s.peter@tum.de) - student of computer science at TUM **/
+/** Manages a pixel by wrapping access to the ImageData for better accessibility **/
 export function Pixel(index, x, y, red, green, blue, alpha) {
-    const originalValue = red;
+    const originalValue = red;  // asserting the image is gray scale with identical color channels
+    const uint8Max = 255;
     this.red = red;
     this.green = green;
     this.blue = blue;
@@ -17,7 +20,7 @@ export function Pixel(index, x, y, red, green, blue, alpha) {
         this.green = 150;
         this.red = 150;
         this.blue = 0;
-        this.alpha = opacity * 255;
+        this.alpha = opacity * uint8Max;
         return this.setImageData(imageData);
     }
 
@@ -26,7 +29,7 @@ export function Pixel(index, x, y, red, green, blue, alpha) {
         this.red = value;
         this.green = value;
         this.blue = value;
-        this.alpha = 255;
+        this.alpha = uint8Max;
         return this.setImageData(imageData);
     }
 
