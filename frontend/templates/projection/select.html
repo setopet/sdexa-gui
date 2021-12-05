@@ -3,7 +3,9 @@
     <input style="display:none;" id="projection-input" name="projection" type="file" title="Upload Projection">
 
     {% if projection_present %}
-        <button type="button" onclick="$ctrl.deleteImage('/projection')"
+        <button type="button"
+                onclick="!window.$ctrl && setTimeout(() => $ctrl.deleteImage('/projection'), 1000) ||
+                    $ctrl.deleteImage('/projection')"
         class="btn-close float-end close-image-button"></button>
     {% endif %}
 </div>

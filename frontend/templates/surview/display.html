@@ -60,7 +60,7 @@
            <button {{ "disabled" if not scatter_present }} style="width: 512px; height: 38px"
                   class="btn btn-success d-flex justify-content-center align-items-center"
                   id="calculate-abmd-button"
-                  onclick="$ctrl.clickCalculate()">
+                  onclick="!window.$ctrl && setTimeout(() => $ctrl.clickCalculate(), 1000) || $ctrl.clickCalculate()">
                Calculate aBMD
            </button>
         </div>
