@@ -13,7 +13,7 @@ export function ResultCanvas(blob) {
     this.watchMouseClick = (onClick) => {
             this.canvas.onclick = event => {
             const imageData = getImageDataFromMousePosition(event);
-            if (imageData.value > this.threshold) {
+            if (imageData && imageData.value > this.threshold) {
                 this.segmentClicked = true;
                 markSegment(imageData.x, imageData.y, 1);
                 onClick(this.segment);
@@ -30,7 +30,7 @@ export function ResultCanvas(blob) {
     this.watchMouseHover = (onHover) => {
         this.canvas.onmousemove = event => {
             const imageData = getImageDataFromMousePosition(event);
-            if(!this.segmentClicked && imageData.value > this.threshold) {
+            if(!this.segmentClicked && imageData && imageData.value > this.threshold) {
                 markSegment(imageData.x, imageData.y, 0.75);
             } else if(!this.segmentClicked && this.segment.length !== 0) {
                 clearSegment();
@@ -42,11 +42,13 @@ export function ResultCanvas(blob) {
     const getImageDataFromMousePosition = mouseEvent => {
         const x = mouseEvent.offsetX;
         const y = mouseEvent.offsetY;
-        const value = this.pixels[y][x].getValue();
+        if (x < 0 || y < 0 || y >= this.pixels.length || x >= this.pixels[0].length)
+            return null;
+        const pixel = this.pixels[y][x];
         return {
             x: x,
             y: y,
-            value: value
+            value: pixel.getValue()
         };
     }
 
