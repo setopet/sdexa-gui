@@ -22,20 +22,6 @@ export function Controller(httpService, fileService, alertService) {
             .catch(alertService.error);
     }
 
-    vm.uploadScatter = (file) => {
-        const animation = new LoadingAnimation("scatter-input-label");
-        httpService
-            .uploadFile(file, "surview/scatter")
-            .then(() => getImage("surview"))
-            .then(blob => initModalCanvas(blob, 50, 50))
-            .then(animation.stop)
-            .then(openSoftTissueSelectionModal)
-            .catch(error => {
-                animation.stop();
-                alertService.error(error);
-            });
-    }
-
     vm.clickCalculate = () => {
         const animation = new LoadingAnimation("calculate-abmd-button");
         httpService.put("/surview/sdexa/calculation")
@@ -149,19 +135,15 @@ export function Controller(httpService, fileService, alertService) {
         return Promise.resolve(this);
     }
 
-    const surviewUploadCallback = file => uploadImage(file, "surview",
+    const surviewUpload = file => uploadImage(file, "surview",
         "Move the rectangle by clicking on the surview image to select the area for segmenation. " +
         "Click the OK button when you are finished.");
 
-    const projectionUploadCallback = file => uploadImage(file, "projection",
+    const projectionUpload = file => uploadImage(file, "projection",
         "Move the rectangle by clicking on the projection image to select the area for registration. " +
         "Click the OK button when you are finished.");
 
-    fileService.watchFileInput("surview-input", surviewUploadCallback);
-    fileService.watchFileDrop("surview-drop", surviewUploadCallback);
-    fileService.watchFileInput("projection-input", projectionUploadCallback);
-    fileService.watchFileDrop("projection-drop", projectionUploadCallback);
-    fileService.watchFileInput("segmentation-input", file => {
+    const segmentationUpload = file => {
         const animation = new LoadingAnimation("segmentation-input-label");
         httpService.uploadFile(file, "/surview/segmentation").then(() => {
             animation.stop();
@@ -170,8 +152,28 @@ export function Controller(httpService, fileService, alertService) {
             animation.stop();
             alertService.error(error);
         });
-    })
-    fileService.watchFileInput("scatter-input", vm.uploadScatter);
+    };
+
+    const scatterUpload = (file) => {
+        const animation = new LoadingAnimation("scatter-input-label");
+        httpService
+            .uploadFile(file, "surview/scatter")
+            .then(() => getImage("surview"))
+            .then(blob => initModalCanvas(blob, 50, 50))
+            .then(animation.stop)
+            .then(openSoftTissueSelectionModal)
+            .catch(error => {
+                animation.stop();
+                alertService.error(error);
+            });
+    }
+
+    fileService.watchFileInput("surview-input", surviewUpload);
+    fileService.watchFileDrop("surview-drop", surviewUpload);
+    fileService.watchFileInput("projection-input", projectionUpload);
+    fileService.watchFileDrop("projection-drop", projectionUpload);
+    fileService.watchFileInput("segmentation-input", segmentationUpload)
+    fileService.watchFileInput("scatter-input", scatterUpload);
 
     return vm;
 }

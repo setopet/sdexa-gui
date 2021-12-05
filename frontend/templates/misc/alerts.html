@@ -8,9 +8,10 @@
 
     {% if surview_present and not scatter_present %}
         <div class="alert alert-success" role="alert">
-            For <strong>areal bone mineral density (aBMD) </strong> calculation upload a scatter image.
+            For <strong>areal bone mineral density (aBMD) </strong> calculation upload a <strong style="color:blue">
+             scatter image.</strong>
             {% if not projection_present %}
-                For <strong>image registration</strong> upload a projection image.
+                For <strong>image registration</strong> upload a <strong style="color:blue">projection image</strong>.
             {% endif %}
             <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>

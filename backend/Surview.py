@@ -28,6 +28,9 @@ class Surview(Image):
             self.segmentation = custom_segmentation
         elif custom_segmentation.shape == self.full_image.shape:
             self.segmentation = pad_and_crop_image(custom_segmentation, self.region)
+        else:
+            raise Exception(f"Custom segmentation is size {custom_segmentation.shape}. "
+                            f"It should be size {(512,512)} or {self.full_image.shape}!")
 
     def get_segmentation_overlay_image(self):
         return overlay_with_mask(self.image, self.get_segmentation(), 50, self.window)
