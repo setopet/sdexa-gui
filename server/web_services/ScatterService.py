@@ -31,4 +31,3 @@ class ScatterService(WebService):
             return SUCCESS
         surview.delete_scatter()
         return SUCCESS
-
