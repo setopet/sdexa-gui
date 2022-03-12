@@ -1,7 +1,7 @@
 # SDEXA GUI
 
 ### Description
-This web application is a software primarily for calculating the <b>areal bone mineral density (aBMD)</b> from a CT surview scan (SDEXA). It therefore uses a provided neural network for segmentation of the vertebral bodies.
+This web application is a software for calculating the <b>areal bone mineral density (aBMD)</b> from a CT surview scan (SDEXA). It therefore uses a provided neural network for segmentation of the vertebral bodies.
 It is also usable for other kinds of tasks related to medical image processing, like <b>image registration</b>.
 
 
